@@ -1,5 +1,6 @@
 
 import { ArrowRight, Play } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
@@ -27,22 +28,28 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-            <button className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 hover:scale-105 flex items-center gap-2">
-              Jwenn Konsiltasyon Gratis
+            <Link
+              to="/contact"
+              className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
+            >
+              Jwenn Konsèltasyon Gratis
               <ArrowRight className="w-5 h-5" />
-            </button>
+            </Link>
             
-            <button className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 flex items-center gap-2">
+            <Link
+              to="/projects"
+              className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 flex items-center gap-2"
+            >
               <Play className="w-5 h-5" />
               Gade Pwojè Nou Yo
-            </button>
+            </Link>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
             <div className="text-center">
               <div className="font-poppins font-bold text-3xl md:text-4xl text-accent mb-2">150+</div>
-              <div className="font-inter text-gray-200">Pwojè Reyalize</div>
+              <div className="font-inter text-gray-200">Pwojè Realize</div>
             </div>
             <div className="text-center">
               <div className="font-poppins font-bold text-3xl md:text-4xl text-accent mb-2">8</div>

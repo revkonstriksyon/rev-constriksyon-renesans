@@ -1,5 +1,5 @@
-
 import { Home, Wrench, FileText, Eye, Zap, Shield } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Services = () => {
   const services = [
@@ -83,17 +83,23 @@ const Services = () => {
                 ))}
               </ul>
 
-              <button className="text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300">
+              <Link
+                to="/services"
+                className="text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300"
+              >
                 Aprann plis →
-              </button>
+              </Link>
             </div>
           ))}
         </div>
 
         <div className="text-center mt-12">
-          <button className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300">
+          <Link
+            to="/contact"
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300"
+          >
             Depo Devis Gratis
-          </button>
+          </Link>
         </div>
       </div>
     </section>
