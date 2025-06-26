@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
@@ -207,10 +206,13 @@ const BlogPage = () => {
                     </div>
                   </div>
                   
-                  <button className="flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300">
+                  <Link
+                    to={`/blog/${filteredArticles[0].slug}`}
+                    className="flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300"
+                  >
                     Li Atik Konplè A
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -277,10 +279,13 @@ const BlogPage = () => {
                     ))}
                   </div>
 
-                  <button className="flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300">
+                  <Link
+                    to={`/blog/${article.slug}`}
+                    className="flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300"
+                  >
                     Li Plis
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </Link>
                 </div>
               </article>
             ))}

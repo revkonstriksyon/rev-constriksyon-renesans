@@ -1,11 +1,13 @@
 
 import { Calendar, ArrowRight, Clock, User } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Blog = () => {
   const articles = [
     {
       id: 1,
       title: 'Kijan pou prepare yon renovasyon ki gen siksè?',
+      slug: 'kijan-pou-prepare-renovasyon',
       excerpt: 'Dekouvri etap esansyèl yo pou planifye ak reyalize yon pwojè renovasyon ki reponn ak bezwen ou yo ak bidjè ou.',
       image: 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       author: 'Ing. Réveillère Joseph',
@@ -16,6 +18,7 @@ const Blog = () => {
     {
       id: 2,
       title: 'Materyèl modèn pou konstriksyon an Ayiti',
+      slug: 'materyel-modern-konstruksyon-ayiti',
       excerpt: 'Eksplorасyon nan nouvo materyèl ak teknoloji yo ki disponib pou pwojè konstriksyon nan kontèks klimatik Ayiti a.',
       image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       author: 'Arch. Marie-Claire Désir',
@@ -26,6 +29,7 @@ const Blog = () => {
     {
       id: 3,
       title: 'Optimizasyon espas ak design minimalist',
+      slug: 'optimizasyon-espas-design-minimalist',
       excerpt: 'Teknik ak konsèy yo pou maksimize espas nan kay ou ak kreye yon anviwonman ki gen style ak fonksyonèl.',
       image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       author: 'Arch. Marie-Claire Désir',
@@ -91,10 +95,13 @@ const Blog = () => {
                   </div>
                 </div>
 
-                <button className="flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300">
+                <Link
+                  to={`/blog/${article.slug}`}
+                  className="flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300"
+                >
                   Li plis
                   <ArrowRight className="w-4 h-4" />
-                </button>
+                </Link>
               </div>
             </article>
           ))}
@@ -127,9 +134,12 @@ const Blog = () => {
         </div>
 
         <div className="text-center mt-8">
-          <button className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300">
+          <Link
+            to="/blog"
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300"
+          >
             Wè Tout Atik Yo
-          </button>
+          </Link>
         </div>
       </div>
     </section>
