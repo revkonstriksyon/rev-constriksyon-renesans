@@ -1,8 +1,11 @@
 
 import { ArrowRight, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useStaticContent } from '@/hooks/useStaticContent';
 
 const Hero = () => {
+  const { content } = useStaticContent();
+
   return (
     <section id="home" className="relative h-screen flex items-center justify-center bg-gradient-to-br from-primary to-primary/80 overflow-hidden">
       {/* Background Image */}
@@ -19,12 +22,11 @@ const Hero = () => {
       <div className="relative z-10 container mx-auto px-4 text-center text-white">
         <div className="max-w-4xl mx-auto animate-fade-in">
           <h1 className="font-poppins font-bold text-4xl md:text-6xl lg:text-7xl leading-tight mb-6">
-            Nou bati <span className="text-accent">rèv ou</span> ak presizyon & ekselans
+            {content.hero_title || 'Rev Konstriksyon - Konstriksyon ak Renovasyon'}
           </h1>
           
           <p className="font-inter text-lg md:text-xl lg:text-2xl mb-8 text-gray-200 max-w-3xl mx-auto">
-            Depi 2015, Rev Konstriksyon se konpayi konstriksyon ki pi gen konfyans nan Ayiti. 
-            Nou espesyalis nan renovasyon, extansyon, ak konstriksyon nouvo ak teknoloji modèn.
+            {content.hero_subtitle || 'Ekspètiz ak Kalite nan Chak Pwojè'}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -32,7 +34,7 @@ const Hero = () => {
               to="/contact"
               className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
             >
-              Jwenn Konsèltasyon Gratis
+              {content.cta_primary_text || 'Jwenn Konsèltasyon Gratis'}
               <ArrowRight className="w-5 h-5" />
             </Link>
             
@@ -41,7 +43,7 @@ const Hero = () => {
               className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 flex items-center gap-2"
             >
               <Play className="w-5 h-5" />
-              Gade Pwojè Nou Yo
+              {content.cta_secondary_text || 'Gade Pwojè Nou Yo'}
             </Link>
           </div>
 

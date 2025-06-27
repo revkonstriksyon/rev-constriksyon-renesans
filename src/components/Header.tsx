@@ -2,10 +2,12 @@
 import { useState } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { useStaticContent } from '@/hooks/useStaticContent';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { content } = useStaticContent();
 
   const navItems = [
     { label: 'Accueil', href: '/' },
@@ -55,13 +57,13 @@ const Header = () => {
           <div className="hidden lg:flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm text-gray-600">
               <Phone className="w-4 h-4" />
-              <span>+509 3456-7890</span>
+              <span>{content.contact_phone_1 || '+509 3456-7890'}</span>
             </div>
             <Link 
               to="/contact"
               className="bg-accent hover:bg-accent/90 text-white px-6 py-2 rounded-lg font-inter font-medium transition-colors duration-300"
             >
-              Consultation Gratuite
+              {content.cta_primary_text || 'Consultation Gratuite'}
             </Link>
           </div>
 
@@ -95,14 +97,14 @@ const Header = () => {
               <div className="flex flex-col space-y-2 pt-4 border-t border-gray-200">
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <Phone className="w-4 h-4" />
-                  <span>+509 3456-7890</span>
+                  <span>{content.contact_phone_1 || '+509 3456-7890'}</span>
                 </div>
                 <Link
                   to="/contact"
                   className="bg-accent hover:bg-accent/90 text-white px-6 py-2 rounded-lg font-inter font-medium transition-colors duration-300 w-full text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Consultation Gratuite
+                  {content.cta_primary_text || 'Consultation Gratuite'}
                 </Link>
               </div>
             </div>

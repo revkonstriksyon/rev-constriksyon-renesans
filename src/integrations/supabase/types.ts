@@ -102,6 +102,48 @@ export type Database = {
         }
         Relationships: []
       }
+      services: {
+        Row: {
+          created_at: string
+          description: string
+          duration: string | null
+          features: string[] | null
+          icon: string | null
+          id: string
+          order_position: number | null
+          price_range: string | null
+          published: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          duration?: string | null
+          features?: string[] | null
+          icon?: string | null
+          id?: string
+          order_position?: number | null
+          price_range?: string | null
+          published?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          duration?: string | null
+          features?: string[] | null
+          icon?: string | null
+          id?: string
+          order_position?: number | null
+          price_range?: string | null
+          published?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       static_content: {
         Row: {
           content: string

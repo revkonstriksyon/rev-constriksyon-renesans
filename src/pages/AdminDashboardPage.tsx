@@ -1,15 +1,16 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { User } from '@supabase/supabase-js';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LogOut, Plus, FileText, Folder, Settings } from 'lucide-react';
+import { LogOut, Plus, FileText, Folder, Settings, Phone, Briefcase } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import BlogManagement from '@/components/admin/BlogManagement';
 import ProjectManagement from '@/components/admin/ProjectManagement';
 import StaticContentManagement from '@/components/admin/StaticContentManagement';
+import ServicesManagement from '@/components/admin/ServicesManagement';
+import ContactManagement from '@/components/admin/ContactManagement';
 
 const AdminDashboardPage = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -72,6 +73,8 @@ const AdminDashboardPage = () => {
   const tabs = [
     { id: 'blogs', label: 'Blog Management', icon: FileText },
     { id: 'projects', label: 'Pwojè Management', icon: Folder },
+    { id: 'services', label: 'Sèvis Management', icon: Briefcase },
+    { id: 'contact', label: 'Enfòmasyon Kontak', icon: Phone },
     { id: 'content', label: 'Kontni Estatik', icon: Settings },
   ];
 
@@ -126,6 +129,8 @@ const AdminDashboardPage = () => {
         <div>
           {activeTab === 'blogs' && <BlogManagement />}
           {activeTab === 'projects' && <ProjectManagement />}
+          {activeTab === 'services' && <ServicesManagement />}
+          {activeTab === 'contact' && <ContactManagement />}
           {activeTab === 'content' && <StaticContentManagement />}
         </div>
       </div>
