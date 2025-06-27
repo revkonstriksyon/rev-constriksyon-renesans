@@ -1,10 +1,14 @@
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Phone, Mail, MapPin, Clock, Send, MessageCircle, Calendar, User, Building } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send, MessageCircle, Calendar } from 'lucide-react';
 import { useState } from 'react';
+import { useContactInfo } from '@/hooks/useContactInfo';
+import { useStaticContent } from '@/hooks/useStaticContent';
 
 const ContactPage = () => {
+  const { contactInfo, isLoading: contactLoading } = useContactInfo();
+  const { content, isLoading: contentLoading } = useStaticContent();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,6 +19,8 @@ const ContactPage = () => {
     message: '',
     preferredContact: 'phone'
   });
+
+  const isLoading = contactLoading || contentLoading;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,28 +45,28 @@ const ContactPage = () => {
     {
       icon: Phone,
       title: 'Telefòn',
-      primary: '+509 3456-7890',
-      secondary: '+509 2812-3456',
+      primary: contactInfo.phone_1,
+      secondary: contactInfo.phone_2,
       description: 'Rele nou direkteman pou diskisyon rapid'
     },
     {
       icon: Mail,
       title: 'Email',
-      primary: 'info@revkonstriksyon.com',
-      secondary: 'devis@revkonstriksyon.com',
+      primary: contactInfo.email_1,
+      secondary: contactInfo.email_2,
       description: 'Voye nou yon email ak detay pwojè ou a'
     },
     {
       icon: MapPin,
       title: 'Biwo',
-      primary: '123 Rue Lamarre, Péguy-Ville',
-      secondary: 'Port-au-Prince, Haïti',
+      primary: contactInfo.address.split(',')[0] || contactInfo.address,
+      secondary: contactInfo.address.split(',').slice(1).join(',') || '',
       description: 'Vizite nou nan biwo nou an'
     },
     {
       icon: MessageCircle,
       title: 'WhatsApp',
-      primary: '+509 3456-7890',
+      primary: contactInfo.phone_1,
       secondary: 'Disponib 24/7',
       description: 'Mesaj rapid ak reponn rapid'
     }
@@ -94,6 +100,18 @@ const ContactPage = () => {
     'Pa gen presyon'
   ];
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <div className="pt-24 pb-16 bg-gray-50 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-2 text-gray-600">Ap chaje enfòmasyon kontak yo...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -102,10 +120,10 @@ const ContactPage = () => {
       <section className="pt-24 pb-16 bg-gradient-to-br from-primary to-primary/80">
         <div className="container mx-auto px-4 text-center text-white">
           <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-6">
-            Kominike Ak Nou
+            {content.contact_section_title || 'Kominike Ak Nou'}
           </h1>
           <p className="font-inter text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
-            Pare pou kòmanse pwojè ou a? Kominike ak nou kònnye a pou konsèltasyon gratis ak devis personalize ki adapte ak bezwen ou yo.
+            {content.contact_section_subtitle || 'Pare pou kòmanse pwojè ou a? Kominike ak nou kònnye a pou konsèltasyon gratis ak devis personalize ki adapte ak bezwen ou yo.'}
           </p>
         </div>
       </section>
@@ -128,9 +146,11 @@ const ContactPage = () => {
                 <p className="font-inter font-semibold text-gray-800 mb-1">
                   {method.primary}
                 </p>
-                <p className="font-inter text-gray-600 text-sm mb-3">
-                  {method.secondary}
-                </p>
+                {method.secondary && (
+                  <p className="font-inter text-gray-600 text-sm mb-3">
+                    {method.secondary}
+                  </p>
+                )}
                 <p className="font-inter text-gray-500 text-sm">
                   {method.description}
                 </p>
@@ -347,17 +367,14 @@ const ContactPage = () => {
                   </h3>
                 </div>
                 <div className="space-y-4">
-                  {officeHours.map((schedule, index) => (
-                    <div key={index} className="flex justify-between items-center py-2 border-b border-white/20 last:border-b-0">
-                      <span className="font-inter font-medium">{schedule.day}</span>
-                      <span className="font-inter text-gray-200">{schedule.hours}</span>
-                    </div>
-                  ))}
+                  <div className="py-2 border-b border-white/20">
+                    <p className="font-inter text-gray-200">{contactInfo.hours}</p>
+                  </div>
                 </div>
                 <div className="mt-6 p-4 bg-white/10 rounded-lg">
                   <p className="font-inter text-sm text-gray-200">
                     <strong>Kontak Urgans:</strong> Nan ka urgans sèlman (pwoblèm sekirite, aksidan), 
-                    nou disponib 24/7 nan +509 3456-7890
+                    nou disponib 24/7 nan {contactInfo.phone_1}
                   </p>
                 </div>
               </div>
@@ -368,14 +385,20 @@ const ContactPage = () => {
                   Kontè Rapid
                 </h3>
                 <div className="space-y-4">
-                  <button className="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3">
+                  <a 
+                    href={`https://wa.me/${contactInfo.phone_1?.replace(/[^0-9]/g, '')}`}
+                    className="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3"
+                  >
                     <MessageCircle className="w-6 h-6" />
                     WhatsApp Nou
-                  </button>
-                  <button className="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3">
+                  </a>
+                  <a 
+                    href={`tel:${contactInfo.phone_1}`}
+                    className="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3"
+                  >
                     <Phone className="w-6 h-6" />
                     Rele Nou Kounye A
-                  </button>
+                  </a>
                   <button className="w-full bg-gray-600 hover:bg-gray-700 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3">
                     <Calendar className="w-6 h-6" />
                     Rann Randevou
@@ -391,7 +414,7 @@ const ContactPage = () => {
                     Google Map pral ajoute isit la byentò
                   </p>
                   <p className="text-gray-500 font-inter text-sm mt-2">
-                    123 Rue Lamarre, Péguy-Ville, Port-au-Prince
+                    {contactInfo.address}
                   </p>
                 </div>
               </div>
