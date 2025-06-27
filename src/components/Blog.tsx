@@ -1,102 +1,82 @@
 
 import { Calendar, ArrowRight, Clock, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useBlogs } from '@/hooks/useBlogs';
+import { useStaticContent } from '@/hooks/useStaticContent';
 
 const Blog = () => {
-  const articles = [
-    {
-      id: 1,
-      title: 'Kijan pou prepare yon renovasyon ki gen siksè?',
-      slug: 'kijan-pou-prepare-renovasyon',
-      excerpt: 'Dekouvri etap esansyèl yo pou planifye ak reyalize yon pwojè renovasyon ki reponn ak bezwen ou yo ak bidjè ou.',
-      image: 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      author: 'Ing. Réveillère Joseph',
-      date: '15 Janvye 2024',
-      readTime: '5 min',
-      category: 'Konsèy Renovasyon'
-    },
-    {
-      id: 2,
-      title: 'Materyèl modèn pou konstriksyon an Ayiti',
-      slug: 'materyel-modern-konstruksyon-ayiti',
-      excerpt: 'Eksplorасyon nan nouvo materyèl ak teknoloji yo ki disponib pou pwojè konstriksyon nan kontèks klimatik Ayiti a.',
-      image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      author: 'Arch. Marie-Claire Désir',
-      date: '8 Janvye 2024',
-      readTime: '7 min',
-      category: 'Teknoloji'
-    },
-    {
-      id: 3,
-      title: 'Optimizasyon espas ak design minimalist',
-      slug: 'optimizasyon-espas-design-minimalist',
-      excerpt: 'Teknik ak konsèy yo pou maksimize espas nan kay ou ak kreye yon anviwonman ki gen style ak fonksyonèl.',
-      image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      author: 'Arch. Marie-Claire Désir',
-      date: '2 Janvye 2024',
-      readTime: '4 min',
-      category: 'Design Interyè'
-    }
-  ];
+  const { blogs, isLoading } = useBlogs();
+  const { content } = useStaticContent();
+
+  if (isLoading) {
+    return (
+      <section className="py-20 bg-secondary">
+        <div className="container mx-auto px-4 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-2 text-gray-600">Ap chaje blog yo...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-20 bg-secondary">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-poppins font-bold text-3xl md:text-4xl text-primary mb-4">
-            Blog / Atik Konsèy
+            {content.blog_section_title || 'Blog / Atik Konsèy'}
           </h2>
           <p className="font-inter text-lg text-gray-600 max-w-2xl mx-auto">
-            Dekouvri konsèy ekspè, tendans nouvo yo, ak enfòmasyon itil pou pwojè konstriksyon ou yo.
+            {content.blog_section_subtitle || 'Dekouvri konsèy ekspè, tendans nouvo yo, ak enfòmasyon itil pou pwojè konstriksyon ou yo.'}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {articles.map((article) => (
+          {blogs.slice(0, 3).map((blog) => (
             <article
-              key={article.id}
+              key={blog.id}
               className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
             >
               {/* Article Image */}
               <div className="relative h-48 overflow-hidden">
                 <img
-                  src={article.image}
-                  alt={article.title}
+                  src={blog.image_url || 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'}
+                  alt={blog.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute top-4 left-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-inter font-medium">
-                  {article.category}
+                  {blog.category}
                 </div>
               </div>
 
               {/* Article Content */}
               <div className="p-6">
                 <h3 className="font-poppins font-semibold text-xl text-primary mb-3 group-hover:text-accent transition-colors duration-300">
-                  {article.title}
+                  {blog.title}
                 </h3>
 
                 <p className="font-inter text-gray-600 mb-4 line-clamp-3">
-                  {article.excerpt}
+                  {blog.excerpt}
                 </p>
 
                 {/* Article Meta */}
                 <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
                   <div className="flex items-center gap-1">
                     <User className="w-4 h-4" />
-                    <span>{article.author}</span>
+                    <span>{blog.author}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Calendar className="w-4 h-4" />
-                    <span>{article.date}</span>
+                    <span>{blog.date}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="w-4 h-4" />
-                    <span>{article.readTime}</span>
+                    <span>{blog.read_time}</span>
                   </div>
                 </div>
 
                 <Link
-                  to={`/blog/${article.slug}`}
+                  to={`/blog/${blog.slug}`}
                   className="flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300"
                 >
                   Li plis
@@ -111,10 +91,10 @@ const Blog = () => {
         <div className="mt-16 bg-primary rounded-2xl p-8 text-white">
           <div className="max-w-2xl mx-auto text-center">
             <h3 className="font-poppins font-bold text-2xl mb-4">
-              Abònman Newsletter Nou An
+              {content.newsletter_title || 'Abònman Newsletter Nou An'}
             </h3>
             <p className="font-inter text-lg mb-6 text-gray-200">
-              Resevwa konsèy ekspè, nouvo pwojè nou yo, ak enfòmasyon sou tendans konstriksyon yo nan Ayiti.
+              {content.newsletter_subtitle || 'Resevwa konsèy ekspè, nouvo pwojè nou yo, ak enfòmasyon sou tendans konstriksyon yo nan Ayiti.'}
             </p>
             <form className="flex flex-col sm:flex-row gap-4">
               <input

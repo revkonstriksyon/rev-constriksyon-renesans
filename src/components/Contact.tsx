@@ -1,8 +1,10 @@
 
 import { Phone, Mail, MapPin, Clock, Send, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
+import { useStaticContent } from '@/hooks/useStaticContent';
 
 const Contact = () => {
+  const { content, isLoading } = useStaticContent();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,15 +26,26 @@ const Contact = () => {
     });
   };
 
+  if (isLoading) {
+    return (
+      <section id="contact" className="py-20 bg-white">
+        <div className="container mx-auto px-4 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-2 text-gray-600">Ap chaje enfòmasyon kontak yo...</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="contact" className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-poppins font-bold text-3xl md:text-4xl text-primary mb-4">
-            Kominike Ak Nou
+            {content.contact_section_title || 'Kominike Ak Nou'}
           </h2>
           <p className="font-inter text-lg text-gray-600 max-w-2xl mx-auto">
-            Pare pou kòmanse pwojè ou a? Kominike ak nou kònnye a pou konsiltasyon gratis ak devis personalize.
+            {content.contact_section_subtitle || 'Pare pou kòmanse pwojè ou a? Kominike ak nou kònnye a pou konsiltasyon gratis ak devis personalize.'}
           </p>
         </div>
 
@@ -51,8 +64,10 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-inter font-semibold text-primary mb-1">Telefòn</h4>
-                    <p className="font-inter text-gray-600">+509 3456-7890</p>
-                    <p className="font-inter text-gray-600">+509 2812-3456</p>
+                    <p className="font-inter text-gray-600">{content.contact_phone_1 || '+509 3456-7890'}</p>
+                    {content.contact_phone_2 && (
+                      <p className="font-inter text-gray-600">{content.contact_phone_2}</p>
+                    )}
                   </div>
                 </div>
 
@@ -62,8 +77,10 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-inter font-semibold text-primary mb-1">Email</h4>
-                    <p className="font-inter text-gray-600">info@revkonstriksyon.com</p>
-                    <p className="font-inter text-gray-600">devis@revkonstriksyon.com</p>
+                    <p className="font-inter text-gray-600">{content.contact_email_1 || 'info@revkonstriksyon.com'}</p>
+                    {content.contact_email_2 && (
+                      <p className="font-inter text-gray-600">{content.contact_email_2}</p>
+                    )}
                   </div>
                 </div>
 
@@ -73,8 +90,9 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-inter font-semibold text-primary mb-1">Adrès</h4>
-                    <p className="font-inter text-gray-600">123 Rue Lamarre, Péguy-Ville</p>
-                    <p className="font-inter text-gray-600">Port-au-Prince, Haïti</p>
+                    <p className="font-inter text-gray-600">
+                      {content.contact_address || '123 Rue Lamarre, Péguy-Ville, Port-au-Prince, Haïti'}
+                    </p>
                   </div>
                 </div>
 
@@ -84,8 +102,9 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-inter font-semibold text-primary mb-1">Otè Travay</h4>
-                    <p className="font-inter text-gray-600">Lendi - Vandredi: 7:00 AM - 5:00 PM</p>
-                    <p className="font-inter text-gray-600">Samdi: 8:00 AM - 2:00 PM</p>
+                    <p className="font-inter text-gray-600">
+                      {content.contact_hours || 'Lendi - Vandredi: 7:00 AM - 5:00 PM, Samdi: 8:00 AM - 2:00 PM'}
+                    </p>
                   </div>
                 </div>
               </div>
