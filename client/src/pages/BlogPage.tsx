@@ -1,7 +1,7 @@
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 import { Calendar, ArrowRight, Clock, User, Search, Tag } from 'lucide-react';
 import { useState } from 'react';
 import { useBlogs } from '@/hooks/useBlogs';

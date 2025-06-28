@@ -1,6 +1,6 @@
 
 import { Calendar, ArrowRight, Clock, User } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 import { useBlogs } from '@/hooks/useBlogs';
 import { useStaticContent } from '@/hooks/useStaticContent';
 
@@ -77,7 +77,7 @@ const Blog = () => {
                 </div>
 
                 <Link
-                  to={`/blog/${blog.slug}`}
+                  href={`/blog/${blog.slug}`}
                   className="flex items-center gap-2 text-accent hover:text-black font-inter font-medium transition-colors duration-300"
                 >
                   Li plis

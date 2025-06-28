@@ -1,6 +1,6 @@
 
 import { Home, Wrench, FileText, Eye, Zap, Shield } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 import { useServices } from '@/hooks/useServices';
 import { useStaticContent } from '@/hooks/useStaticContent';
 

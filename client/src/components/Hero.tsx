@@ -1,6 +1,6 @@
 
 import { ArrowRight, Play } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 import { useStaticContent } from '@/hooks/useStaticContent';
 
 const Hero = () => {
@@ -31,7 +31,7 @@ const Hero = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <Link
-              to="/contact"
+              href="/contact"
               className="bg-accent hover:bg-black hover:border-accent border-2 border-accent text-white px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
             >
               {content.cta_primary_text || 'Jwenn Konsèltasyon Gratis'}
@@ -39,7 +39,7 @@ const Hero = () => {
             </Link>
             
             <Link
-              to="/projects"
+              href="/projects"
               className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 flex items-center gap-2"
             >
               <Play className="w-5 h-5" />

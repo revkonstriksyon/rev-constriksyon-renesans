@@ -1,10 +1,9 @@
 
-import { useParams, Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useParams, Link } from 'wouter';
+import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Calendar, ArrowLeft, ArrowRight, User, Clock, Tag } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { useStaticContent } from '@/hooks/useStaticContent';
 
 interface Blog {
@@ -23,56 +22,39 @@ interface Blog {
 
 const BlogArticlePage = () => {
   const { slug } = useParams();
-  const [article, setArticle] = useState<Blog | null>(null);
-  const [relatedArticles, setRelatedArticles] = useState<Blog[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
   const { content } = useStaticContent();
 
-  useEffect(() => {
-    const fetchArticle = async () => {
-      if (!slug) return;
-
-      try {
-        // Fetch the main article
-        const { data: articleData, error: articleError } = await supabase
-          .from('blogs')
-          .select('*')
-          .eq('slug', slug)
-          .eq('published', true)
-          .single();
-
-        if (articleError || !articleData) {
-          setNotFound(true);
-          setIsLoading(false);
-          return;
+  const { data: article, isLoading, error } = useQuery({
+    queryKey: ['blog', slug],
+    queryFn: async () => {
+      if (!slug) throw new Error('No slug provided');
+      const response = await fetch(`/api/blogs/${slug}`);
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('Blog not found');
         }
-
-        setArticle(articleData);
-
-        // Fetch related articles (same category, excluding current article)
-        const { data: relatedData, error: relatedError } = await supabase
-          .from('blogs')
-          .select('*')
-          .eq('category', articleData.category)
-          .eq('published', true)
-          .neq('id', articleData.id)
-          .limit(3);
-
-        if (!relatedError && relatedData) {
-          setRelatedArticles(relatedData);
-        }
-
-      } catch (error) {
-        console.error('Error fetching article:', error);
-        setNotFound(true);
-      } finally {
-        setIsLoading(false);
+        throw new Error('Failed to fetch blog');
       }
-    };
+      return response.json() as Promise<Blog>;
+    },
+    enabled: !!slug,
+  });
 
-    fetchArticle();
-  }, [slug]);
+  const { data: allBlogs = [] } = useQuery({
+    queryKey: ['blogs'],
+    queryFn: async () => {
+      const response = await fetch('/api/blogs');
+      if (!response.ok) throw new Error('Failed to fetch blogs');
+      return response.json() as Promise<Blog[]>;
+    },
+  });
+
+  const relatedArticles = article 
+    ? allBlogs.filter(blog => 
+        blog.category === article.category && 
+        blog.id !== article.id
+      ).slice(0, 3)
+    : [];
 
   // Loading state
   if (isLoading) {
@@ -88,7 +70,7 @@ const BlogArticlePage = () => {
   }
 
   // Article not found
-  if (notFound || !article) {
+  if (error || !article) {
     return (
       <div className="min-h-screen">
         <Header />

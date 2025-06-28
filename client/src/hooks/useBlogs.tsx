@@ -1,6 +1,5 @@
 
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from '@tanstack/react-query';
 
 interface Blog {
   id: string;
@@ -17,49 +16,16 @@ interface Blog {
 }
 
 export const useBlogs = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('blogs')
-          .select('*')
-          .eq('published', true)
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
-        setBlogs(data || []);
-      } catch (error) {
-        console.error('Error fetching blogs:', error);
-      } finally {
-        setIsLoading(false);
+  const { data: blogs = [], isLoading, error } = useQuery({
+    queryKey: ['blogs'],
+    queryFn: async () => {
+      const response = await fetch('/api/blogs');
+      if (!response.ok) {
+        throw new Error('Failed to fetch blogs');
       }
-    };
+      return response.json() as Promise<Blog[]>;
+    },
+  });
 
-    fetchBlogs();
-
-    // Set up realtime subscription for live updates
-    const channel = supabase
-      .channel('blogs-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'blogs'
-        },
-        () => {
-          fetchBlogs();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  return { blogs, isLoading };
+  return { blogs, isLoading, error };
 };

@@ -1,7 +1,6 @@
 
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,10 +8,10 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 
 const AdminLoginPage = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
   const { toast } = useToast();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -20,74 +19,26 @@ const AdminLoginPage = () => {
     setIsLoading(true);
     
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        toast({
-          title: 'Erè koneksyon',
-          description: error.message,
-          variant: 'destructive',
-        });
-      } else {
+      // Simple authentication for demo - replace with real auth in production
+      if (username === 'admin' && password === 'admin123') {
+        localStorage.setItem('adminLoggedIn', 'true');
+        localStorage.setItem('adminUser', username);
         toast({
           title: 'Konekte ak siksè!',
           description: 'Ou konekte nan admin dashboard la.',
         });
-        navigate('/admin');
+        setLocation('/admin');
+      } else {
+        toast({
+          title: 'Erè koneksyon',
+          description: 'Username oswa motdepas yo pa kòrèk.',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       toast({
         title: 'Erè',
         description: 'Gen yon pwoblèm ak koneksyon an.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSignUp = async () => {
-    if (!email || !password) {
-      toast({
-        title: 'Erè',
-        description: 'Tanpri antre email ak motdepas ou yo.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    
-    try {
-      const redirectUrl = `${window.location.origin}/admin`;
-      
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: redirectUrl
-        }
-      });
-
-      if (error) {
-        toast({
-          title: 'Erè enskripsyon',
-          description: error.message,
-          variant: 'destructive',
-        });
-      } else {
-        toast({
-          title: 'Enskripsyon ak siksè!',
-          description: 'Tcheke email ou pou konfime kont lan.',
-        });
-      }
-    } catch (error) {
-      toast({
-        title: 'Erè',
-        description: 'Gen yon pwoblèm ak enskripsyon an.',
         variant: 'destructive',
       });
     } finally {
@@ -109,13 +60,13 @@ const AdminLoginPage = () => {
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@revkonstriksyon.com"
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="admin"
                 required
               />
             </div>
@@ -130,23 +81,15 @@ const AdminLoginPage = () => {
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Button 
-                type="submit" 
-                className="w-full" 
-                disabled={isLoading}
-              >
-                {isLoading ? 'Ap konekte...' : 'Konekte'}
-              </Button>
-              <Button 
-                type="button" 
-                variant="outline" 
-                className="w-full"
-                onClick={handleSignUp}
-                disabled={isLoading}
-              >
-                Kreye nouvo kont
-              </Button>
+            <Button 
+              type="submit" 
+              className="w-full" 
+              disabled={isLoading}
+            >
+              {isLoading ? 'Ap konekte...' : 'Konekte'}
+            </Button>
+            <div className="text-center text-sm text-gray-600 mt-4">
+              Demo: username = admin, password = admin123
             </div>
           </form>
         </CardContent>

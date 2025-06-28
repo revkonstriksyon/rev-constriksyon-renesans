@@ -1,7 +1,7 @@
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 import { Star, Quote, ArrowRight, MapPin, Calendar } from 'lucide-react';
 
 const TestimonialsPage = () => {

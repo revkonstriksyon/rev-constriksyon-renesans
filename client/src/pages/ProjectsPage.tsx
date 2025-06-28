@@ -1,7 +1,7 @@
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 import { Calendar, MapPin, ArrowRight, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { useProjects } from '@/hooks/useProjects';
@@ -16,8 +16,8 @@ const ProjectsPage = () => {
   const categories = [
     { id: 'all', label: 'Tout Pwojè' },
     ...Array.from(new Set(projects.map(project => project.category).filter(Boolean))).map(cat => ({
-      id: cat,
-      label: cat
+      id: cat!,
+      label: cat!
     }))
   ];
 
@@ -60,7 +60,7 @@ const ProjectsPage = () => {
             {categories.map((category) => (
               <button
                 key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
+                onClick={() => setSelectedCategory(category.id || 'all')}
                 className={`px-6 py-3 rounded-lg font-inter font-medium transition-all duration-300 ${
                   selectedCategory === category.id
                     ? 'bg-accent text-white shadow-lg'

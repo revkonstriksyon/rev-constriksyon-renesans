@@ -1,6 +1,5 @@
 
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from '@tanstack/react-query';
 
 interface StaticContent {
   key: string;
@@ -8,53 +7,21 @@ interface StaticContent {
 }
 
 export const useStaticContent = () => {
-  const [content, setContent] = useState<Record<string, string>>({});
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('static_content')
-          .select('key, content');
-
-        if (error) throw error;
-
-        const contentMap: Record<string, string> = {};
-        data?.forEach(item => {
-          contentMap[item.key] = item.content;
-        });
-
-        setContent(contentMap);
-      } catch (error) {
-        console.error('Error fetching static content:', error);
-      } finally {
-        setIsLoading(false);
+  const { data: staticContent = [], isLoading, error } = useQuery({
+    queryKey: ['static-content'],
+    queryFn: async () => {
+      const response = await fetch('/api/static-content');
+      if (!response.ok) {
+        throw new Error('Failed to fetch static content');
       }
-    };
+      return response.json() as Promise<StaticContent[]>;
+    },
+  });
 
-    fetchContent();
+  const content: Record<string, string> = {};
+  staticContent.forEach(item => {
+    content[item.key] = item.content;
+  });
 
-    // Set up realtime subscription for live updates
-    const channel = supabase
-      .channel('static-content-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'static_content'
-        },
-        () => {
-          fetchContent();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  return { content, isLoading };
+  return { content, isLoading, error };
 };

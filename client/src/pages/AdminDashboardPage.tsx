@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useNavigate } from 'react-router-dom';
-import { User } from '@supabase/supabase-js';
+import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LogOut, Plus, FileText, Folder, Settings, Phone, Briefcase } from 'lucide-react';
@@ -13,50 +11,32 @@ import ServicesManagement from '@/components/admin/ServicesManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
 
 const AdminDashboardPage = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<{ username: string } | null>(null);
   const [activeTab, setActiveTab] = useState('blogs');
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check current session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setUser(session.user);
-      } else {
-        navigate('/admin/login');
-      }
-    });
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (session?.user) {
-          setUser(session.user);
-        } else {
-          navigate('/admin/login');
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        title: 'Erè',
-        description: 'Pwoblèm nan dekoneksyon an.',
-        variant: 'destructive',
-      });
+    // Check localStorage for login status
+    const isLoggedIn = localStorage.getItem('adminLoggedIn');
+    const adminUser = localStorage.getItem('adminUser');
+    
+    if (isLoggedIn === 'true' && adminUser) {
+      setUser({ username: adminUser });
     } else {
-      toast({
-        title: 'Dekonekte',
-        description: 'Ou dekonekte ak siksè.',
-      });
-      navigate('/admin/login');
+      setLocation('/admin/login');
     }
+  }, [setLocation]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminLoggedIn');
+    localStorage.removeItem('adminUser');
+    setUser(null);
+    toast({
+      title: 'Dekonekte',
+      description: 'Ou dekonekte ak siksè.',
+    });
+    setLocation('/admin/login');
   };
 
   if (!user) {
@@ -89,7 +69,7 @@ const AdminDashboardPage = () => {
                 Rev Konstriksyon Admin
               </h1>
               <p className="text-sm text-gray-500">
-                Bonjou, {user.email}
+                Bonjou, {user.username}
               </p>
             </div>
             <Button 
