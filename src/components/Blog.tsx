@@ -35,7 +35,7 @@ const Blog = () => {
           {blogs.slice(0, 3).map((blog) => (
             <article
               key={blog.id}
-              className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
+              className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group border border-gray-200"
             >
               {/* Article Image */}
               <div className="relative h-48 overflow-hidden">
@@ -44,6 +44,7 @@ const Blog = () => {
                   alt={blog.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-300"></div>
                 <div className="absolute top-4 left-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-inter font-medium">
                   {blog.category}
                 </div>
@@ -77,7 +78,7 @@ const Blog = () => {
 
                 <Link
                   to={`/blog/${blog.slug}`}
-                  className="flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300"
+                  className="flex items-center gap-2 text-accent hover:text-black font-inter font-medium transition-colors duration-300"
                 >
                   Li plis
                   <ArrowRight className="w-4 h-4" />
@@ -88,24 +89,24 @@ const Blog = () => {
         </div>
 
         {/* Newsletter Signup */}
-        <div className="mt-16 bg-primary rounded-2xl p-8 text-white">
+        <div className="mt-16 bg-black rounded-2xl p-8 text-white">
           <div className="max-w-2xl mx-auto text-center">
             <h3 className="font-poppins font-bold text-2xl mb-4">
               {content.newsletter_title || 'Abònman Newsletter Nou An'}
             </h3>
-            <p className="font-inter text-lg mb-6 text-gray-200">
+            <p className="font-inter text-lg mb-6 text-gray-300">
               {content.newsletter_subtitle || 'Resevwa konsèy ekspè, nouvo pwojè nou yo, ak enfòmasyon sou tendans konstriksyon yo nan Ayiti.'}
             </p>
             <form className="flex flex-col sm:flex-row gap-4">
               <input
                 type="email"
                 placeholder="Antre email ou a..."
-                className="flex-1 px-4 py-3 rounded-lg text-primary font-inter"
+                className="flex-1 px-4 py-3 rounded-lg text-black font-inter border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
                 required
               />
               <button
                 type="submit"
-                className="bg-accent hover:bg-accent/90 text-white px-8 py-3 rounded-lg font-inter font-semibold transition-colors duration-300"
+                className="bg-accent hover:bg-white hover:text-black border-2 border-accent text-white px-8 py-3 rounded-lg font-inter font-semibold transition-all duration-300"
               >
                 Abònman
               </button>
@@ -116,7 +117,7 @@ const Blog = () => {
         <div className="text-center mt-8">
           <Link
             to="/blog"
-            className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300"
+            className="bg-accent hover:bg-black hover:border-accent border-2 border-accent text-white px-8 py-4 rounded-lg font-inter font-semibold transition-all duration-300"
           >
             Wè Tout Atik Yo
           </Link>

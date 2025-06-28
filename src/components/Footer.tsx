@@ -9,7 +9,7 @@ const Footer = () => {
 
   if (isLoading) {
     return (
-      <footer className="bg-primary text-white">
+      <footer className="bg-black text-white">
         <div className="container mx-auto px-4 py-12 text-center">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mx-auto"></div>
           <p className="mt-2 text-gray-300">Ap chaje...</p>
@@ -19,7 +19,7 @@ const Footer = () => {
   }
 
   return (
-    <footer className="bg-primary text-white">
+    <footer className="bg-black text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -39,19 +39,19 @@ const Footer = () => {
             <div className="flex space-x-4">
               <a 
                 href={contactInfo.facebook || '#'} 
-                className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
+                className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
               >
                 <Facebook className="w-5 h-5" />
               </a>
               <a 
                 href={contactInfo.instagram || '#'} 
-                className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
+                className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a 
                 href={contactInfo.twitter || '#'} 
-                className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
+                className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
               >
                 <Twitter className="w-5 h-5" />
               </a>
@@ -113,7 +113,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 mt-12 pt-8">
+        <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="font-inter text-gray-300 text-sm">
               {content.copyright_text || '© 2024 Rev Konstriksyon. Tout dwa rezève.'}

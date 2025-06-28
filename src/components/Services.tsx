@@ -47,10 +47,10 @@ const Services = () => {
             return (
               <div
                 key={service.id}
-                className="bg-white rounded-xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group"
+                className="bg-white rounded-xl p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group border border-gray-200"
               >
                 <div className="flex items-center mb-6">
-                  <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-accent/10 transition-colors duration-300">
+                  <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center group-hover:bg-accent/10 transition-colors duration-300">
                     <IconComponent className="w-8 h-8 text-primary group-hover:text-accent transition-colors duration-300" />
                   </div>
                 </div>
@@ -83,7 +83,7 @@ const Services = () => {
 
                 <Link
                   to="/services"
-                  className="text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300"
+                  className="text-accent hover:text-black font-inter font-medium transition-colors duration-300"
                 >
                   Aprann plis →
                 </Link>
@@ -95,7 +95,7 @@ const Services = () => {
         <div className="text-center mt-12">
           <Link
             to="/contact"
-            className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300"
+            className="bg-accent hover:bg-black hover:border-accent border-2 border-accent text-white px-8 py-4 rounded-lg font-inter font-semibold transition-all duration-300"
           >
             Depo Devis Gratis
           </Link>

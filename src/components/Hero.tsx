@@ -7,7 +7,7 @@ const Hero = () => {
   const { content } = useStaticContent();
 
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center bg-gradient-to-br from-primary to-primary/80 overflow-hidden">
+    <section id="home" className="relative h-screen flex items-center justify-center bg-gradient-to-br from-primary via-gray-900 to-black overflow-hidden">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -15,7 +15,7 @@ const Hero = () => {
           backgroundImage: `url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')`,
         }}
       >
-        <div className="absolute inset-0 bg-primary/70"></div>
+        <div className="absolute inset-0 bg-black/75"></div>
       </div>
 
       {/* Content */}
@@ -32,7 +32,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <Link
               to="/contact"
-              className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
+              className="bg-accent hover:bg-black hover:border-accent border-2 border-accent text-white px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
             >
               {content.cta_primary_text || 'Jwenn Konsèltasyon Gratis'}
               <ArrowRight className="w-5 h-5" />
@@ -40,7 +40,7 @@ const Hero = () => {
             
             <Link
               to="/projects"
-              className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 flex items-center gap-2"
+              className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 flex items-center gap-2"
             >
               <Play className="w-5 h-5" />
               {content.cta_secondary_text || 'Gade Pwojè Nou Yo'}
