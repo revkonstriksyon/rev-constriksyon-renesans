@@ -1,28 +1,35 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { getTranslatedContent } from '@/utils/translationHelpers';
 
 interface StaticContent {
   key: string;
   content: string;
+  content_ht?: string;
+  content_fr?: string;
+  content_en?: string;
 }
 
 export const useStaticContent = () => {
   const [content, setContent] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
+  const { currentLanguage } = useLanguage();
 
   useEffect(() => {
     const fetchContent = async () => {
       try {
         const { data, error } = await supabase
           .from('static_content')
-          .select('key, content');
+          .select('*');
 
         if (error) throw error;
 
         const contentMap: Record<string, string> = {};
         data?.forEach(item => {
-          contentMap[item.key] = item.content;
+          const translatedContent = getTranslatedContent(item, 'content', currentLanguage, item.content);
+          contentMap[item.key] = translatedContent;
         });
 
         setContent(contentMap);
@@ -54,7 +61,7 @@ export const useStaticContent = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [currentLanguage]);
 
   return { content, isLoading };
 };

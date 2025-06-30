@@ -7,8 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Edit, Trash2, Save, X } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Globe } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
+import TranslationForm from './TranslationManagement';
 
 interface Blog {
   id: string;
@@ -30,7 +32,10 @@ const BlogManagement = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [translatingBlog, setTranslatingBlog] = useState<Blog | null>(null);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const [formData, setFormData] = useState({
     title: '',
@@ -171,6 +176,39 @@ const BlogManagement = () => {
       read_time: blog.read_time,
     });
     setIsCreating(true);
+  };
+
+  const startTranslation = (blog: Blog) => {
+    setTranslatingBlog(blog);
+    setIsTranslating(true);
+  };
+
+  const handleSaveTranslations = async (translations: Record<string, any>) => {
+    if (!translatingBlog) return;
+
+    try {
+      const { error } = await supabase
+        .from('blogs')
+        .update(translations)
+        .eq('id', translatingBlog.id);
+
+      if (error) throw error;
+
+      toast({
+        title: 'Siksè!',
+        description: 'Tradiksyon yo konsève avèk siksè.',
+      });
+
+      setIsTranslating(false);
+      setTranslatingBlog(null);
+      fetchBlogs();
+    } catch (error) {
+      toast({
+        title: 'Erè',
+        description: 'Gen pwoblèm nan konsève tradiksyon yo.',
+        variant: 'destructive',
+      });
+    }
   };
 
   const resetForm = () => {
@@ -318,6 +356,14 @@ const BlogManagement = () => {
                   <Button size="sm" variant="outline" onClick={() => startEdit(blog)}>
                     <Edit className="w-4 h-4" />
                   </Button>
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    onClick={() => startTranslation(blog)}
+                    title="Modifye tradiksyon"
+                  >
+                    <Globe className="w-4 h-4" />
+                  </Button>
                   <Button size="sm" variant="destructive" onClick={() => handleDelete(blog.id)}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
@@ -334,6 +380,31 @@ const BlogManagement = () => {
             <p className="text-gray-500">Pa gen blog ankò. Kòmanse kreye premye blog ou a!</p>
           </CardContent>
         </Card>
+      )}
+
+      {/* Translation Modal */}
+      {isTranslating && translatingBlog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <TranslationForm
+              title={`Tradiksyon pou: ${translatingBlog.title}`}
+              description="Ajoute tradiksyon yo nan 3 lang yo: Kreyòl Ayisyen, Français, ak English"
+              initialData={translatingBlog}
+              fields={[
+                { key: 'title', label: 'Tit', type: 'text', required: true },
+                { key: 'excerpt', label: 'Egzètè', type: 'textarea', required: true },
+                { key: 'content', label: 'Kontni', type: 'textarea', required: true },
+                { key: 'category', label: 'Kategori', type: 'text', required: true },
+                { key: 'author', label: 'Otè', type: 'text', required: true },
+              ]}
+              onSave={handleSaveTranslations}
+              onCancel={() => {
+                setIsTranslating(false);
+                setTranslatingBlog(null);
+              }}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

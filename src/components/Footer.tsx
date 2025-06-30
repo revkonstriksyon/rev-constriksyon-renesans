@@ -2,17 +2,19 @@
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter } from 'lucide-react';
 import { useContactInfo } from '@/hooks/useContactInfo';
 import { useStaticContent } from '@/hooks/useStaticContent';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Footer = () => {
   const { contactInfo, isLoading } = useContactInfo();
   const { content } = useStaticContent();
+  const { t } = useLanguage();
 
   if (isLoading) {
     return (
       <footer className="bg-black text-white">
         <div className="container mx-auto px-4 py-12 text-center">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mx-auto"></div>
-          <p className="mt-2 text-gray-300">Ap chaje...</p>
+          <p className="mt-2 text-gray-300">{t('loading', 'Ap chaje...')}</p>
         </div>
       </footer>
     );

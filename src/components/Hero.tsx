@@ -2,9 +2,11 @@
 import { ArrowRight, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useStaticContent } from '@/hooks/useStaticContent';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Hero = () => {
   const { content } = useStaticContent();
+  const { t } = useLanguage();
 
   return (
     <section id="home" className="relative h-screen flex items-center justify-center bg-gradient-to-br from-primary via-gray-900 to-black overflow-hidden">
@@ -34,7 +36,7 @@ const Hero = () => {
               to="/contact"
               className="bg-accent hover:bg-black hover:border-accent border-2 border-accent text-white px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
             >
-              {content.cta_primary_text || 'Jwenn Konsèltasyon Gratis'}
+              {content.cta_primary_text || t('hero.cta_primary', 'Jwenn Konsèltasyon Gratis')}
               <ArrowRight className="w-5 h-5" />
             </Link>
             
@@ -43,7 +45,7 @@ const Hero = () => {
               className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 flex items-center gap-2"
             >
               <Play className="w-5 h-5" />
-              {content.cta_secondary_text || 'Gade Pwojè Nou Yo'}
+              {content.cta_secondary_text || t('hero.cta_secondary', 'Gade Pwojè Nou Yo')}
             </Link>
           </div>
 

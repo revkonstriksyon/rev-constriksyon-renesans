@@ -3,20 +3,23 @@ import { useState } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useStaticContent } from '@/hooks/useStaticContent';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { LanguageSelector } from './LanguageSelector';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { content } = useStaticContent();
+  const { t } = useLanguage();
 
   const navItems = [
-    { label: 'Accueil', href: '/' },
-    { label: 'Services', href: '/services' },
-    { label: 'Projets', href: '/projects' },
-    { label: 'Témoignages', href: '/testimonials' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'À propos', href: '/about' },
-    { label: 'Contact', href: '/contact' }
+    { label: t('nav.home'), href: '/' },
+    { label: t('nav.services'), href: '/services' },
+    { label: t('nav.projects'), href: '/projects' },
+    { label: t('nav.testimonials'), href: '/testimonials' },
+    { label: t('nav.blog'), href: '/blog' },
+    { label: t('nav.about'), href: '/about' },
+    { label: t('nav.contact'), href: '/contact' }
   ];
 
   const isActive = (href: string) => location.pathname === href;
@@ -53,17 +56,18 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Contact Info & CTA */}
+          {/* Contact Info, Language Selector & CTA */}
           <div className="hidden lg:flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm text-gray-600">
               <Phone className="w-4 h-4" />
               <span>{content.contact_phone_1 || '+509 3456-7890'}</span>
             </div>
+            <LanguageSelector />
             <Link 
               to="/contact"
               className="bg-accent hover:bg-black hover:border-accent border-2 border-accent text-white px-6 py-2 rounded-lg font-inter font-medium transition-all duration-300"
             >
-              {content.cta_primary_text || 'Consultation Gratuite'}
+              {t('btn.getQuote')}
             </Link>
           </div>
 
@@ -99,12 +103,15 @@ const Header = () => {
                   <Phone className="w-4 h-4" />
                   <span>{content.contact_phone_1 || '+509 3456-7890'}</span>
                 </div>
+                <div className="flex justify-center py-2">
+                  <LanguageSelector />
+                </div>
                 <Link
                   to="/contact"
                   className="bg-accent hover:bg-black hover:border-accent border-2 border-accent text-white px-6 py-2 rounded-lg font-inter font-medium transition-all duration-300 w-full text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {content.cta_primary_text || 'Consultation Gratuite'}
+                  {t('btn.getQuote')}
                 </Link>
               </div>
             </div>
