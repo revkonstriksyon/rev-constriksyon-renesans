@@ -25,7 +25,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <img 
-              src="/lovable-uploads/880a9829-94fc-4423-bfc3-3eff62ff347d.png" 
+              src="/lovable-uploads/13fb6e7e-0f38-4087-a603-87332522b654.png" 
               alt="Rev Konstriksyon Logo" 
               className="h-12 w-12 object-contain"
             />
