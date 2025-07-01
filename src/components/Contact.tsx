@@ -1,22 +1,72 @@
 
 import { Phone, Mail, MapPin, Clock, Send, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
-import { useStaticContent } from '@/hooks/useStaticContent';
+import { useToast } from '@/hooks/use-toast';
 
 const Contact = () => {
-  const { content, isLoading } = useStaticContent();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     projectType: '',
-    message: ''
+    message: '',
+    preferredContact: 'whatsapp'
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Handle form submission
+    setIsSubmitting(true);
+
+    try {
+      // Create the message content
+      const messageContent = `Nouvo demann depo devis:
+Non: ${formData.name}
+Imèl: ${formData.email}
+Telefòn: ${formData.phone || 'Pa bay'}
+Tip pwojè: ${formData.projectType || 'Pa espesifye'}
+Mesaj: ${formData.message}
+
+Metòd preferans pou kontakte: ${formData.preferredContact === 'whatsapp' ? 'WhatsApp' : 'Email'}`;
+
+      if (formData.preferredContact === 'whatsapp') {
+        // Send via WhatsApp
+        const whatsappMessage = encodeURIComponent(messageContent);
+        window.open(`https://wa.me/50947624431?text=${whatsappMessage}`, '_blank');
+      } else {
+        // Send via Email
+        const emailSubject = encodeURIComponent('Nouvo Demann Depo Devis - Rev Konstriksyon');
+        const emailBody = encodeURIComponent(messageContent);
+        window.open(`mailto:revkonstriksyon@gmail.com?subject=${emailSubject}&body=${emailBody}`, '_blank');
+      }
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        projectType: '',
+        message: '',
+        preferredContact: 'whatsapp'
+      });
+
+      // Show success message
+      toast({
+        title: "Mèsi pou demann ou a!",
+        description: "Nou resevwa demann ou ak nou pral kominike ak ou nan ti tan an.",
+      });
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Gen yon pwoblèm",
+        description: "Tanpri eseye ankò oswa rele nou dirèkteman.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -32,17 +82,6 @@ const Contact = () => {
     );
     window.open(`https://wa.me/50947624431?text=${message}`, '_blank');
   };
-
-  if (isLoading) {
-    return (
-      <section id="contact" className="py-20 bg-white">
-        <div className="container mx-auto px-4 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-gray-600">Ap chaje enfòmasyon kontak yo...</p>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="contact" className="py-20 bg-white">
@@ -127,7 +166,7 @@ const Contact = () => {
                     Mesaj Rapid
                   </h4>
                   <p className="font-inter text-gray-600 text-sm">
-                    Kominike ak nou direkteman sou WhatsApp
+                    Kominike ak nou dirèkteman sou WhatsApp
                   </p>
                 </div>
                 <button 
@@ -143,7 +182,7 @@ const Contact = () => {
           {/* Contact Form */}
           <div className="bg-secondary rounded-xl p-8">
             <h3 className="font-poppins font-bold text-2xl text-primary mb-6">
-              Depo Konsèltasyon Gratis
+              Depo Devis Gratis
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -166,7 +205,7 @@ const Contact = () => {
 
                 <div>
                   <label htmlFor="phone" className="block font-inter font-medium text-primary mb-2">
-                    Telefòn *
+                    Telefòn
                   </label>
                   <input
                     type="tel"
@@ -174,7 +213,6 @@ const Contact = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    required
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
                     placeholder="+509 ..."
                   />
@@ -209,11 +247,11 @@ const Contact = () => {
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
                 >
                   <option value="">Chwazi yon tip pwojè...</option>
-                  <option value="renovation">Renovasyon</option>
-                  <option value="extension">Extansyon</option>
-                  <option value="construction">Konstriksyon Nouvo</option>
-                  <option value="plans">Plan Achitekti</option>
-                  <option value="consultation">Konsèltasyon</option>
+                  <option value="Renovasyon">Renovasyon</option>
+                  <option value="Extansyon">Extansyon</option>
+                  <option value="Konstriksyon Nouvo">Konstriksyon Nouvo</option>
+                  <option value="Plan Achitekti">Plan Achitekti</option>
+                  <option value="Konsèltasyon">Konsèltasyon</option>
                 </select>
               </div>
 
@@ -233,12 +271,43 @@ const Contact = () => {
                 ></textarea>
               </div>
 
+              <div>
+                <label className="block font-inter font-medium text-primary mb-2">
+                  Kijan ou prefere nou kominike ak ou? *
+                </label>
+                <div className="flex gap-4">
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="preferredContact"
+                      value="whatsapp"
+                      checked={formData.preferredContact === 'whatsapp'}
+                      onChange={handleChange}
+                      className="mr-2 text-accent focus:ring-accent"
+                    />
+                    <span className="font-inter">WhatsApp</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="preferredContact"
+                      value="email"
+                      checked={formData.preferredContact === 'email'}
+                      onChange={handleChange}
+                      className="mr-2 text-accent focus:ring-accent"
+                    />
+                    <span className="font-inter">Imèl</span>
+                  </label>
+                </div>
+              </div>
+
               <button
                 type="submit"
-                className="w-full bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-2"
+                disabled={isSubmitting}
+                className="w-full bg-accent hover:bg-accent/90 disabled:bg-accent/50 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-2"
               >
                 <Send className="w-5 h-5" />
-                Voye Depo A
+                {isSubmitting ? 'Ap voye...' : 'Voye Depo A'}
               </button>
             </form>
 

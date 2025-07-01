@@ -2,18 +2,15 @@
 import { useState } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useStaticContent } from '@/hooks/useStaticContent';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { content } = useStaticContent();
 
   const navItems = [
     { label: 'Akèy', href: '/' },
     { label: 'Sèvis yo', href: '/services' },
     { label: 'Pwojè yo', href: '/projects' },
-    { label: 'Temwayaj', href: '/testimonials' },
     { label: 'Blog', href: '/blog' },
     { label: 'Sou Nou', href: '/about' },
     { label: 'Kontakte Nou', href: '/contact' }
@@ -48,7 +45,13 @@ const Header = () => {
                   isActive(item.href) 
                     ? 'text-accent' 
                     : 'text-gray-700 hover:text-accent'
+                } ${
+                  // Add text shadow for better visibility on dark backgrounds
+                  'text-shadow-sm hover:text-shadow-md'
                 }`}
+                style={{
+                  textShadow: isActive(item.href) ? '0 1px 2px rgba(0,0,0,0.3)' : '0 1px 1px rgba(0,0,0,0.1)'
+                }}
               >
                 {item.label}
                 {isActive(item.href) && (
@@ -89,7 +92,7 @@ const Header = () => {
                 <Link
                   key={item.label}
                   to={item.href}
-                  className={`transition-colors duration-300 font-inter font-medium ${
+                  className={`transition-colors duration-300 font-inter font-medium py-2 ${
                     isActive(item.href) 
                       ? 'text-accent font-semibold' 
                       : 'text-gray-700 hover:text-accent'

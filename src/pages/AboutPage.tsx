@@ -8,43 +8,43 @@ const AboutPage = () => {
   const teamMembers = [
     {
       name: 'Ing. Réveillère Joseph',
-      role: 'Directeur Général & Ingénieur Civil',
+      role: 'Direktè Jeneral & Enjenyè Sivil',
       image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      experience: '15 ans d\'expérience',
-      specialties: ['Gestion de projet', 'Ingénierie structurelle', 'BIM & CAD'],
-      bio: 'Diplômé en génie civil avec une passion pour l\'innovation dans la construction. Leader de l\'équipe Rev Konstriksyon depuis sa création en 2015.',
-      education: 'Ingénieur Civil, Université d\'État d\'Haïti',
-      certifications: ['PMP', 'BIM Manager', 'Sécurité Construction']
+      experience: '15 an ekspètiz',
+      specialties: ['Jesyon pwojè', 'Enjenyè estrikti', 'BIM & CAD'],
+      bio: 'Diplome nan jeni sivil ak yon pasyon pou inovasyon nan konstriksyon. Lidè ekip Rev Konstriksyon ak ekspètiz nan jesyon pwojè yo.',
+      education: 'Enjenyè Sivil, Inivèsite Deta Ayiti',
+      certifications: ['PMP', 'BIM Manager', 'Sekirite Konstriksyon']
     },
     {
       name: 'Arch. Marie-Claire Désir',
-      role: 'Architecte Principal',
+      role: 'Achitèkt Prensipal',
       image: 'https://images.unsplash.com/photo-1494790108755-2616b612b47c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      experience: '12 ans d\'expérience',
-      specialties: ['Design moderne', 'Architecture durable', 'Urbanisme'],
-      bio: 'Créatrice de designs innovants qui allient esthétique moderne et fonctionnalité. Spécialiste en architecture écologique adaptée au climat haïtien.',
-      education: 'Master en Architecture, École Nationale Supérieure d\'Architecture',
-      certifications: ['LEED AP', 'Architect AIA', 'Design Durable']
+      experience: '12 an ekspètiz',
+      specialties: ['Design modèn', 'Achitekti dirab', 'Urbanis'],
+      bio: 'Kreative design ki inovatè ki konbine estetik modèn ak fonksyonalite. Spesyalis nan achitekti ekolojik ki adapte ak klima Ayisyen.',
+      education: 'Master nan Achitekti, Lekòl Nasyonal Siperyè Achitekti',
+      certifications: ['LEED AP', 'Architect AIA', 'Design Dirab']
     },
     {
       name: 'Eng. Patrick Moreau',
-      role: 'Chef de Chantier',
+      role: 'Chèf Chantye',
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      experience: '10 ans d\'expérience',
-      specialties: ['Supervision', 'Sécurité chantier', 'Coordination équipes'],
-      bio: 'Expert en gestion de chantier avec un focus sur la sécurité et le respect des délais. Garantit la qualité d\'exécution de chaque projet.',
-      education: 'Ingénieur en Construction, Institut Technologique',
+      experience: '10 an ekspètiz',
+      specialties: ['Sipèvizyon', 'Sekitite chantye', 'Kòdinasyon ekip'],
+      bio: 'Ekspè nan jesyon chantye ak yon focus sou sekitite ak respè pou dat yo. Garanti kalite egzekisyon nan chak pwojè.',
+      education: 'Enjenyè nan Konstriksyon, Enstitì Teknolojik',
       certifications: ['OSHA Safety', 'Project Management', 'Quality Control']
     },
     {
-      name: 'Technicien Jean-Baptiste Louis',
-      role: 'Superviseur Électrique',
+      name: 'Teknicyen Jean-Baptiste Louis',
+      role: 'Sipèvizè Elektrik',
       image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      experience: '8 ans d\'expérience',
-      specialties: ['Installation électrique', 'Automatisation', 'Énergies renouvelables'],
-      bio: 'Spécialiste en systèmes électriques modernes et solutions énergétiques durables pour les constructions en Haïti.',
-      education: 'Technicien Supérieur en Électricité',
-      certifications: ['Électricien Certifié', 'Énergie Solaire', 'Automation']
+      experience: '8 an ekspètiz',
+      specialties: ['Enstalasyon elektrik', 'Otomatizasyon', 'Enèji renouvlab'],
+      bio: 'Spesyalis nan sistèm elektrik modèn ak solisyon enèji dirab pou konstriksyon yo nan Ayiti.',
+      education: 'Teknicyen Siperyè nan Elektrisite',
+      certifications: ['Elektricyen Sètifye', 'Enèji Solè', 'Automation']
     }
   ];
 
@@ -52,25 +52,25 @@ const AboutPage = () => {
     {
       icon: Shield,
       title: 'Presizyon',
-      description: 'Nou travay ak metikile ak atansyon pou detay yo nan chak pwojè.',
-      details: 'Chak mezi, chak materyèl, ak chak finisman yo chwazi ak kalkilé ak presizyon pou garanti rezilta ki depase atant yo.'
+      description: 'Nou travay ak metikilòz ak atansyon pou detay yo nan chak pwojè.',
+      details: 'Chak mezi, chak materyèl, ak chak finisman yo chwazi ak kalkile ak presizyon pou garanti rezèlta ki depase atant yo.'
     },
     {
       icon: Heart,
       title: 'Konfyans',
-      description: 'Relasyon ak kliyan nou yo konstwi sou konfyans ak transparan.',
+      description: 'Relasyon ak kliyan nou yo konstwi sou konfyans ak transparans.',
       details: 'Nou kominike klèman ak nou respekte angajman nou yo pou kreye relasyon ki dire lontan ak kliyan nou yo.'
     },
     {
       icon: Target,
       title: 'Transparans',
-      description: 'Nou bay enfòmasyon klè sou pwosè yo, bidjè yo, ak echeye yo.',
-      details: 'Kliyan nou yo toujou konnen sa k ap pase ak pwojè yo, ak yo pa janm gen sippriz ki pa bon sou kòb oswa tan.'
+      description: 'Nou ba enfòmasyon klè sou pwosè yo, bidjè yo, ak echeye yo.',
+      details: 'Kliyan nou yo toujou konnen sa k ap pase ak pwojè yo, ak yo pa janm gen sipriz ki pa bon sou kòb oswa tan.'
     },
     {
       icon: Award,
       title: 'Ekselans',
-      description: 'Nou vise ekselans nan chak aspè nan travay nou an.',
+      description: 'Nou vize ekselans nan chak aspè nan travay nou an.',
       details: 'Depi seleksyon materyèl yo jiska livrezon final la, nou pa aksepte anyen ki pa nan nivo ki pi wo a.'
     }
   ];
@@ -79,7 +79,7 @@ const AboutPage = () => {
     {
       year: '2015',
       title: 'Kòmansman Rev Konstriksyon',
-      description: 'Fondasyon konpayi a ak premye pwojè renovasyon nan Delmas.'
+      description: 'Fondasyon konpayi a ak yon vizyon klè: bati ak kalite ak presizyon.'
     },
     {
       year: '2017',
@@ -88,25 +88,25 @@ const AboutPage = () => {
     },
     {
       year: '2019',
-      title: 'Sètifikasyon Kalite',
-      description: 'Resevwa sètifikasyon ISO ak adopte estanda entènasyonal yo.'
+      title: 'Adopte Estanda Entènasyonal',
+      description: 'Entegre estanda entènasyonal kalite ak adopte BIM ak teknoloji modèn.'
     },
     {
       year: '2021',
       title: 'Inovasyon Teknolojik',
-      description: 'Entegrasyon BIM ak teknoloji modèn nan tout pwojè yo.'
+      description: 'Entegrasyon BIM ak teknoloji modèn nan tout pwojè yo pou pi bon rezèlta.'
     },
     {
       year: '2023',
-      title: '100+ Pwojè Konplè',
-      description: 'Rive nan etap enpòtan an ak plis pase 100 pwojè yo te fini ak siksè.'
+      title: 'Etabli Pozisyon nan Mache a',
+      description: 'Vin youn nan konpayi konstriksyon ki pi gen konfyans nan rejyon an.'
     }
   ];
 
   const stats = [
     { icon: Users, number: '25+', label: 'Pwofesyonèl ki Gen Kalifikasyon' },
     { icon: Award, number: '8', label: 'An Ekselans nan Endustri a' },
-    { icon: Briefcase, number: '150+', label: 'Pwojè yo Reyalize ak Siksè' },
+    { icon: Briefcase, number: 'Chak', label: 'Pwojè Nou Yo Konte' },
     { icon: Target, number: '100%', label: 'Kliyan ki Satisfè ak Travay la' }
   ];
 
@@ -121,7 +121,7 @@ const AboutPage = () => {
             Sou Rev Konstriksyon
           </h1>
           <p className="font-inter text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
-            Depi 2015, nou konsantre sou livré kalite, presizyon ak relasyon kliyan nan tout pwojè konstriksyon nou yo nan Ayiti.
+            Rev Konstriksyon, se yon konpayi ki kwè nan vizyon ak rèsponsablite. Chak pwojè nou touche, nou trete li tankou pa nou.
           </p>
         </div>
       </section>
@@ -136,17 +136,18 @@ const AboutPage = () => {
               </h2>
               <div className="space-y-4 font-inter text-gray-600 text-lg">
                 <p>
-                  Rev Konstriksyon te kòmanse nan 2015 ak yon vizyon senp: ba Ayiti sèvis konstriksyon 
+                  Rev Konstriksyon te kòmanse ak yon vizyon senp: ba Ayiti sèvis konstriksyon 
                   ki gen kalite ak presizyon ki ka konpare ak estanda entènasyonal yo.
                 </p>
                 <p>
-                  Depi kòmansman nou an, nou konsantre sou konbine ekspètiz teknik ak konprann pwofon 
-                  nan kontèks lokal Ayiti an. Nou konnen defi klimatik yo, materyèl ki disponib yo, 
-                  ak bezwen espesifik kominote nou an.
+                  Nou pa chèche fè kantite, men nou vize kalite. Chak pwojè nou pran, nou trete li ak 
+                  menm respè ak atansyon nou ta ba kay nou. Nou travay kole kole ak kliyan pou pote 
+                  solisyon ki solid, fonksyonèl, ak elegant.
                 </p>
                 <p>
-                  Jòdi a, ak yon ekip 25+ pwofesyonèl ak plis pase 150 pwojè ki konplè, nou kontinye 
-                  ap bati ak menm angajman nan ekselans ak entegrite ki te etabli nou depi kòmansman.
+                  Nou chita sou respè, bon jan planifikasyon, ak kominikasyon klè. Jòdi a, ak yon ekip 
+                  pwofesyonèl ki gen ekspètiz ak pasyon, nou kontinye ap bati ak menm angajman nan 
+                  ekselans ak entegrite ki te etabli nou depi kòmansman.
                 </p>
               </div>
               <div className="mt-8">
@@ -186,8 +187,8 @@ const AboutPage = () => {
                 Misyon Nou An
               </h3>
               <p className="font-inter text-gray-600 text-lg">
-                Nou vle transofòme paysaj konstriksyon nan Ayiti ak livre sèvis kalite wo, 
-                inovatè ak dirab ki depase atant kliyan nou yo ak kontribye nan devlopman peyi a.
+                Nou vle bati ak konfyans, presizyon, ak pwofesyonalis ki depase atant kliyan nou yo. 
+                Nou konsantre sou delivre sèvis kalite wo, inovatè ak dirab ki kontribye nan devlopman Ayiti.
               </p>
             </div>
             <div className="bg-white p-8 rounded-2xl">
@@ -198,8 +199,8 @@ const AboutPage = () => {
                 Vizyon Nou An
               </h3>
               <p className="font-inter text-gray-600 text-lg">
-                Vin konpayi konstriksyon ki pi rekonèt ak pi gen konfyans nan Ayiti, 
-                ki rekonèt pou inovasyon, kalite ak angajman nan devlopman dirab.
+                Vin konpayi konstriksyon ki pi gen konfyans nan Ayiti, ki rekonèt pou kalite travay nou, 
+                inovasyon nou ak angajman nou nan devlopman dirab ak responsab.
               </p>
             </div>
           </div>
@@ -321,7 +322,7 @@ const AboutPage = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <p className="font-inter font-medium text-primary text-sm">Spécialités:</p>
+                  <p className="font-inter font-medium text-primary text-sm">Spésyalite:</p>
                   <div className="flex flex-wrap gap-1 justify-center">
                     {member.specialties.map((specialty, idx) => (
                       <span
