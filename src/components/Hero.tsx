@@ -2,11 +2,9 @@
 import { ArrowRight, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useStaticContent } from '@/hooks/useStaticContent';
-import { useLanguage } from '@/contexts/LanguageContext';
 
 const Hero = () => {
   const { content } = useStaticContent();
-  const { t } = useLanguage();
 
   return (
     <section id="home" className="relative h-screen flex items-center justify-center bg-gradient-to-br from-primary via-gray-900 to-black overflow-hidden">
@@ -24,11 +22,11 @@ const Hero = () => {
       <div className="relative z-10 container mx-auto px-4 text-center text-white">
         <div className="max-w-4xl mx-auto animate-fade-in">
           <h1 className="font-poppins font-bold text-4xl md:text-6xl lg:text-7xl leading-tight mb-6">
-            {content.hero_title || 'Rev Konstriksyon - Konstriksyon ak Renovasyon'}
+            Rev Konstriksyon
           </h1>
           
           <p className="font-inter text-lg md:text-xl lg:text-2xl mb-8 text-gray-200 max-w-3xl mx-auto">
-            {content.hero_subtitle || 'Ekspètiz ak Kalite nan Chak Pwojè'}
+            Nou konstwi rèv ou yo ak ekspètiz, presizyon ak pasyon. Chak pwojè gen pwòp istwa li, chak detay gen valè li.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -36,7 +34,7 @@ const Hero = () => {
               to="/contact"
               className="bg-accent hover:bg-black hover:border-accent border-2 border-accent text-white px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
             >
-              {content.cta_primary_text || t('hero.cta_primary', 'Jwenn Konsèltasyon Gratis')}
+              Kòmanse Pwojè Ou A
               <ArrowRight className="w-5 h-5" />
             </Link>
             
@@ -45,23 +43,23 @@ const Hero = () => {
               className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 flex items-center gap-2"
             >
               <Play className="w-5 h-5" />
-              {content.cta_secondary_text || t('hero.cta_secondary', 'Gade Pwojè Nou Yo')}
+              Gade Travay Nou Yo
             </Link>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
             <div className="text-center">
-              <div className="font-poppins font-bold text-3xl md:text-4xl text-accent mb-2">150+</div>
-              <div className="font-inter text-gray-200">Pwojè Realize</div>
+              <div className="font-poppins font-bold text-3xl md:text-4xl text-accent mb-2">Kalite</div>
+              <div className="font-inter text-gray-200">Nan Chak Detay</div>
             </div>
             <div className="text-center">
-              <div className="font-poppins font-bold text-3xl md:text-4xl text-accent mb-2">8</div>
-              <div className="font-inter text-gray-200">Ane Eksperyans</div>
+              <div className="font-poppins font-bold text-3xl md:text-4xl text-accent mb-2">Pasyon</div>
+              <div className="font-inter text-gray-200">Nan Chak Pwojè</div>
             </div>
             <div className="text-center">
-              <div className="font-poppins font-bold text-3xl md:text-4xl text-accent mb-2">100%</div>
-              <div className="font-inter text-gray-200">Kliyan Satisfè</div>
+              <div className="font-poppins font-bold text-3xl md:text-4xl text-accent mb-2">Ekspètiz</div>
+              <div className="font-inter text-gray-200">Ki Depase Limite</div>
             </div>
           </div>
         </div>

@@ -26,6 +26,13 @@ const Contact = () => {
     });
   };
 
+  const handleWhatsAppClick = () => {
+    const message = encodeURIComponent(
+      `Bonjou Rev Konstriksyon! Mwen gen yon pwojè konstriksyon epi mwen ta renmen pale ak nou sou li.`
+    );
+    window.open(`https://wa.me/50947624431?text=${message}`, '_blank');
+  };
+
   if (isLoading) {
     return (
       <section id="contact" className="py-20 bg-white">
@@ -42,10 +49,10 @@ const Contact = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-poppins font-bold text-3xl md:text-4xl text-primary mb-4">
-            {content.contact_section_title || 'Kominike Ak Nou'}
+            Kominike Ak Nou
           </h2>
           <p className="font-inter text-lg text-gray-600 max-w-2xl mx-auto">
-            {content.contact_section_subtitle || 'Pare pou kòmanse pwojè ou a? Kominike ak nou kònnye a pou konsiltasyon gratis ak devis personalize.'}
+            Pare pou kòmanse pwojè ou a? Kominike ak nou kònnye a pou konsèltasyon gratis ak devis ki fèt espesyalman pou ou.
           </p>
         </div>
 
@@ -64,10 +71,9 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-inter font-semibold text-primary mb-1">Telefòn</h4>
-                    <p className="font-inter text-gray-600">{content.contact_phone_1 || '+509 3456-7890'}</p>
-                    {content.contact_phone_2 && (
-                      <p className="font-inter text-gray-600">{content.contact_phone_2}</p>
-                    )}
+                    <a href="tel:+50947624431" className="font-inter text-gray-600 hover:text-accent transition-colors">
+                      +509 4762 4431
+                    </a>
                   </div>
                 </div>
 
@@ -76,11 +82,10 @@ const Contact = () => {
                     <Mail className="w-6 h-6 text-accent" />
                   </div>
                   <div>
-                    <h4 className="font-inter font-semibold text-primary mb-1">Email</h4>
-                    <p className="font-inter text-gray-600">{content.contact_email_1 || 'info@revkonstriksyon.com'}</p>
-                    {content.contact_email_2 && (
-                      <p className="font-inter text-gray-600">{content.contact_email_2}</p>
-                    )}
+                    <h4 className="font-inter font-semibold text-primary mb-1">Imèl</h4>
+                    <a href="mailto:revkonstriksyon@gmail.com" className="font-inter text-gray-600 hover:text-accent transition-colors">
+                      revkonstriksyon@gmail.com
+                    </a>
                   </div>
                 </div>
 
@@ -89,9 +94,9 @@ const Contact = () => {
                     <MapPin className="w-6 h-6 text-accent" />
                   </div>
                   <div>
-                    <h4 className="font-inter font-semibold text-primary mb-1">Adrès</h4>
+                    <h4 className="font-inter font-semibold text-primary mb-1">Kote Nou Ye</h4>
                     <p className="font-inter text-gray-600">
-                      {content.contact_address || '123 Rue Lamarre, Péguy-Ville, Port-au-Prince, Haïti'}
+                      Pòtoprens ak anviwon yo, Ayiti
                     </p>
                   </div>
                 </div>
@@ -103,7 +108,8 @@ const Contact = () => {
                   <div>
                     <h4 className="font-inter font-semibold text-primary mb-1">Otè Travay</h4>
                     <p className="font-inter text-gray-600">
-                      {content.contact_hours || 'Lendi - Vandredi: 7:00 AM - 5:00 PM, Samdi: 8:00 AM - 2:00 PM'}
+                      Lendi - Vandredi: 7:00 AM - 5:00 PM<br />
+                      Samdi: 8:00 AM - 2:00 PM
                     </p>
                   </div>
                 </div>
@@ -124,7 +130,10 @@ const Contact = () => {
                     Kominike ak nou direkteman sou WhatsApp
                   </p>
                 </div>
-                <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-inter font-medium transition-colors duration-300">
+                <button 
+                  onClick={handleWhatsAppClick}
+                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-inter font-medium transition-colors duration-300"
+                >
                   WhatsApp
                 </button>
               </div>
@@ -134,7 +143,7 @@ const Contact = () => {
           {/* Contact Form */}
           <div className="bg-secondary rounded-xl p-8">
             <h3 className="font-poppins font-bold text-2xl text-primary mb-6">
-              Depo Konsiltasyon Gratis
+              Depo Konsèltasyon Gratis
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -174,7 +183,7 @@ const Contact = () => {
 
               <div>
                 <label htmlFor="email" className="block font-inter font-medium text-primary mb-2">
-                  Email *
+                  Imèl *
                 </label>
                 <input
                   type="email"
@@ -184,7 +193,7 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                  placeholder="exemple@email.com"
+                  placeholder="egzanp@email.com"
                 />
               </div>
 
@@ -204,7 +213,7 @@ const Contact = () => {
                   <option value="extension">Extansyon</option>
                   <option value="construction">Konstriksyon Nouvo</option>
                   <option value="plans">Plan Achitekti</option>
-                  <option value="consultation">Konsiltasyon</option>
+                  <option value="consultation">Konsèltasyon</option>
                 </select>
               </div>
 

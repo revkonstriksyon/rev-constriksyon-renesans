@@ -45,10 +45,10 @@ const ProjectsPage = () => {
       <section className="pt-24 pb-16 bg-gradient-to-br from-primary to-primary/80">
         <div className="container mx-auto px-4 text-center text-white">
           <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-6">
-            {content.projects_section_title || 'Pwojè Rev Konstriksyon'}
+            Pwojè Rev Konstriksyon
           </h1>
           <p className="font-inter text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
-            {content.projects_section_subtitle || 'Dekouvri kèk nan pwojè nou yo ki pi rekonèt, ki montre ekspètiz nou an ak kalite travay nou an nan divès domèn konstriksyon.'}
+            Dekouvri kèk nan pwojè nou yo ki pi rekonèt, ki montre ekspètiz nou an ak kalite travay nou an nan divès domèn konstriksyon.
           </p>
         </div>
       </section>
@@ -177,16 +177,16 @@ const ProjectsPage = () => {
       <section className="py-16 bg-primary text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-poppins font-bold text-3xl mb-4">
-            {content.cta_projects_title || 'Ou Gen Yon Pwojè nan Tèt Ou?'}
+            Ou Gen Yon Pwojè nan Tèt Ou?
           </h2>
           <p className="font-inter text-lg mb-8 text-gray-200 max-w-2xl mx-auto">
-            {content.cta_projects_subtitle || 'Ann travay ansanm pou reyalize rèv konstriksyon ou a ak menm nivo kalite ak presizyon.'}
+            Ann travay ansanm pou reyalize rèv konstriksyon ou a ak menm nivo kalite ak presizyon.
           </p>
           <Link
             to="/contact"
             className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 inline-flex items-center gap-2"
           >
-            {content.cta_primary_text || 'Kòmanse Pwojè Ou A'}
+            Kòmanse Pwojè Ou A
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>

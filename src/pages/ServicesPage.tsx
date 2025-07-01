@@ -36,15 +36,15 @@ const ServicesPage = () => {
     },
     {
       icon: Wrench,
-      title: 'Renovasyon & Extansyon',
-      shortDesc: 'Transofòme ak agrandi espas ou yo ak respè pou achitekti orijinal la.',
+      title: 'Renovasyon ak Extansyon',
+      shortDesc: 'Transfòme ak agrandi espas ou yo ak respè pou achitekti orijinal la.',
       fullDesc: 'Nou spesyalis nan renovasyon konplè ak extansyon kay ki gen style. Nou konsèlve bèlte achitekti orijinal la pandan n ap ajoute modènite ak fonksyonalite.',
       features: [
         'Renovasyon konplè ak partial',
         'Extansyon ak respè pou estèl orijinal',
         'Amelyorasyon sekirite ak fonksyonalite',
         'Design modèn ak materyèl pwofesyonèl',
-        'Planifikasyon 3D ak avant/après'
+        'Planifikasyon 3D ak avan/apre'
       ],
       image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
     },
@@ -66,13 +66,13 @@ const ServicesPage = () => {
       icon: Zap,
       title: 'Entalasyon Elektrik',
       shortDesc: 'Sistèm elektrik segè ak teknoloji nouvo ak estanda sekirite.',
-      fullDesc: 'Nou ofri sèvis entalasyon ak réparation elektrik ak estanda sekirite ki pi wo yo. Ekip nou an gen sètifikasyon ak ekspètiz nan sistèm elektrik modèn.',
+      fullDesc: 'Nou ofri sèvis entalasyon ak reparasyon elektrik ak estanda sekirite ki pi wo yo. Ekip nou an gen sètifikasyon ak ekspètiz nan sistèm elektrik modèn.',
       features: [
         'Entalasyon sistèm elektrik konplè',
         'Sistèm sekirite ak otomatizasyon',
         'Panèl elektrik ak distribisyon',
         'Éclairaj ak priz modèn',
-        'Ekonomi enèji ak teknoloji vè'
+        'Ekonomi enèji ak teknoloji vèt'
       ],
       image: 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
     },
@@ -82,7 +82,7 @@ const ServicesPage = () => {
       shortDesc: 'Konsèy ekspè ak estimasyon detaye pou pwojè ou a.',
       fullDesc: 'Nou ba ou konsèy pwofesyonèl ak estimasyon transparan pou pwojè ou a. Nou analize bezwen ou yo ak nou ba ou solisyon ki adapte ak bidjè ou.',
       features: [
-        'Konsèlasyon gratis ak ekspè',
+        'Konsèltasyon gratis ak ekspè',
         'Estimasyon detaye ak transparan',
         'Analiz ak rekòmandasyon pwofesyonèl',
         'Planifikasyon ak echeye reyèl',

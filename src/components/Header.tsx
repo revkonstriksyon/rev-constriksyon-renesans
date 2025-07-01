@@ -3,23 +3,20 @@ import { useState } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useStaticContent } from '@/hooks/useStaticContent';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { LanguageSelector } from './LanguageSelector';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { content } = useStaticContent();
-  const { t } = useLanguage();
 
   const navItems = [
-    { label: t('nav.home'), href: '/' },
-    { label: t('nav.services'), href: '/services' },
-    { label: t('nav.projects'), href: '/projects' },
-    { label: t('nav.testimonials'), href: '/testimonials' },
-    { label: t('nav.blog'), href: '/blog' },
-    { label: t('nav.about'), href: '/about' },
-    { label: t('nav.contact'), href: '/contact' }
+    { label: 'Akèy', href: '/' },
+    { label: 'Sèvis yo', href: '/services' },
+    { label: 'Pwojè yo', href: '/projects' },
+    { label: 'Temwayaj', href: '/testimonials' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'Sou Nou', href: '/about' },
+    { label: 'Kontakte Nou', href: '/contact' }
   ];
 
   const isActive = (href: string) => location.pathname === href;
@@ -29,13 +26,15 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl font-poppins">R</span>
-            </div>
+          <Link to="/" className="flex items-center space-x-3">
+            <img 
+              src="/lovable-uploads/880a9829-94fc-4423-bfc3-3eff62ff347d.png" 
+              alt="Rev Konstriksyon Logo" 
+              className="h-12 w-12 object-contain"
+            />
             <div>
               <h1 className="font-poppins font-bold text-xl text-primary">Rev Konstriksyon</h1>
-              <p className="text-xs text-gray-600">Excellence & Précision</p>
+              <p className="text-xs text-gray-600">Ekspètiz ak Presizyon</p>
             </div>
           </Link>
 
@@ -45,29 +44,31 @@ const Header = () => {
               <Link
                 key={item.label}
                 to={item.href}
-                className={`transition-colors duration-300 font-inter font-medium ${
+                className={`transition-colors duration-300 font-inter font-medium relative ${
                   isActive(item.href) 
-                    ? 'text-accent border-b-2 border-accent pb-1' 
+                    ? 'text-accent' 
                     : 'text-gray-700 hover:text-accent'
                 }`}
               >
                 {item.label}
+                {isActive(item.href) && (
+                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent rounded-full"></div>
+                )}
               </Link>
             ))}
           </nav>
 
-          {/* Contact Info, Language Selector & CTA */}
+          {/* Contact Info & CTA */}
           <div className="hidden lg:flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm text-gray-600">
               <Phone className="w-4 h-4" />
-              <span>{content.contact_phone_1 || '+509 3456-7890'}</span>
+              <span>+509 4762 4431</span>
             </div>
-            <LanguageSelector />
             <Link 
               to="/contact"
-              className="bg-accent hover:bg-black hover:border-accent border-2 border-accent text-white px-6 py-2 rounded-lg font-inter font-medium transition-all duration-300"
+              className="bg-accent hover:bg-accent/90 text-white px-6 py-2 rounded-lg font-inter font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
             >
-              {t('btn.getQuote')}
+              Jwenn Devis Gratis
             </Link>
           </div>
 
@@ -98,20 +99,17 @@ const Header = () => {
                   {item.label}
                 </Link>
               ))}
-              <div className="flex flex-col space-y-2 pt-4 border-t border-gray-200">
+              <div className="flex flex-col space-y-3 pt-4 border-t border-gray-200">
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <Phone className="w-4 h-4" />
-                  <span>{content.contact_phone_1 || '+509 3456-7890'}</span>
-                </div>
-                <div className="flex justify-center py-2">
-                  <LanguageSelector />
+                  <span>+509 4762 4431</span>
                 </div>
                 <Link
                   to="/contact"
-                  className="bg-accent hover:bg-black hover:border-accent border-2 border-accent text-white px-6 py-2 rounded-lg font-inter font-medium transition-all duration-300 w-full text-center"
+                  className="bg-accent hover:bg-accent/90 text-white px-6 py-2 rounded-lg font-inter font-medium transition-all duration-300 w-full text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {t('btn.getQuote')}
+                  Jwenn Devis Gratis
                 </Link>
               </div>
             </div>

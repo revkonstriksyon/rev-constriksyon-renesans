@@ -35,38 +35,43 @@ const ContactPage = () => {
     });
   };
 
-  const officeHours = [
-    { day: 'Lendi - Vandredi', hours: '7:00 AM - 5:00 PM' },
-    { day: 'Samdi', hours: '8:00 AM - 2:00 PM' },
-    { day: 'Dimanch', hours: 'Fèmen (Urgence sèlman)' }
-  ];
+  const handleWhatsAppClick = () => {
+    const message = encodeURIComponent(
+      `Bonjou Rev Konstriksyon! Mwen gen yon pwojè konstriksyon epi mwen ta renmen pale ak nou sou li.`
+    );
+    window.open(`https://wa.me/50947624431?text=${message}`, '_blank');
+  };
+
+  const handleCallClick = () => {
+    window.open('tel:+50947624431', '_self');
+  };
 
   const contactMethods = [
     {
       icon: Phone,
       title: 'Telefòn',
-      primary: contactInfo.phone_1,
-      secondary: contactInfo.phone_2,
+      primary: '+509 4762 4431',
+      secondary: '',
       description: 'Rele nou direkteman pou diskisyon rapid'
     },
     {
       icon: Mail,
-      title: 'Email',
-      primary: contactInfo.email_1,
-      secondary: contactInfo.email_2,
-      description: 'Voye nou yon email ak detay pwojè ou a'
+      title: 'Imèl',
+      primary: 'revkonstriksyon@gmail.com',
+      secondary: '',
+      description: 'Voye nou yon imèl ak detay pwojè ou a'
     },
     {
       icon: MapPin,
       title: 'Biwo',
-      primary: contactInfo.address.split(',')[0] || contactInfo.address,
-      secondary: contactInfo.address.split(',').slice(1).join(',') || '',
-      description: 'Vizite nou nan biwo nou an'
+      primary: 'Pòtoprens ak anviwon yo',
+      secondary: 'Ayiti',
+      description: 'Kote nou ka rive pou konsèltasyon'
     },
     {
       icon: MessageCircle,
       title: 'WhatsApp',
-      primary: contactInfo.phone_1,
+      primary: '+509 4762 4431',
       secondary: 'Disponib 24/7',
       description: 'Mesaj rapid ak reponn rapid'
     }
@@ -120,10 +125,10 @@ const ContactPage = () => {
       <section className="pt-24 pb-16 bg-gradient-to-br from-primary to-primary/80">
         <div className="container mx-auto px-4 text-center text-white">
           <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-6">
-            {content.contact_section_title || 'Kominike Ak Nou'}
+            Kominike Ak Nou
           </h1>
           <p className="font-inter text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
-            {content.contact_section_subtitle || 'Pare pou kòmanse pwojè ou a? Kominike ak nou kònnye a pou konsèltasyon gratis ak devis personalize ki adapte ak bezwen ou yo.'}
+            Pare pou kòmanse pwojè ou a? Kominike ak nou kònnye a pou konsèltasyon gratis ak devis ki fèt espesyalman pou ou.
           </p>
         </div>
       </section>
@@ -212,7 +217,7 @@ const ContactPage = () => {
 
                 <div>
                   <label htmlFor="email" className="block font-inter font-medium text-primary mb-2">
-                    Email *
+                    Imèl *
                   </label>
                   <input
                     type="email"
@@ -222,11 +227,10 @@ const ContactPage = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                    placeholder="exemple@email.com"
+                    placeholder="egzanp@email.com"
                   />
                 </div>
 
-                {/* Project Details */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="projectType" className="block font-inter font-medium text-primary mb-2">
@@ -300,7 +304,6 @@ const ContactPage = () => {
                   ></textarea>
                 </div>
 
-                {/* Preferred Contact Method */}
                 <div>
                   <label className="block font-inter font-medium text-primary mb-2">
                     Kijan ou prefere nou kominike ak ou?
@@ -326,7 +329,7 @@ const ContactPage = () => {
                         onChange={handleChange}
                         className="mr-2 text-accent focus:ring-accent"
                       />
-                      <span className="font-inter">Email</span>
+                      <span className="font-inter">Imèl</span>
                     </label>
                     <label className="flex items-center">
                       <input
@@ -368,13 +371,14 @@ const ContactPage = () => {
                 </div>
                 <div className="space-y-4">
                   <div className="py-2 border-b border-white/20">
-                    <p className="font-inter text-gray-200">{contactInfo.hours}</p>
+                    <p className="font-inter text-gray-200">Lendi - Vandredi: 7:00 AM - 5:00 PM</p>
+                    <p className="font-inter text-gray-200">Samdi: 8:00 AM - 2:00 PM</p>
                   </div>
                 </div>
                 <div className="mt-6 p-4 bg-white/10 rounded-lg">
                   <p className="font-inter text-sm text-gray-200">
                     <strong>Kontak Urgans:</strong> Nan ka urgans sèlman (pwoblèm sekirite, aksidan), 
-                    nou disponib 24/7 nan {contactInfo.phone_1}
+                    nou disponib 24/7 nan +509 4762 4431
                   </p>
                 </div>
               </div>
@@ -385,20 +389,20 @@ const ContactPage = () => {
                   Kontè Rapid
                 </h3>
                 <div className="space-y-4">
-                  <a 
-                    href={`https://wa.me/${contactInfo.phone_1?.replace(/[^0-9]/g, '')}`}
+                  <button 
+                    onClick={handleWhatsAppClick}
                     className="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3"
                   >
                     <MessageCircle className="w-6 h-6" />
                     WhatsApp Nou
-                  </a>
-                  <a 
-                    href={`tel:${contactInfo.phone_1}`}
+                  </button>
+                  <button 
+                    onClick={handleCallClick}
                     className="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3"
                   >
                     <Phone className="w-6 h-6" />
                     Rele Nou Kounye A
-                  </a>
+                  </button>
                   <button className="w-full bg-gray-600 hover:bg-gray-700 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3">
                     <Calendar className="w-6 h-6" />
                     Rann Randevou
@@ -414,7 +418,7 @@ const ContactPage = () => {
                     Google Map pral ajoute isit la byentò
                   </p>
                   <p className="text-gray-500 font-inter text-sm mt-2">
-                    {contactInfo.address}
+                    Pòtoprens ak anviwon yo, Ayiti
                   </p>
                 </div>
               </div>
