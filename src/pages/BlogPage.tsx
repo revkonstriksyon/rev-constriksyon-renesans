@@ -10,7 +10,7 @@ import { useStaticContent } from '@/hooks/useStaticContent';
 const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const { blogs, isLoading } = useBlogs();
+  const { blogs, isLoading, error } = useBlogs();
   const { content } = useStaticContent();
 
   // Get unique categories from blogs
@@ -38,6 +38,25 @@ const BlogPage = () => {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
           <p className="mt-2 text-gray-600">Ap chaje atik yo...</p>
         </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <div className="pt-24 pb-16 bg-gray-50 text-center">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Erè nan chaje blog yo</h1>
+          <p className="text-gray-600 mb-8">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-inter font-semibold transition-colors duration-300"
+          >
+            Eseye Ankò
+          </button>
+        </div>
+        <Footer />
       </div>
     );
   }
@@ -157,7 +176,12 @@ const BlogPage = () => {
         <div className="container mx-auto px-4">
           {filteredBlogs.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600 font-inter text-lg">Pa gen atik ki jwenn.</p>
+              <p className="text-gray-600 font-inter text-lg">
+                {searchTerm || selectedCategory !== 'all' 
+                  ? 'Pa gen atik ki koresspòn ak rechèch ou a.'
+                  : 'Pa gen atik pibliye pou kounye a.'
+                }
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -216,15 +240,6 @@ const BlogPage = () => {
               ))}
             </div>
           )}
-
-          {/* Load More Button - can be implemented later */}
-          {filteredBlogs.length > 9 && (
-            <div className="text-center mt-12">
-              <button className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300">
-                Chaje Pi Gwo Atik
-              </button>
-            </div>
-          )}
         </div>
       </section>
 
@@ -238,7 +253,7 @@ const BlogPage = () => {
             <p className="font-inter text-lg mb-6 text-gray-200">
               {content.newsletter_subtitle || 'Resevwa konsèy ekspè, nouvo atik yo, ak enfòmasyon sou tendans konstriksyon yo nan Ayiti chak semèn.'}
             </p>
-            <form className="flex flex-col sm:flex-row gap-4">
+            <form className="flex flex-col sm:flex-row gap-4" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 placeholder="Antre email ou a..."

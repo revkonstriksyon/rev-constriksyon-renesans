@@ -5,7 +5,7 @@ import { useBlogs } from '@/hooks/useBlogs';
 import { useStaticContent } from '@/hooks/useStaticContent';
 
 const Blog = () => {
-  const { blogs, isLoading } = useBlogs();
+  const { blogs, isLoading, error } = useBlogs();
   const { content } = useStaticContent();
 
   if (isLoading) {
@@ -14,6 +14,32 @@ const Blog = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
           <p className="mt-2 text-gray-600">Ap chaje blog yo...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-20 bg-secondary">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <p className="text-gray-600">Tanpri eseye ankò pi ta.</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (blogs.length === 0) {
+    return (
+      <section className="py-20 bg-secondary">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="font-poppins font-bold text-3xl md:text-4xl text-primary mb-4">
+            {content.blog_section_title || 'Blog / Atik Konsèy'}
+          </h2>
+          <p className="font-inter text-lg text-gray-600">
+            Pa gen atik pibliye pou kounye a. Tounen pi ta!
+          </p>
         </div>
       </section>
     );
@@ -97,7 +123,7 @@ const Blog = () => {
             <p className="font-inter text-lg mb-6 text-gray-300">
               {content.newsletter_subtitle || 'Resevwa konsèy ekspè, nouvo pwojè nou yo, ak enfòmasyon sou tendans konstriksyon yo nan Ayiti.'}
             </p>
-            <form className="flex flex-col sm:flex-row gap-4">
+            <form className="flex flex-col sm:flex-row gap-4" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 placeholder="Antre email ou a..."

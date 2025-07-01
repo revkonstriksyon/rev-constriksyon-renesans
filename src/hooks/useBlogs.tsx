@@ -16,6 +16,8 @@ interface Blog {
   category: string;
   image_url: string | null;
   published: boolean;
+  created_at: string;
+  updated_at: string;
   // Multilang fields
   title_ht?: string;
   title_fr?: string;
@@ -46,42 +48,67 @@ export interface TranslatedBlog {
   category: string;
   image_url: string | null;
   published: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export const useBlogs = () => {
   const [blogs, setBlogs] = useState<TranslatedBlog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const { currentLanguage } = useLanguage();
 
   // Function to translate blog data based on current language
-  const translateBlog = (blog: Blog): TranslatedBlog => ({
-    id: blog.id,
-    title: getTranslatedContent(blog, 'title', currentLanguage, blog.title),
-    excerpt: getTranslatedContent(blog, 'excerpt', currentLanguage, blog.excerpt),
-    content: getTranslatedContent(blog, 'content', currentLanguage, blog.content),
-    slug: blog.slug,
-    author: getTranslatedContent(blog, 'author', currentLanguage, blog.author),
-    date: blog.date,
-    read_time: blog.read_time,
-    category: getTranslatedContent(blog, 'category', currentLanguage, blog.category),
-    image_url: blog.image_url,
-    published: blog.published,
-  });
+  const translateBlog = (blog: Blog): TranslatedBlog => {
+    // Format date properly from created_at or use the date field
+    const formattedDate = blog.date || new Date(blog.created_at).toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    return {
+      id: blog.id,
+      title: getTranslatedContent(blog, 'title', currentLanguage, blog.title),
+      excerpt: getTranslatedContent(blog, 'excerpt', currentLanguage, blog.excerpt),
+      content: getTranslatedContent(blog, 'content', currentLanguage, blog.content),
+      slug: blog.slug,
+      author: getTranslatedContent(blog, 'author', currentLanguage, blog.author),
+      date: formattedDate,
+      read_time: blog.read_time,
+      category: getTranslatedContent(blog, 'category', currentLanguage, blog.category),
+      image_url: blog.image_url,
+      published: blog.published,
+      created_at: blog.created_at,
+      updated_at: blog.updated_at,
+    };
+  };
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
+        
         const { data, error } = await supabase
           .from('blogs')
           .select('*')
           .eq('published', true)
           .order('created_at', { ascending: false });
 
-        if (error) throw error;
+        if (error) {
+          console.error('Error fetching blogs:', error);
+          setError('Erè nan chaje blog yo');
+          setBlogs([]);
+          return;
+        }
+
         const translatedBlogs = (data || []).map(translateBlog);
         setBlogs(translatedBlogs);
       } catch (error) {
         console.error('Error fetching blogs:', error);
+        setError('Erè nan chaje blog yo');
+        setBlogs([]);
       } finally {
         setIsLoading(false);
       }
@@ -99,7 +126,8 @@ export const useBlogs = () => {
           schema: 'public',
           table: 'blogs'
         },
-        () => {
+        (payload) => {
+          console.log('Blog change detected:', payload);
           fetchBlogs();
         }
       )
@@ -110,5 +138,99 @@ export const useBlogs = () => {
     };
   }, [currentLanguage]);
 
-  return { blogs, isLoading };
+  return { blogs, isLoading, error };
+};
+
+// Hook for fetching a single blog by slug
+export const useBlog = (slug: string) => {
+  const [blog, setBlog] = useState<TranslatedBlog | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { currentLanguage } = useLanguage();
+
+  const translateBlog = (blog: Blog): TranslatedBlog => {
+    const formattedDate = blog.date || new Date(blog.created_at).toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    return {
+      id: blog.id,
+      title: getTranslatedContent(blog, 'title', currentLanguage, blog.title),
+      excerpt: getTranslatedContent(blog, 'excerpt', currentLanguage, blog.excerpt),
+      content: getTranslatedContent(blog, 'content', currentLanguage, blog.content),
+      slug: blog.slug,
+      author: getTranslatedContent(blog, 'author', currentLanguage, blog.author),
+      date: formattedDate,
+      read_time: blog.read_time,
+      category: getTranslatedContent(blog, 'category', currentLanguage, blog.category),
+      image_url: blog.image_url,
+      published: blog.published,
+      created_at: blog.created_at,
+      updated_at: blog.updated_at,
+    };
+  };
+
+  useEffect(() => {
+    const fetchBlog = async () => {
+      if (!slug) return;
+
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const { data, error } = await supabase
+          .from('blogs')
+          .select('*')
+          .eq('slug', slug)
+          .eq('published', true)
+          .single();
+
+        if (error) {
+          console.error('Error fetching blog:', error);
+          setError('Atik la pa jwenn');
+          setBlog(null);
+          return;
+        }
+
+        const translatedBlog = translateBlog(data);
+        setBlog(translatedBlog);
+      } catch (error) {
+        console.error('Error fetching blog:', error);
+        setError('Erè nan chaje atik la');
+        setBlog(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBlog();
+
+    // Set up realtime subscription for live updates
+    const channel = supabase
+      .channel(`blog-${slug}-changes`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'blogs'
+        },
+        (payload) => {
+          // Refetch if this specific blog was updated
+          if (payload.new?.slug === slug || payload.old?.slug === slug) {
+            console.log('Current blog updated:', payload);
+            fetchBlog();
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [slug, currentLanguage]);
+
+  return { blog, isLoading, error };
 };

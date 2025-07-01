@@ -6,8 +6,11 @@ import Footer from '@/components/Footer';
 import { Calendar, ArrowLeft, ArrowRight, User, Clock, Tag } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useStaticContent } from '@/hooks/useStaticContent';
+import { useBlog } from '@/hooks/useBlogs';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { getTranslatedContent } from '@/utils/translationHelpers';
 
-interface Blog {
+interface RelatedBlog {
   id: string;
   title: string;
   excerpt: string;
@@ -19,60 +22,71 @@ interface Blog {
   category: string;
   image_url: string | null;
   published: boolean;
+  created_at: string;
+  // Multilang fields
+  title_ht?: string;
+  title_fr?: string;
+  title_en?: string;
+  excerpt_ht?: string;
+  excerpt_fr?: string;
+  excerpt_en?: string;
+  category_ht?: string;
+  category_fr?: string;
+  category_en?: string;
+  author_ht?: string;
+  author_fr?: string;
+  author_en?: string;
 }
 
 const BlogArticlePage = () => {
   const { slug } = useParams();
-  const [article, setArticle] = useState<Blog | null>(null);
-  const [relatedArticles, setRelatedArticles] = useState<Blog[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
+  const { blog, isLoading, error } = useBlog(slug || '');
+  const [relatedArticles, setRelatedArticles] = useState<RelatedBlog[]>([]);
+  const [isLoadingRelated, setIsLoadingRelated] = useState(false);
   const { content } = useStaticContent();
+  const { currentLanguage } = useLanguage();
 
+  // Fetch related articles when blog is loaded
   useEffect(() => {
-    const fetchArticle = async () => {
-      if (!slug) return;
+    const fetchRelatedArticles = async () => {
+      if (!blog) return;
 
       try {
-        // Fetch the main article
-        const { data: articleData, error: articleError } = await supabase
-          .from('blogs')
-          .select('*')
-          .eq('slug', slug)
-          .eq('published', true)
-          .single();
-
-        if (articleError || !articleData) {
-          setNotFound(true);
-          setIsLoading(false);
-          return;
-        }
-
-        setArticle(articleData);
-
-        // Fetch related articles (same category, excluding current article)
+        setIsLoadingRelated(true);
+        
         const { data: relatedData, error: relatedError } = await supabase
           .from('blogs')
           .select('*')
-          .eq('category', articleData.category)
+          .eq('category', blog.category)
           .eq('published', true)
-          .neq('id', articleData.id)
+          .neq('id', blog.id)
           .limit(3);
 
         if (!relatedError && relatedData) {
-          setRelatedArticles(relatedData);
+          // Translate related articles
+          const translatedRelated = relatedData.map(article => ({
+            ...article,
+            title: getTranslatedContent(article, 'title', currentLanguage, article.title),
+            excerpt: getTranslatedContent(article, 'excerpt', currentLanguage, article.excerpt),
+            category: getTranslatedContent(article, 'category', currentLanguage, article.category),
+            author: getTranslatedContent(article, 'author', currentLanguage, article.author),
+            date: article.date || new Date(article.created_at).toLocaleDateString('fr-FR', {
+              day: '2-digit',
+              month: 'long',
+              year: 'numeric'
+            }),
+          }));
+          setRelatedArticles(translatedRelated);
         }
-
       } catch (error) {
-        console.error('Error fetching article:', error);
-        setNotFound(true);
+        console.error('Error fetching related articles:', error);
       } finally {
-        setIsLoading(false);
+        setIsLoadingRelated(false);
       }
     };
 
-    fetchArticle();
-  }, [slug]);
+    fetchRelatedArticles();
+  }, [blog, currentLanguage]);
 
   // Loading state
   if (isLoading) {
@@ -87,14 +101,16 @@ const BlogArticlePage = () => {
     );
   }
 
-  // Article not found
-  if (notFound || !article) {
+  // Error or article not found
+  if (error || !blog) {
     return (
       <div className="min-h-screen">
         <Header />
         <div className="pt-24 pb-16 bg-gray-50 text-center">
           <h1 className="text-2xl font-bold text-gray-800 mb-4">Atik la pa jwenn</h1>
-          <p className="text-gray-600 mb-8">Atik ou ap chèche a pa egziste oswa li pa pibliye.</p>
+          <p className="text-gray-600 mb-8">
+            {error || 'Atik ou ap chèche a pa egziste oswa li pa pibliye.'}
+          </p>
           <Link
             to="/blog"
             className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-inter font-semibold transition-colors duration-300"
@@ -120,7 +136,7 @@ const BlogArticlePage = () => {
             <ArrowRight className="w-4 h-4" />
             <Link to="/blog" className="hover:text-primary transition-colors">Blog</Link>
             <ArrowRight className="w-4 h-4" />
-            <span className="text-primary">{article.category}</span>
+            <span className="text-primary">{blog.category}</span>
           </nav>
         </div>
       </section>
@@ -132,58 +148,62 @@ const BlogArticlePage = () => {
             {/* Category & Meta */}
             <div className="flex flex-wrap items-center gap-4 mb-6">
               <span className="bg-accent text-white px-3 py-1 rounded-full text-sm font-inter font-medium">
-                {article.category}
+                {blog.category}
               </span>
               <div className="flex items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-1">
                   <User className="w-4 h-4" />
-                  <span>{article.author}</span>
+                  <span>{blog.author}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
-                  <span>{article.date}</span>
+                  <span>{blog.date}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  <span>{article.read_time}</span>
+                  <span>{blog.read_time}</span>
                 </div>
               </div>
             </div>
 
             {/* Title */}
             <h1 className="font-poppins font-bold text-3xl md:text-4xl lg:text-5xl text-primary mb-6 leading-tight">
-              {article.title}
+              {blog.title}
             </h1>
 
             {/* Excerpt */}
             <p className="font-inter text-lg text-gray-600 mb-8 leading-relaxed">
-              {article.excerpt}
+              {blog.excerpt}
             </p>
 
             {/* Featured Image */}
-            {article.image_url && (
+            {blog.image_url && (
               <div className="mb-12">
                 <img
-                  src={article.image_url}
-                  alt={article.title}
+                  src={blog.image_url}
+                  alt={blog.title}
                   className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-lg"
                 />
               </div>
             )}
 
-            {/* Article Content */}
+            {/* Article Content with HTML formatting preserved */}
             <div 
               className="prose prose-lg max-w-none font-inter leading-relaxed
                 prose-headings:font-poppins prose-headings:font-bold prose-headings:text-primary prose-headings:mb-4 prose-headings:mt-8
-                prose-h2:text-2xl prose-h3:text-xl
+                prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg
                 prose-p:mb-6 prose-p:text-gray-700 prose-p:leading-relaxed
-                prose-ul:mb-6 prose-li:mb-2 prose-li:text-gray-700
+                prose-ul:mb-6 prose-ol:mb-6 prose-li:mb-2 prose-li:text-gray-700
                 prose-strong:text-primary prose-strong:font-semibold
                 prose-em:text-accent prose-em:font-medium
+                prose-a:text-accent prose-a:underline hover:prose-a:text-accent/80
                 prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:bg-secondary prose-blockquote:rounded-r-lg prose-blockquote:my-8
                 prose-blockquote:text-primary prose-blockquote:font-medium prose-blockquote:italic
+                prose-img:rounded-lg prose-img:shadow-md prose-img:my-8
+                prose-pre:bg-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
+                prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm
                 .lead:text-xl .lead:font-medium .lead:text-primary .lead:mb-8"
-              dangerouslySetInnerHTML={{ __html: article.content }}
+              dangerouslySetInnerHTML={{ __html: blog.content }}
             />
           </div>
         </div>
