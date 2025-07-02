@@ -218,8 +218,12 @@ export const useBlog = (slug: string) => {
           table: 'blogs'
         },
         (payload) => {
+          // Type the payload properly to access blog properties
+          const newBlog = payload.new as Blog | null;
+          const oldBlog = payload.old as Blog | null;
+          
           // Refetch if this specific blog was updated
-          if (payload.new?.slug === slug || payload.old?.slug === slug) {
+          if (newBlog?.slug === slug || oldBlog?.slug === slug) {
             console.log('Current blog updated:', payload);
             fetchBlog();
           }
