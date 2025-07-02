@@ -32,7 +32,7 @@ const Projects = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.slice(0, 6).map((project) => (
+          {projects.slice(0, 3).map((project) => (
             <div
               key={project.id}
               className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group"

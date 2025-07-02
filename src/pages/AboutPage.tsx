@@ -48,9 +48,9 @@ const AboutPage = () => {
   ];
 
   const stats = [
-    { icon: Users, number: '25+', label: 'Professionnels qualifiés' },
-    { icon: Award, number: '8', label: 'Années d\'excellence' },
-    { icon: Briefcase, number: '150+', label: 'Projets réalisés' }
+    { icon: Users, number: '5', label: 'Pwofesyonèl kalifye' },
+    { icon: Award, number: '100%', label: 'Konfyans kliyan yo' },
+    { icon: Briefcase, number: 'Plizyè', label: 'Pwojè reyalize sou tout Ayiti' }
   ];
 
   const values = [
@@ -82,7 +82,7 @@ const AboutPage = () => {
             Sou Rev Konstriksyon
           </h1>
           <p className="font-inter text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
-            Depi 8 an, nou ap konstwi rèv ak ekspètiz, presizyon ak pasyon nan tout kwen Ayiti.
+            Nou ap konstwi rèv ak ekspètiz, presizyon ak pasyon nan tout kwen Ayiti.
           </p>
         </div>
       </section>
@@ -101,7 +101,7 @@ const AboutPage = () => {
                 sou kalite ak sevis kliyan ki eksepsyonèl.
               </p>
               <p className="font-inter text-gray-700 mb-6">
-                Jodi a, nou gen yon ekip 25+ pwofesyonèl ki gen ekspètiz nan divès domèn: 
+                Jodi a, nou gen yon ekip pwofesyonèl ki gen ekspètiz nan divès domèn: 
                 achitekti, jeni sivil, jesyon pwojè, ak plis ankò. Nou fye de travay nou te fè 
                 ak relasyon nou konstwi ak kliyan nou yo.
               </p>

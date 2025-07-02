@@ -31,7 +31,7 @@ const Header = () => {
             />
             <div>
               <h1 className="font-poppins font-bold text-xl text-primary">Rev Konstriksyon</h1>
-              <p className="text-xs text-gray-600">Ekspètiz ak Presizyon</p>
+              <p className="text-xs text-gray-700 font-medium">Ekspètiz ak Presizyon</p>
             </div>
           </Link>
 
@@ -43,15 +43,9 @@ const Header = () => {
                 to={item.href}
                 className={`transition-colors duration-300 font-inter font-medium relative ${
                   isActive(item.href) 
-                    ? 'text-accent' 
-                    : 'text-gray-700 hover:text-accent'
-                } ${
-                  // Add text shadow for better visibility on dark backgrounds
-                  'text-shadow-sm hover:text-shadow-md'
+                    ? 'text-accent font-semibold' 
+                    : 'text-gray-800 hover:text-accent'
                 }`}
-                style={{
-                  textShadow: isActive(item.href) ? '0 1px 2px rgba(0,0,0,0.3)' : '0 1px 1px rgba(0,0,0,0.1)'
-                }}
               >
                 {item.label}
                 {isActive(item.href) && (
@@ -63,7 +57,7 @@ const Header = () => {
 
           {/* Contact Info & CTA */}
           <div className="hidden lg:flex items-center space-x-4">
-            <div className="flex items-center space-x-2 text-sm text-gray-600">
+            <div className="flex items-center space-x-2 text-sm text-gray-700 font-medium">
               <Phone className="w-4 h-4" />
               <span>+509 4762 4431</span>
             </div>

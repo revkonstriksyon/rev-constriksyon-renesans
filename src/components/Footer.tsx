@@ -2,10 +2,12 @@
 import { Phone, Mail, MapPin, Facebook, Instagram } from 'lucide-react';
 import { useContactInfo } from '@/hooks/useContactInfo';
 import { useStaticContent } from '@/hooks/useStaticContent';
+import { useFooterServices } from '@/hooks/useFooterServices';
 
 const Footer = () => {
   const { contactInfo, isLoading } = useContactInfo();
   const { content } = useStaticContent();
+  const { services } = useFooterServices();
 
   if (isLoading) {
     return (
@@ -26,7 +28,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-3 mb-6">
               <img 
-                src="/lovable-uploads/880a9829-94fc-4423-bfc3-3eff62ff347d.png" 
+                src="/lovable-uploads/13fb6e7e-0f38-4087-a603-87332522b654.png" 
                 alt="Rev Konstriksyon Logo" 
                 className="h-10 w-10 object-contain"
               />
@@ -36,7 +38,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="font-inter text-gray-300 mb-4">
-              Nou konstwi rèv ou yo ak ekspètiz, presizyon ak pasyon. Chак pwojè gen pwòp istwa li, chак detay gen valè li.
+              Nou konstwi rèv ou yo ak ekspètiz, presizyon ak pasyon. Chak pwojè gen pwòp istwa li, chak detay gen valè li.
             </p>
             <div className="flex space-x-4">
               <a 
@@ -62,7 +64,7 @@ const Footer = () => {
                 className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-2.08v5.73a2.88 2.88 0 01-2.88 2.88 2.88 2.88 0 01-2.88-2.88V2H6.9v5.73a4.83 4.83 0 004.83 4.83c.424 0 .844-.055 1.252-.162.08 2.18.688 4.18 1.742 5.85l-.72.72L15.5 20.5l.72-.72c1.054-1.67 1.662-3.67 1.742-5.85.408.107.828.162 1.252.162a4.83 4.83 0 004.83-4.83V2h-2.08v.44a4.83 4.83 0 01-3.77 4.25z"/>
+                  <path d="M19.321 5.562a5.124 5.124 0 01-.443-.258 6.228 6.228 0 01-1.137-.966c-.849-.93-1.4-2.16-1.4-3.538v-.364C16.341.436 15.905 0 15.369 0h-2.454c-.536 0-.972.436-.972.972v10.024c0 1.696-1.377 3.072-3.072 3.072s-3.072-1.377-3.072-3.072 1.377-3.072 3.072-3.072c.169 0 .336.014.5.04V5.506c-.164-.026-.331-.04-.5-.04-3.632 0-6.576 2.944-6.576 6.576s2.944 6.576 6.576 6.576 6.576-2.944 6.576-6.576V8.851c1.035.606 2.23.951 3.497.951v-3.503c-.65 0-1.266-.137-1.823-.387-.557-.25-1.057-.607-1.448-1.05z"/>
                 </svg>
               </a>
               <a 
@@ -82,12 +84,24 @@ const Footer = () => {
           <div>
             <h3 className="font-poppins font-bold text-lg mb-6">Sèvis Nou Yo</h3>
             <ul className="space-y-3 font-inter text-gray-300">
-              <li><a href="/services" className="hover:text-accent transition-colors duration-300">Renovasyon Konplè</a></li>
-              <li><a href="/services" className="hover:text-accent transition-colors duration-300">Extansyon Kay</a></li>
-              <li><a href="/services" className="hover:text-accent transition-colors duration-300">Plan Achitekti</a></li>
-              <li><a href="/services" className="hover:text-accent transition-colors duration-300">Supervizyon Chantye</a></li>
-              <li><a href="/services" className="hover:text-accent transition-colors duration-300">Entalasyon Elektrik</a></li>
-              <li><a href="/services" className="hover:text-accent transition-colors duration-300">Konsèltasyon ak Manten</a></li>
+              {services.length > 0 ? (
+                services.map((service) => (
+                  <li key={service.id}>
+                    <a href={service.url} className="hover:text-accent transition-colors duration-300">
+                      {service.title}
+                    </a>
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li><a href="/services" className="hover:text-accent transition-colors duration-300">Plan achitekti</a></li>
+                  <li><a href="/services" className="hover:text-accent transition-colors duration-300">Plan estriktirèl</a></li>
+                  <li><a href="/services" className="hover:text-accent transition-colors duration-300">Visualisation 3D</a></li>
+                  <li><a href="/services" className="hover:text-accent transition-colors duration-300">Deviz estimatif</a></li>
+                  <li><a href="/services" className="hover:text-accent transition-colors duration-300">Siveyans ak jesyon chantye</a></li>
+                  <li><a href="/services" className="hover:text-accent transition-colors duration-300">Renovasyon</a></li>
+                </>
+              )}
             </ul>
           </div>
 

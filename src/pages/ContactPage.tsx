@@ -1,14 +1,15 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Phone, Mail, MapPin, Clock, Send, MessageCircle, Calendar } from 'lucide-react';
 import { useState } from 'react';
 import { useContactInfo } from '@/hooks/useContactInfo';
 import { useStaticContent } from '@/hooks/useStaticContent';
+import { useContactForm } from '@/hooks/useContactForm';
 
 const ContactPage = () => {
   const { contactInfo, isLoading: contactLoading } = useContactInfo();
   const { content, isLoading: contentLoading } = useStaticContent();
+  const { submitForm, isSubmitting } = useContactForm();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,15 +18,26 @@ const ContactPage = () => {
     budget: '',
     timeline: '',
     message: '',
-    preferredContact: 'phone'
+    preferredContact: 'phone' as 'phone' | 'email' | 'whatsapp'
   });
 
   const isLoading = contactLoading || contentLoading;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Handle form submission
+    const success = await submitForm(formData);
+    if (success) {
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        projectType: '',
+        budget: '',
+        timeline: '',
+        message: '',
+        preferredContact: 'phone'
+      });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -347,10 +359,11 @@ const ContactPage = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className="w-full bg-accent hover:bg-accent/90 disabled:bg-accent/50 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-2"
                 >
                   <Send className="w-5 h-5" />
-                  Voye Depo A
+                  {isSubmitting ? 'Ap voye...' : 'Voye Depo A'}
                 </button>
               </form>
 

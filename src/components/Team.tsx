@@ -26,33 +26,14 @@ const Team = () => {
       experience: '7 ans d\'expérience',
       specialties: ['Swivi chantiers', 'Jesyon travay jounalye', 'Travay ak ekip & kontra'],
       bio: 'Bigly se youn nan moun ki konekte byen ak ekip ak ouvriye yo. Li pote disiplin ak kouraj sou teren an. Toujou pare pou mete men.'
-    },
-    {
-      name: 'Toussaint Youvenson',
-      role: 'Chef Chantye',
-      image: '/lovable-uploads/07214ea8-fb52-4b3d-a98a-03968718cb1a.png',
-      experience: '12 ans d\'expérience',
-      specialties: ['Jesyon ekip', 'Swivi konstriksyon', 'Enspeksyon ak verifikasyon travay'],
-      bio: 'Youvenson se bra dwat ekzekisyon Rev Konstriksyon. Avèk eksperyans li sou teren, li gide ouvriye yo, tcheke detay, epi asire tout bagay fèt jan plan an mande.'
-    },
-    {
-      name: 'Joseph Lucknerson',
-      role: 'Quality Control & Logistics Coordinator',
-      image: '/lovable-uploads/d3489930-649a-4f5f-8a55-2bbe0dd4ebb9.png',
-      experience: '6 ans d\'expérience',
-      specialties: ['Kontwòl kalite', 'Swivi livrezon', 'Siveyans règ sekirite'],
-      bio: 'Joseph se moun ki asire bon jan kalite ak bon jan livrezon sou teren. Li se lyen ant biwo ak chantye, li verifye ke tout materyo ak travay respekte estanda.'
     }
   ];
 
   const stats = [
-    { icon: Users, number: '25+', label: 'Professionnels qualifiés' },
-    { icon: Award, number: '8', label: 'Années d\'excellence' },
-    { icon: Briefcase, number: '150+', label: 'Projets réalisés' }
+    { icon: Users, number: '5', label: 'Pwofesyonèl kalifye' },
+    { icon: Award, number: '100%', label: 'Konfyans kliyan yo' },
+    { icon: Briefcase, number: 'Plizyè', label: 'Pwojè reyalize sou tout Ayiti' }
   ];
-
-  // Show only first 3 members on home page, can be controlled by props
-  const displayMembers = teamMembers.slice(0, 3);
 
   return (
     <section className="py-20 bg-white">
@@ -85,7 +66,7 @@ const Team = () => {
 
         {/* Team Members */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {displayMembers.map((member, index) => (
+          {teamMembers.map((member, index) => (
             <div
               key={index}
               className="bg-secondary rounded-xl p-6 text-center hover:shadow-lg transition-all duration-300"
@@ -136,8 +117,8 @@ const Team = () => {
             Nou travay ak presizyon, respè, ak transparans
           </h3>
           <p className="font-inter text-lg text-gray-200 max-w-3xl mx-auto">
-            Chак manm ekip nou an gen menm vizyon: livré pwojè kalite wo ki depase atant kliyan nou yo. 
-            Nou kwè nan inovasyon, sekirite, ak excellence nan chак detay.
+            Chak manm ekip nou an gen menm vizyon: livré pwojè kalite wo ki depase atant kliyan nou yo. 
+            Nou kwè nan inovasyon, sekirite, ak excellence nan chak detay.
           </p>
         </div>
       </div>
