@@ -1,5 +1,6 @@
 
 import { ArrowRight, Calendar, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useProjects } from '@/hooks/useProjects';
 import { useStaticContent } from '@/hooks/useStaticContent';
 
@@ -106,19 +107,25 @@ const Projects = () => {
                   </div>
                 </div>
 
-                <button className="flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300">
-                  Wè detay yo
+                <Link
+                  to="/contact"
+                  className="flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300"
+                >
+                  Diskite Pwojè Sa A Avè Nou
                   <ArrowRight className="w-4 h-4" />
-                </button>
+                </Link>
               </div>
             </div>
           ))}
         </div>
 
         <div className="text-center mt-12">
-          <button className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300">
+          <Link
+            to="/projects"
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300"
+          >
             Wè Tout Pwojè Yo
-          </button>
+          </Link>
         </div>
       </div>
     </section>

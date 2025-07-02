@@ -40,23 +40,39 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a 
-                href="#" 
+                href="https://www.facebook.com/revkonstriksyon" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
               >
                 <Facebook className="w-5 h-5" />
               </a>
               <a 
-                href="#" 
+                href="https://www.instagram.com/revkonstriksyon" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a 
-                href="#" 
+                href="https://www.tiktok.com/@revkonstriksyon" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-2.08v5.73a2.88 2.88 0 0 1-2.88 2.88 2.88 2.88 0 0 1-2.88-2.88V2H6.9v5.73a4.83 4.83 0 0 0 4.83 4.83c.424 0 .844-.055 1.252-.162.08 2.18.688 4.18 1.742 5.85l-.72.72L15.5 20.5l.72-.72c1.054-1.67 1.662-3.67 1.742-5.85.408.107.828.162 1.252.162a4.83 4.83 0 0 0 4.83-4.83V2h-2.08v.44a4.83 4.83 0 0 1-3.77 4.25z"/>
+                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-2.08v5.73a2.88 2.88 0 01-2.88 2.88 2.88 2.88 0 01-2.88-2.88V2H6.9v5.73a4.83 4.83 0 004.83 4.83c.424 0 .844-.055 1.252-.162.08 2.18.688 4.18 1.742 5.85l-.72.72L15.5 20.5l.72-.72c1.054-1.67 1.662-3.67 1.742-5.85.408.107.828.162 1.252.162a4.83 4.83 0 004.83-4.83V2h-2.08v.44a4.83 4.83 0 01-3.77 4.25z"/>
+                </svg>
+              </a>
+              <a 
+                href="https://www.youtube.com/@revkonstriksyon" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                 </svg>
               </a>
             </div>
