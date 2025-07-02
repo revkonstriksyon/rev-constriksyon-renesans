@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Award, Users, Briefcase, Target, Eye, Heart } from 'lucide-react';
@@ -9,7 +8,6 @@ const AboutPage = () => {
       name: 'Panier Agaby',
       role: 'CEO / Civil Engineer',
       image: '/lovable-uploads/d11c487b-6fcb-4a8f-88bd-742cc22c1064.png',
-      experience: '8 ans d\'expérience',
       specialties: ['Design achitekti & estriktirèl', 'Planifikasyon woutin', 'BIM / CAD / Suivi Site'],
       bio: 'Agaby se yon jèn enjenyè sivil ak yon vizyon pwofon pou inovasyon ak entegrite nan konstriksyon. Li konbine eksperyans sou teren ak yon sans detay nan konsepsyon ak jesyon pwojè.'
     },
@@ -17,7 +15,6 @@ const AboutPage = () => {
       name: 'Dominique Wattson',
       role: 'COO / Structural Engineer',
       image: '/lovable-uploads/57a2242f-0bbf-42a6-a13a-381bc7a09c71.png',
-      experience: '10 ans d\'expérience',
       specialties: ['Analiz estriktirèl', 'BIM, AutoCAD, Revit', 'Optimizasyon modèl estriktirèl'],
       bio: 'Dominique se sèvo lojik ekip la. Li se yon enjenyè estriktirèl ki mete kalkil devan emosyon. Li analize chak moso plan ak presizyon chirijikal.'
     },
@@ -25,7 +22,6 @@ const AboutPage = () => {
       name: 'Bigly Coriolan',
       role: 'Civil Site Engineer',
       image: '/lovable-uploads/b01bca38-b58e-47f7-ab57-21c2a3eb0da0.png',
-      experience: '7 ans d\'expérience',
       specialties: ['Swivi chantiers', 'Jesyon travay jounalye', 'Travay ak ekip & kontra'],
       bio: 'Bigly se youn nan moun ki konekte byen ak ekip ak ouvriye yo. Li pote disiplin ak kouraj sou teren an. Toujou pare pou mete men.'
     },
@@ -33,7 +29,6 @@ const AboutPage = () => {
       name: 'Toussaint Youvenson',
       role: 'Chef Chantye',
       image: '/lovable-uploads/07214ea8-fb52-4b3d-a98a-03968718cb1a.png',
-      experience: '12 ans d\'expérience',
       specialties: ['Jesyon ekip', 'Swivi konstriksyon', 'Enspeksyon ak verifikasyon travay'],
       bio: 'Youvenson se bra dwat ekzekisyon Rev Konstriksyon. Avèk eksperyans li sou teren, li gide ouvriye yo, tcheke detay, epi asire tout bagay fèt jan plan an mande.'
     },
@@ -41,14 +36,13 @@ const AboutPage = () => {
       name: 'Joseph Lucknerson',
       role: 'Quality Control & Logistics Coordinator',
       image: '/lovable-uploads/d3489930-649a-4f5f-8a55-2bbe0dd4ebb9.png',
-      experience: '6 ans d\'expérience',
       specialties: ['Kontwòl kalite', 'Swivi livrezon', 'Siveyans règ sekirite'],
       bio: 'Joseph se moun ki asire bon jan kalite ak bon jan livrezon sou teren. Li se lyen ant biwo ak chantye, li verifye ke tout materyo ak travay respekte estanda.'
     }
   ];
 
   const stats = [
-    { icon: Users, number: '5', label: 'Pwofesyonèl kalifye' },
+    { icon: Users, number: '+10', label: 'Pwofesyonèl angaje nan misyon nou' },
     { icon: Award, number: '100%', label: 'Konfyans kliyan yo' },
     { icon: Briefcase, number: 'Plizyè', label: 'Pwojè reyalize sou tout Ayiti' }
   ];
@@ -102,8 +96,8 @@ const AboutPage = () => {
               </p>
               <p className="font-inter text-gray-700 mb-6">
                 Jodi a, nou gen yon ekip pwofesyonèl ki gen ekspètiz nan divès domèn: 
-                achitekti, jeni sivil, jesyon pwojè, ak plis ankò. Nou fye de travay nou te fè 
-                ak relasyon nou konstwi ak kliyan nou yo.
+                achitekti, jeni sivil, jesyon pwojè, ak plis ankò. Nou pa konte eksperyans an ane, 
+                nou konte li nan rezilta ak pasyon nou mete nan chak pwojè.
               </p>
               <p className="font-inter text-gray-700">
                 Misyon nou se ede moun yo ak biznis yo reyalize rèv konstriksyon yo ak yon 
@@ -115,6 +109,7 @@ const AboutPage = () => {
                 src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 alt="Rev Konstriksyon ekip"
                 className="rounded-2xl shadow-lg"
+                loading="lazy"
               />
             </div>
           </div>
@@ -195,10 +190,8 @@ const AboutPage = () => {
                     src={member.image}
                     alt={member.name}
                     className="w-32 h-32 rounded-full object-cover mx-auto mb-4"
+                    loading="lazy"
                   />
-                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-accent text-white px-3 py-1 rounded-full text-sm font-inter font-medium">
-                    {member.experience}
-                  </div>
                 </div>
 
                 <h3 className="font-poppins font-bold text-xl text-primary mb-2">

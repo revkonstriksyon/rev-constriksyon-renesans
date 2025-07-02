@@ -3,21 +3,11 @@ import { Calendar, ArrowRight, Clock, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useBlogs } from '@/hooks/useBlogs';
 import { useStaticContent } from '@/hooks/useStaticContent';
-import { useNewsletter } from '@/hooks/useNewsletter';
-import { useState } from 'react';
+import Newsletter from './Newsletter';
 
 const Blog = () => {
   const { blogs, isLoading, error } = useBlogs();
   const { content } = useStaticContent();
-  const { subscribe, isLoading: isSubscribing } = useNewsletter();
-  const [email, setEmail] = useState('');
-
-  const handleNewsletterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (await subscribe(email)) {
-      setEmail('');
-    }
-  };
 
   if (isLoading) {
     return (
@@ -80,6 +70,7 @@ const Blog = () => {
                   src={blog.image_url || 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'}
                   alt={blog.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-300"></div>
                 <div className="absolute top-4 left-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-inter font-medium">
@@ -130,33 +121,8 @@ const Blog = () => {
         </div>
 
         {/* Newsletter Signup */}
-        <div className="mt-16 bg-black rounded-2xl p-8 text-white">
-          <div className="max-w-2xl mx-auto text-center">
-            <h3 className="font-poppins font-bold text-2xl mb-4">
-              {content.newsletter_title || 'Abònman Newsletter Nou An'}
-            </h3>
-            <p className="font-inter text-lg mb-6 text-gray-300">
-              {content.newsletter_subtitle || 'Resevwa konsèy ekspè, nouvo pwojè nou yo, ak enfòmasyon sou tendans konstriksyon yo nan Ayiti.'}
-            </p>
-            <form className="flex flex-col sm:flex-row gap-4" onSubmit={handleNewsletterSubmit}>
-              <input
-                type="email"
-                placeholder="Antre email ou a..."
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 px-4 py-3 rounded-lg text-black font-inter border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                required
-                disabled={isSubscribing}
-              />
-              <button
-                type="submit"
-                disabled={isSubscribing}
-                className="bg-accent hover:bg-white hover:text-black border-2 border-accent text-white px-8 py-3 rounded-lg font-inter font-semibold transition-all duration-300 disabled:opacity-50"
-              >
-                {isSubscribing ? 'Ap ajoute...' : 'Abònman'}
-              </button>
-            </form>
-          </div>
+        <div className="mt-16">
+          <Newsletter />
         </div>
 
         <div className="text-center mt-8">

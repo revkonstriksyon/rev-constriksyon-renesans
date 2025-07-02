@@ -30,7 +30,7 @@ const Team = () => {
   ];
 
   const stats = [
-    { icon: Users, number: '5', label: 'Pwofesyonèl kalifye' },
+    { icon: Users, number: '+10', label: 'Pwofesyonèl angaje nan misyon nou' },
     { icon: Award, number: '100%', label: 'Konfyans kliyan yo' },
     { icon: Briefcase, number: 'Plizyè', label: 'Pwojè reyalize sou tout Ayiti' }
   ];
@@ -76,6 +76,7 @@ const Team = () => {
                   src={member.image}
                   alt={member.name}
                   className="w-32 h-32 rounded-full object-cover mx-auto mb-4"
+                  loading="lazy"
                 />
                 <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-accent text-white px-3 py-1 rounded-full text-sm font-inter font-medium">
                   {member.experience}
@@ -118,7 +119,7 @@ const Team = () => {
           </h3>
           <p className="font-inter text-lg text-gray-200 max-w-3xl mx-auto">
             Chak manm ekip nou an gen menm vizyon: livré pwojè kalite wo ki depase atant kliyan nou yo. 
-            Nou kwè nan inovasyon, sekirite, ak excellence nan chak detay.
+            Nou pa konte eksperyans an ane, nou konte li nan rezilta ak pasyon nou mete nan chak pwojè.
           </p>
         </div>
       </div>

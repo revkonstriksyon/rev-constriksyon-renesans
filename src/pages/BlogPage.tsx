@@ -1,6 +1,6 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Newsletter from '@/components/Newsletter';
 import { Link } from 'react-router-dom';
 import { Calendar, ArrowRight, Clock, User, Search, Tag } from 'lucide-react';
 import { useState } from 'react';
@@ -196,6 +196,7 @@ const BlogPage = () => {
                       src={blog.image_url || 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'}
                       alt={blog.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
                     />
                     <div className="absolute top-4 left-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-inter font-medium">
                       {blog.category}
@@ -244,30 +245,13 @@ const BlogPage = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 bg-primary text-white">
+      <section className="py-16 bg-secondary">
         <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
-            <h3 className="font-poppins font-bold text-2xl mb-4">
-              {content.newsletter_title || 'Abònman Newsletter Nou An'}
-            </h3>
-            <p className="font-inter text-lg mb-6 text-gray-200">
-              {content.newsletter_subtitle || 'Resevwa konsèy ekspè, nouvo atik yo, ak enfòmasyon sou tendans konstriksyon yo nan Ayiti chak semèn.'}
-            </p>
-            <form className="flex flex-col sm:flex-row gap-4" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="Antre email ou a..."
-                className="flex-1 px-4 py-3 rounded-lg text-primary font-inter"
-                required
-              />
-              <button
-                type="submit"
-                className="bg-accent hover:bg-accent/90 text-white px-8 py-3 rounded-lg font-inter font-semibold transition-colors duration-300"
-              >
-                Abònman
-              </button>
-            </form>
-          </div>
+          <Newsletter 
+            variant="light"
+            title="Abònman Newsletter Nou An"
+            subtitle="Resevwa konsèy ekspè, nouvo atik yo, ak enfòmasyon sou tendans konstriksyon yo nan Ayiti chak semèn."
+          />
         </div>
       </section>
 
