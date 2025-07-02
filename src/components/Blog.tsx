@@ -3,10 +3,21 @@ import { Calendar, ArrowRight, Clock, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useBlogs } from '@/hooks/useBlogs';
 import { useStaticContent } from '@/hooks/useStaticContent';
+import { useNewsletter } from '@/hooks/useNewsletter';
+import { useState } from 'react';
 
 const Blog = () => {
   const { blogs, isLoading, error } = useBlogs();
   const { content } = useStaticContent();
+  const { subscribe, isLoading: isSubscribing } = useNewsletter();
+  const [email, setEmail] = useState('');
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (await subscribe(email)) {
+      setEmail('');
+    }
+  };
 
   if (isLoading) {
     return (
@@ -94,7 +105,11 @@ const Blog = () => {
                   </div>
                   <div className="flex items-center gap-1">
                     <Calendar className="w-4 h-4" />
-                    <span>{blog.date}</span>
+                    <span>{new Date(blog.created_at).toLocaleDateString('fr-FR', {
+                      day: '2-digit',
+                      month: 'long',
+                      year: 'numeric'
+                    })}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="w-4 h-4" />
@@ -123,18 +138,22 @@ const Blog = () => {
             <p className="font-inter text-lg mb-6 text-gray-300">
               {content.newsletter_subtitle || 'Resevwa konsèy ekspè, nouvo pwojè nou yo, ak enfòmasyon sou tendans konstriksyon yo nan Ayiti.'}
             </p>
-            <form className="flex flex-col sm:flex-row gap-4" onSubmit={(e) => e.preventDefault()}>
+            <form className="flex flex-col sm:flex-row gap-4" onSubmit={handleNewsletterSubmit}>
               <input
                 type="email"
                 placeholder="Antre email ou a..."
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 px-4 py-3 rounded-lg text-black font-inter border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
                 required
+                disabled={isSubscribing}
               />
               <button
                 type="submit"
-                className="bg-accent hover:bg-white hover:text-black border-2 border-accent text-white px-8 py-3 rounded-lg font-inter font-semibold transition-all duration-300"
+                disabled={isSubscribing}
+                className="bg-accent hover:bg-white hover:text-black border-2 border-accent text-white px-8 py-3 rounded-lg font-inter font-semibold transition-all duration-300 disabled:opacity-50"
               >
-                Abònman
+                {isSubscribing ? 'Ap ajoute...' : 'Abònman'}
               </button>
             </form>
           </div>

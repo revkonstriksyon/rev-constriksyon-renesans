@@ -4,28 +4,44 @@ import { Award, Users, Briefcase } from 'lucide-react';
 const Team = () => {
   const teamMembers = [
     {
-      name: 'Ing. Réveillère Joseph',
-      role: 'Directeur Général & Ingénieur Civil',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      experience: '15 ans d\'expérience',
-      specialties: ['Gestion de projet', 'Ingénierie structurelle', 'BIM & CAD'],
-      bio: 'Diplômé en génie civil avec une passion pour l\'innovation dans la construction. Leader de l\'équipe Rev Konstriksyon depuis sa création.'
+      name: 'Panier Agaby',
+      role: 'CEO / Civil Engineer',
+      image: '/lovable-uploads/d11c487b-6fcb-4a8f-88bd-742cc22c1064.png',
+      experience: '8 ans d\'expérience',
+      specialties: ['Design achitekti & estriktirèl', 'Planifikasyon woutin', 'BIM / CAD / Suivi Site'],
+      bio: 'Agaby se yon jèn enjenyè sivil ak yon vizyon pwofon pou inovasyon ak entegrite nan konstriksyon. Li konbine eksperyans sou teren ak yon sans detay nan konsepsyon ak jesyon pwojè.'
     },
     {
-      name: 'Arch. Marie-Claire Désir',
-      role: 'Architecte Principal',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b47c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      experience: '12 ans d\'expérience',
-      specialties: ['Design moderne', 'Architecture durable', 'Urbanisme'],
-      bio: 'Créatrice de designs innovants qui allient esthétique moderne et fonctionnalité. Spécialiste en architecture écologique.'
-    },
-    {
-      name: 'Eng. Patrick Moreau',
-      role: 'Chef de Chantier',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      name: 'Dominique Wattson',
+      role: 'COO / Structural Engineer',
+      image: '/lovable-uploads/57a2242f-0bbf-42a6-a13a-381bc7a09c71.png',
       experience: '10 ans d\'expérience',
-      specialties: ['Supervision', 'Sécurité chantier', 'Coordination équipes'],
-      bio: 'Expert en gestion de chantier avec un focus sur la sécurité et le respect des délais. Garantit la qualité d\'exécution de chaque projet.'
+      specialties: ['Analiz estriktirèl', 'BIM, AutoCAD, Revit', 'Optimizasyon modèl estriktirèl'],
+      bio: 'Dominique se sèvo lojik ekip la. Li se yon enjenyè estriktirèl ki mete kalkil devan emosyon. Li analize chak moso plan ak presizyon chirijikal.'
+    },
+    {
+      name: 'Bigly Coriolan',
+      role: 'Civil Site Engineer',
+      image: '/lovable-uploads/b01bca38-b58e-47f7-ab57-21c2a3eb0da0.png',
+      experience: '7 ans d\'expérience',
+      specialties: ['Swivi chantiers', 'Jesyon travay jounalye', 'Travay ak ekip & kontra'],
+      bio: 'Bigly se youn nan moun ki konekte byen ak ekip ak ouvriye yo. Li pote disiplin ak kouraj sou teren an. Toujou pare pou mete men.'
+    },
+    {
+      name: 'Toussaint Youvenson',
+      role: 'Chef Chantye',
+      image: '/lovable-uploads/07214ea8-fb52-4b3d-a98a-03968718cb1a.png',
+      experience: '12 ans d\'expérience',
+      specialties: ['Jesyon ekip', 'Swivi konstriksyon', 'Enspeksyon ak verifikasyon travay'],
+      bio: 'Youvenson se bra dwat ekzekisyon Rev Konstriksyon. Avèk eksperyans li sou teren, li gide ouvriye yo, tcheke detay, epi asire tout bagay fèt jan plan an mande.'
+    },
+    {
+      name: 'Joseph Lucknerson',
+      role: 'Quality Control & Logistics Coordinator',
+      image: '/lovable-uploads/d3489930-649a-4f5f-8a55-2bbe0dd4ebb9.png',
+      experience: '6 ans d\'expérience',
+      specialties: ['Kontwòl kalite', 'Swivi livrezon', 'Siveyans règ sekirite'],
+      bio: 'Joseph se moun ki asire bon jan kalite ak bon jan livrezon sou teren. Li se lyen ant biwo ak chantye, li verifye ke tout materyo ak travay respekte estanda.'
     }
   ];
 
@@ -34,6 +50,9 @@ const Team = () => {
     { icon: Award, number: '8', label: 'Années d\'excellence' },
     { icon: Briefcase, number: '150+', label: 'Projets réalisés' }
   ];
+
+  // Show only first 3 members on home page, can be controlled by props
+  const displayMembers = teamMembers.slice(0, 3);
 
   return (
     <section className="py-20 bg-white">
@@ -66,7 +85,7 @@ const Team = () => {
 
         {/* Team Members */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {teamMembers.map((member, index) => (
+          {displayMembers.map((member, index) => (
             <div
               key={index}
               className="bg-secondary rounded-xl p-6 text-center hover:shadow-lg transition-all duration-300"
@@ -118,7 +137,7 @@ const Team = () => {
           </h3>
           <p className="font-inter text-lg text-gray-200 max-w-3xl mx-auto">
             Chак manm ekip nou an gen menm vizyon: livré pwojè kalite wo ki depase atant kliyan nou yo. 
-            Nou kwè nan inovasyon, sekirite, ak excellence nan chak detay.
+            Nou kwè nan inovasyon, sekirite, ak excellence nan chак detay.
           </p>
         </div>
       </div>
