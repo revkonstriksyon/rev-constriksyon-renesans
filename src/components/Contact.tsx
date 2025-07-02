@@ -1,319 +1,206 @@
 
-import { Phone, Mail, MapPin, Clock, Send, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { useNewsletter } from '@/hooks/useNewsletter';
 
 const Contact = () => {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    projectType: '',
-    message: '',
-    preferredContact: 'whatsapp'
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [email, setEmail] = useState('');
+  const { subscribe, isLoading } = useNewsletter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      // Create the message content
-      const messageContent = `Nouvo demann depo devis:
-Non: ${formData.name}
-Imèl: ${formData.email}
-Telefòn: ${formData.phone || 'Pa bay'}
-Tip pwojè: ${formData.projectType || 'Pa espesifye'}
-Mesaj: ${formData.message}
-
-Metòd preferans pou kontakte: ${formData.preferredContact === 'whatsapp' ? 'WhatsApp' : 'Email'}`;
-
-      if (formData.preferredContact === 'whatsapp') {
-        // Send via WhatsApp
-        const whatsappMessage = encodeURIComponent(messageContent);
-        window.open(`https://wa.me/50947624431?text=${whatsappMessage}`, '_blank');
-      } else {
-        // Send via Email
-        const emailSubject = encodeURIComponent('Nouvo Demann Depo Devis - Rev Konstriksyon');
-        const emailBody = encodeURIComponent(messageContent);
-        window.open(`mailto:revkonstriksyon@gmail.com?subject=${emailSubject}&body=${emailBody}`, '_blank');
+    if (email.trim()) {
+      const success = await subscribe(email);
+      if (success) {
+        setEmail('');
       }
-
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        projectType: '',
-        message: '',
-        preferredContact: 'whatsapp'
-      });
-
-      // Show success message
-      toast({
-        title: "Mèsi pou demann ou a!",
-        description: "Nou resevwa demann ou ak nou pral kominike ak ou nan ti tan an.",
-      });
-
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      toast({
-        title: "Gen yon pwoblèm",
-        description: "Tanpri eseye ankò oswa rele nou dirèkteman.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleWhatsAppClick = () => {
-    const message = encodeURIComponent(
-      `Bonjou Rev Konstriksyon! Mwen gen yon pwojè konstriksyon epi mwen ta renmen pale ak nou sou li.`
-    );
-    window.open(`https://wa.me/50947624431?text=${message}`, '_blank');
-  };
-
   return (
-    <section id="contact" className="py-20 bg-white">
+    <section id="contact" className="py-20 bg-secondary">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-poppins font-bold text-3xl md:text-4xl text-primary mb-4">
-            Kominike Ak Nou
+            Kontakte Nou
           </h2>
           <p className="font-inter text-lg text-gray-600 max-w-2xl mx-auto">
-            Pare pou kòmanse pwojè ou a? Kominike ak nou kònnye a pou konsèltasyon gratis ak devis ki fèt espesyalman pou ou.
+            Pare pou kòmanse pwojè ou a? Kite nou ede w kreye espas rèv ou an.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information */}
-          <div className="space-y-8">
-            <div>
+          <div>
+            <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
               <h3 className="font-poppins font-bold text-2xl text-primary mb-6">
                 Enfòmasyon Kontak
               </h3>
               
               <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
                     <Phone className="w-6 h-6 text-accent" />
                   </div>
                   <div>
-                    <h4 className="font-inter font-semibold text-primary mb-1">Telefòn</h4>
-                    <a href="tel:+50947624431" className="font-inter text-gray-600 hover:text-accent transition-colors">
-                      +509 4762 4431
-                    </a>
+                    <h4 className="font-poppins font-semibold text-primary">Telefòn</h4>
+                    <p className="font-inter text-gray-600">+509 4762 4431</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
                     <Mail className="w-6 h-6 text-accent" />
                   </div>
                   <div>
-                    <h4 className="font-inter font-semibold text-primary mb-1">Imèl</h4>
-                    <a href="mailto:revkonstriksyon@gmail.com" className="font-inter text-gray-600 hover:text-accent transition-colors">
-                      revkonstriksyon@gmail.com
-                    </a>
+                    <h4 className="font-poppins font-semibold text-primary">Imèl</h4>
+                    <p className="font-inter text-gray-600">revkonstriksyon@gmail.com</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
                     <MapPin className="w-6 h-6 text-accent" />
                   </div>
                   <div>
-                    <h4 className="font-inter font-semibold text-primary mb-1">Kote Nou Ye</h4>
-                    <p className="font-inter text-gray-600">
-                      Pòtoprens ak anviwon yo, Ayiti
-                    </p>
+                    <h4 className="font-poppins font-semibold text-primary">Adrès</h4>
+                    <p className="font-inter text-gray-600">Pòtoprens ak anviwon yo, Ayiti</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
                     <Clock className="w-6 h-6 text-accent" />
                   </div>
                   <div>
-                    <h4 className="font-inter font-semibold text-primary mb-1">Otè Travay</h4>
-                    <p className="font-inter text-gray-600">
-                      Lendi - Vandredi: 7:00 AM - 5:00 PM<br />
-                      Samdi: 8:00 AM - 2:00 PM
-                    </p>
+                    <h4 className="font-poppins font-semibold text-primary">Otè Travay</h4>
+                    <p className="font-inter text-gray-600">Lendi - Vandredi: 7:00 AM - 5:00 PM</p>
+                    <p className="font-inter text-gray-600">Samdi: 8:00 AM - 2:00 PM</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* WhatsApp Button */}
-            <div className="bg-green-50 rounded-xl p-6 border border-green-200">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
-                  <MessageCircle className="w-6 h-6 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-inter font-semibold text-primary mb-1">
-                    Mesaj Rapid
-                  </h4>
-                  <p className="font-inter text-gray-600 text-sm">
-                    Kominike ak nou dirèkteman sou WhatsApp
-                  </p>
-                </div>
-                <button 
-                  onClick={handleWhatsAppClick}
-                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-inter font-medium transition-colors duration-300"
+            {/* Newsletter Subscription */}
+            <div className="bg-accent/5 rounded-2xl p-8 border border-accent/20">
+              <h3 className="font-poppins font-bold text-xl text-primary mb-4">
+                Abònman ak Newsletter Nou
+              </h3>
+              <p className="font-inter text-gray-600 mb-6">
+                Resevwa dènye nouvo yo ak konsèy konstriksyon nan imèl ou.
+              </p>
+              
+              <form onSubmit={handleNewsletterSubmit} className="flex gap-3">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Antre imèl ou..."
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent font-inter"
+                  required
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-lg font-inter font-semibold transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  WhatsApp
+                  {isLoading ? 'Ap abòne...' : 'Abònman'}
                 </button>
-              </div>
+              </form>
             </div>
           </div>
 
           {/* Contact Form */}
-          <div className="bg-secondary rounded-xl p-8">
+          <div className="bg-white rounded-2xl p-8 shadow-lg">
             <h3 className="font-poppins font-bold text-2xl text-primary mb-6">
-              Depo Devis Gratis
+              Voye yon Mesaj
             </h3>
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <form className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block font-inter font-medium text-primary mb-2">
-                    Non Konplè *
+                  <label className="block font-poppins font-medium text-primary mb-2">
+                    Non
                   </label>
                   <input
                     type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                    placeholder="Antre non ou..."
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent font-inter"
+                    placeholder="Non ou..."
                   />
                 </div>
-
                 <div>
-                  <label htmlFor="phone" className="block font-inter font-medium text-primary mb-2">
-                    Telefòn
+                  <label className="block font-poppins font-medium text-primary mb-2">
+                    Imèl
                   </label>
                   <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                    placeholder="+509 ..."
+                    type="email"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent font-inter"
+                    placeholder="Imèl ou..."
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="email" className="block font-inter font-medium text-primary mb-2">
-                  Imèl *
+                <label className="block font-poppins font-medium text-primary mb-2">
+                  Telefòn
                 </label>
                 <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                  placeholder="egzanp@email.com"
+                  type="tel"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent font-inter"
+                  placeholder="Telefòn ou..."
                 />
               </div>
 
               <div>
-                <label htmlFor="projectType" className="block font-inter font-medium text-primary mb-2">
+                <label className="block font-poppins font-medium text-primary mb-2">
                   Tip Pwojè
                 </label>
-                <select
-                  id="projectType"
-                  name="projectType"
-                  value={formData.projectType}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                >
-                  <option value="">Chwazi yon tip pwojè...</option>
-                  <option value="Renovasyon">Renovasyon</option>
-                  <option value="Extansyon">Extansyon</option>
-                  <option value="Konstriksyon Nouvo">Konstriksyon Nouvo</option>
-                  <option value="Plan Achitekti">Plan Achitekti</option>
-                  <option value="Konsèltasyon">Konsèltasyon</option>
+                <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent font-inter">
+                  <option>Chwazi yon tip pwojè...</option>
+                  <option>Renovasyon Konplè</option>
+                  <option>Extansyon Kay</option>
+                  <option>Konstriksyon Nouvo</option>
+                  <option>Plan Achitekti</option>
+                  <option>Konsèltasyon</option>
                 </select>
               </div>
 
               <div>
-                <label htmlFor="message" className="block font-inter font-medium text-primary mb-2">
-                  Deskripsyon Pwojè *
+                <label className="block font-poppins font-medium text-primary mb-2">
+                  Mesaj
                 </label>
                 <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={4}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                  placeholder="Eksplike pwojè ou a ak detay yo..."
+                  rows={5}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent font-inter resize-none"
+                  placeholder="Eksplike pwojè ou an ak detay..."
                 ></textarea>
-              </div>
-
-              <div>
-                <label className="block font-inter font-medium text-primary mb-2">
-                  Kijan ou prefere nou kominike ak ou? *
-                </label>
-                <div className="flex gap-4">
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="preferredContact"
-                      value="whatsapp"
-                      checked={formData.preferredContact === 'whatsapp'}
-                      onChange={handleChange}
-                      className="mr-2 text-accent focus:ring-accent"
-                    />
-                    <span className="font-inter">WhatsApp</span>
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="preferredContact"
-                      value="email"
-                      checked={formData.preferredContact === 'email'}
-                      onChange={handleChange}
-                      className="mr-2 text-accent focus:ring-accent"
-                    />
-                    <span className="font-inter">Imèl</span>
-                  </label>
-                </div>
               </div>
 
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-accent hover:bg-accent/90 disabled:bg-accent/50 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-2"
+                className="w-full bg-accent hover:bg-accent/90 text-white py-4 rounded-lg font-poppins font-semibold text-lg transition-colors duration-300"
               >
-                <Send className="w-5 h-5" />
-                {isSubmitting ? 'Ap voye...' : 'Voye Depo A'}
+                Voye Mesaj
               </button>
             </form>
+          </div>
+        </div>
 
-            <p className="font-inter text-sm text-gray-600 mt-4 text-center">
-              Nou pral kominike ak ou nan mwens pase 24 èdtan pou diskite pwojè ou a.
+        {/* CTA Section */}
+        <div className="text-center mt-16">
+          <div className="bg-gradient-to-r from-accent to-accent/80 text-white rounded-2xl p-8">
+            <h3 className="font-poppins font-bold text-2xl mb-4">
+              Pare pou Kòmanse Pwojè Ou A?
+            </h3>
+            <p className="font-inter text-lg opacity-90 mb-6">
+              Jwenn konsèltasyon gratis ak devis detaye pou pwojè ou an.
             </p>
+            <a
+              href="tel:+50947624431"
+              className="bg-white text-accent px-8 py-4 rounded-lg font-poppins font-semibold text-lg hover:bg-gray-50 transition-colors duration-300 inline-block"
+            >
+              Rele Kounye A: +509 4762 4431
+            </a>
           </div>
         </div>
       </div>
