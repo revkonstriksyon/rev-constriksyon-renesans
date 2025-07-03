@@ -1,8 +1,9 @@
-
 import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import SEOManager from '@/components/SEO/SEOManager';
+import { BlogPostStructuredData, OrganizationStructuredData } from '@/components/SEO/StructuredData';
 import { Calendar, ArrowLeft, ArrowRight, User, Clock, Tag } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useStaticContent } from '@/hooks/useStaticContent';
@@ -91,213 +92,255 @@ const BlogArticlePage = () => {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen">
-        <Header />
-        <div className="pt-24 pb-16 bg-gray-50 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-gray-600">Ap chaje atik la...</p>
+      <>
+        <SEOManager
+          title="Ap chaje atik la..."
+          description="Atik blog Rev Konstriksyon ap chaje..."
+          noIndex={true}
+        />
+        <div className="min-h-screen">
+          <Header />
+          <div className="pt-24 pb-16 bg-gray-50 text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-2 text-gray-600">Ap chaje atik la...</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   // Error or article not found
   if (error || !blog) {
     return (
-      <div className="min-h-screen">
-        <Header />
-        <div className="pt-24 pb-16 bg-gray-50 text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Atik la pa jwenn</h1>
-          <p className="text-gray-600 mb-8">
-            {error || 'Atik ou ap chèche a pa egziste oswa li pa pibliye.'}
-          </p>
-          <Link
-            to="/blog"
-            className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-inter font-semibold transition-colors duration-300"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Retounen sou Blog la
-          </Link>
+      <>
+        <SEOManager
+          title="Atik la pa jwenn - Rev Konstriksyon"
+          description="Atik ou ap chèche a pa egziste oswa li pa pibliye."
+          noIndex={true}
+        />
+        <div className="min-h-screen">
+          <Header />
+          <div className="pt-24 pb-16 bg-gray-50 text-center">
+            <h1 className="text-2xl font-bold text-gray-800 mb-4">Atik la pa jwenn</h1>
+            <p className="text-gray-600 mb-8">
+              {error || 'Atik ou ap chèche a pa egziste oswa li pa pibliye.'}
+            </p>
+            <Link
+              to="/blog"
+              className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-inter font-semibold transition-colors duration-300"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Retounen sou Blog la
+            </Link>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      </>
     );
   }
 
+  const articleUrl = `https://www.revkonstriksyon.com/blog/${blog.slug}`;
+  const publishedDate = new Date(blog.created_at).toISOString();
+
   return (
-    <div className="min-h-screen">
-      <Header />
+    <>
+      <SEOManager
+        title={`${blog.title} - Blog Rev Konstriksyon`}
+        description={blog.excerpt}
+        keywords={`${blog.category}, konstriksyon Ayiti, ${blog.title.toLowerCase()}, Rev Konstriksyon, blog konstriksyon`}
+        canonicalUrl={articleUrl}
+        ogTitle={blog.title}
+        ogDescription={blog.excerpt}
+        ogImage={blog.image_url || undefined}
+        ogType="article"
+        articlePublishedTime={publishedDate}
+        articleAuthor={blog.author}
+        articleSection={blog.category}
+      />
+      <BlogPostStructuredData
+        title={blog.title}
+        description={blog.excerpt}
+        author={blog.author}
+        datePublished={publishedDate}
+        image={blog.image_url || undefined}
+        url={articleUrl}
+      />
+      <OrganizationStructuredData />
       
-      {/* Breadcrumb */}
-      <section className="pt-24 pb-8 bg-secondary">
-        <div className="container mx-auto px-4">
-          <nav className="flex items-center space-x-2 text-sm text-gray-600">
-            <Link to="/" className="hover:text-primary transition-colors">Akèy</Link>
-            <ArrowRight className="w-4 h-4" />
-            <Link to="/blog" className="hover:text-primary transition-colors">Blog</Link>
-            <ArrowRight className="w-4 h-4" />
-            <span className="text-primary">{blog.category}</span>
-          </nav>
-        </div>
-      </section>
-
-      {/* Article Header */}
-      <article className="bg-white">
-        <div className="container mx-auto px-4 py-12">
-          <div className="max-w-4xl mx-auto">
-            {/* Category & Meta */}
-            <div className="flex flex-wrap items-center gap-4 mb-6">
-              <span className="bg-accent text-white px-3 py-1 rounded-full text-sm font-inter font-medium">
-                {blog.category}
-              </span>
-              <div className="flex items-center gap-4 text-sm text-gray-500">
-                <div className="flex items-center gap-1">
-                  <User className="w-4 h-4" />
-                  <span>{blog.author}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4" />
-                  <span>{blog.date}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Clock className="w-4 h-4" />
-                  <span>{blog.read_time}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Title */}
-            <h1 className="font-poppins font-bold text-3xl md:text-4xl lg:text-5xl text-primary mb-6 leading-tight">
-              {blog.title}
-            </h1>
-
-            {/* Excerpt */}
-            <p className="font-inter text-lg text-gray-600 mb-8 leading-relaxed">
-              {blog.excerpt}
-            </p>
-
-            {/* Featured Image */}
-            {blog.image_url && (
-              <div className="mb-12">
-                <img
-                  src={blog.image_url}
-                  alt={blog.title}
-                  className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-lg"
-                />
-              </div>
-            )}
-
-            {/* Article Content with HTML formatting preserved */}
-            <div 
-              className="prose prose-lg max-w-none font-inter leading-relaxed
-                prose-headings:font-poppins prose-headings:font-bold prose-headings:text-primary prose-headings:mb-4 prose-headings:mt-8
-                prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg
-                prose-p:mb-6 prose-p:text-gray-700 prose-p:leading-relaxed
-                prose-ul:mb-6 prose-ol:mb-6 prose-li:mb-2 prose-li:text-gray-700
-                prose-strong:text-primary prose-strong:font-semibold
-                prose-em:text-accent prose-em:font-medium
-                prose-a:text-accent prose-a:underline hover:prose-a:text-accent/80
-                prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:bg-secondary prose-blockquote:rounded-r-lg prose-blockquote:my-8
-                prose-blockquote:text-primary prose-blockquote:font-medium prose-blockquote:italic
-                prose-img:rounded-lg prose-img:shadow-md prose-img:my-8
-                prose-pre:bg-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
-                prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm
-                .lead:text-xl .lead:font-medium .lead:text-primary .lead:mb-8"
-              dangerouslySetInnerHTML={{ __html: blog.content }}
-            />
-          </div>
-        </div>
-      </article>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-primary text-white">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-2xl mx-auto">
-            <h2 className="font-poppins font-bold text-2xl md:text-3xl mb-4">
-              {content.cta_title || 'Ou gen pwojè ou vle reyalize?'}
-            </h2>
-            <p className="font-inter text-lg mb-8 text-gray-200">
-              {content.cta_subtitle || 'Kontakte nou pou n planifye l ansanm. Nou la pou ede ou transforme vizyon ou an realite.'}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/contact"
-                className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300"
-              >
-                Jwenn Konsèltasyon Gratis
-              </Link>
-              <Link
-                to="/services"
-                className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300"
-              >
-                Gade Sèvis Nou Yo
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Related Articles */}
-      {relatedArticles.length > 0 && (
-        <section className="py-16 bg-secondary">
+      <div className="min-h-screen">
+        <Header />
+        
+        {/* Breadcrumb */}
+        <section className="pt-24 pb-8 bg-secondary">
           <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <h2 className="font-poppins font-bold text-2xl md:text-3xl text-primary mb-8 text-center">
-                Atik ki Gen Rapò
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                {relatedArticles.map((relatedArticle) => (
-                  <Link
-                    key={relatedArticle.id}
-                    to={`/blog/${relatedArticle.slug}`}
-                    className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
-                  >
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={relatedArticle.image_url || 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'}
-                        alt={relatedArticle.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="font-poppins font-semibold text-xl text-primary mb-3 group-hover:text-accent transition-colors duration-300">
-                        {relatedArticle.title}
-                      </h3>
-                      <p className="font-inter text-gray-600 mb-4 line-clamp-2">
-                        {relatedArticle.excerpt}
-                      </p>
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          <span>{relatedArticle.date}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          <span>{relatedArticle.read_time}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
+            <nav className="flex items-center space-x-2 text-sm text-gray-600" aria-label="Breadcrumb">
+              <Link to="/" className="hover:text-primary transition-colors">Akèy</Link>
+              <ArrowRight className="w-4 h-4" />
+              <Link to="/blog" className="hover:text-primary transition-colors">Blog</Link>
+              <ArrowRight className="w-4 h-4" />
+              <span className="text-primary">{blog.category}</span>
+            </nav>
+          </div>
+        </section>
+
+        {/* Article Header */}
+        <article className="bg-white">
+          <div className="container mx-auto px-4 py-12">
+            <div className="max-w-4xl mx-auto">
+              {/* Category & Meta */}
+              <div className="flex flex-wrap items-center gap-4 mb-6">
+                <span className="bg-accent text-white px-3 py-1 rounded-full text-sm font-inter font-medium">
+                  {blog.category}
+                </span>
+                <div className="flex items-center gap-4 text-sm text-gray-500">
+                  <div className="flex items-center gap-1">
+                    <User className="w-4 h-4" />
+                    <span>{blog.author}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Calendar className="w-4 h-4" />
+                    <span>{blog.date}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                    <span>{blog.read_time}</span>
+                  </div>
+                </div>
               </div>
 
-              <div className="text-center">
+              {/* Title */}
+              <h1 className="font-poppins font-bold text-3xl md:text-4xl lg:text-5xl text-primary mb-6 leading-tight">
+                {blog.title}
+              </h1>
+
+              {/* Excerpt */}
+              <p className="font-inter text-lg text-gray-600 mb-8 leading-relaxed">
+                {blog.excerpt}
+              </p>
+
+              {/* Featured Image */}
+              {blog.image_url && (
+                <div className="mb-12">
+                  <img
+                    src={blog.image_url}
+                    alt={blog.title}
+                    className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-lg"
+                  />
+                </div>
+              )}
+
+              {/* Article Content with HTML formatting preserved */}
+              <div 
+                className="prose prose-lg max-w-none font-inter leading-relaxed
+                  prose-headings:font-poppins prose-headings:font-bold prose-headings:text-primary prose-headings:mb-4 prose-headings:mt-8
+                  prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg
+                  prose-p:mb-6 prose-p:text-gray-700 prose-p:leading-relaxed
+                  prose-ul:mb-6 prose-ol:mb-6 prose-li:mb-2 prose-li:text-gray-700
+                  prose-strong:text-primary prose-strong:font-semibold
+                  prose-em:text-accent prose-em:font-medium
+                  prose-a:text-accent prose-a:underline hover:prose-a:text-accent/80
+                  prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:bg-secondary prose-blockquote:rounded-r-lg prose-blockquote:my-8
+                  prose-blockquote:text-primary prose-blockquote:font-medium prose-blockquote:italic
+                  prose-img:rounded-lg prose-img:shadow-md prose-img:my-8
+                  prose-pre:bg-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
+                  prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm
+                  .lead:text-xl .lead:font-medium .lead:text-primary .lead:mb-8"
+                dangerouslySetInnerHTML={{ __html: blog.content }}
+              />
+            </div>
+          </div>
+        </article>
+
+        {/* CTA Section */}
+        <section className="py-16 bg-primary text-white">
+          <div className="container mx-auto px-4 text-center">
+            <div className="max-w-2xl mx-auto">
+              <h2 className="font-poppins font-bold text-2xl md:text-3xl mb-4">
+                {content.cta_title || 'Ou gen pwojè ou vle reyalize?'}
+              </h2>
+              <p className="font-inter text-lg mb-8 text-gray-200">
+                {content.cta_subtitle || 'Kontakte nou pou n planifye l ansanm. Nou la pou ede ou transforme vizyon ou an realite.'}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
-                  to="/blog"
-                  className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300"
+                  to="/contact"
+                  className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300"
                 >
-                  <ArrowLeft className="w-4 h-4" />
-                  Retounen sou Blog la
+                  Jwenn Konsèltasyon Gratis
+                </Link>
+                <Link
+                  to="/services"
+                  className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300"
+                >
+                  Gade Sèvis Nou Yo
                 </Link>
               </div>
             </div>
           </div>
         </section>
-      )}
 
-      <Footer />
-    </div>
+        {/* Related Articles */}
+        {relatedArticles.length > 0 && (
+          <section className="py-16 bg-secondary">
+            <div className="container mx-auto px-4">
+              <div className="max-w-6xl mx-auto">
+                <h2 className="font-poppins font-bold text-2xl md:text-3xl text-primary mb-8 text-center">
+                  Atik ki Gen Rapò
+                </h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                  {relatedArticles.map((relatedArticle) => (
+                    <Link
+                      key={relatedArticle.id}
+                      to={`/blog/${relatedArticle.slug}`}
+                      className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
+                    >
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={relatedArticle.image_url || 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'}
+                          alt={relatedArticle.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      </div>
+                      <div className="p-6">
+                        <h3 className="font-poppins font-semibold text-xl text-primary mb-3 group-hover:text-accent transition-colors duration-300">
+                          {relatedArticle.title}
+                        </h3>
+                        <p className="font-inter text-gray-600 mb-4 line-clamp-2">
+                          {relatedArticle.excerpt}
+                        </p>
+                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            <span>{relatedArticle.date}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            <span>{relatedArticle.read_time}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+
+                <div className="text-center">
+                  <Link
+                    to="/blog"
+                    className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    Retounen sou Blog la
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        <Footer />
+      </div>
+    </>
   );
 };
 

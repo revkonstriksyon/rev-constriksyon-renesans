@@ -1,7 +1,22 @@
+
 User-agent: *
+Allow: /
+
+# Disallow admin areas
 Disallow: /admin/
 Disallow: /admin/login/
 Disallow: /private/
-Allow: /
 
+# Allow important pages
+Allow: /
+Allow: /projects
+Allow: /blog
+Allow: /about
+Allow: /contact
+Allow: /services
+
+# Sitemap location
 Sitemap: https://www.revkonstriksyon.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

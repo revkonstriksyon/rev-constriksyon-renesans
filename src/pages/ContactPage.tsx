@@ -1,5 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import SEOManager from '@/components/SEO/SEOManager';
+import { OrganizationStructuredData } from '@/components/SEO/StructuredData';
 import { Phone, Mail, MapPin, Clock, Send, MessageCircle, Calendar } from 'lucide-react';
 import { useState } from 'react';
 import { useContactInfo } from '@/hooks/useContactInfo';
@@ -119,385 +121,405 @@ const ContactPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen">
-        <Header />
-        <div className="pt-24 pb-16 bg-gray-50 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-gray-600">Ap chaje enfòmasyon kontak yo...</p>
+      <>
+        <SEOManager
+          title="Kontakte Rev Konstriksyon - Devis Gratis ak Konsèltasyon Konstriksyon"
+          description="Kontakte Rev Konstriksyon pou devis gratis, konsèltasyon ak enfòmasyon sou sèvis konstriksyon ak renovasyon nou yo nan Ayiti. Telefòn: +509 4762 4431"
+          keywords="kontak Rev Konstriksyon, devis gratis konstriksyon, konsèltasyon renovasyon, telefòn konstriksyon Ayiti, imèl Rev Konstriksyon"
+          canonicalUrl="https://www.revkonstriksyon.com/contact"
+        />
+        <div className="min-h-screen">
+          <Header />
+          <div className="pt-24 pb-16 bg-gray-50 text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-2 text-gray-600">Ap chaje enfòmasyon kontak yo...</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen">
-      <Header />
+    <>
+      <SEOManager
+        title="Kontakte Rev Konstriksyon - Devis Gratis ak Konsèltasyon Konstriksyon"
+        description="Kontakte Rev Konstriksyon pou devis gratis, konsèltasyon ak enfòmasyon sou sèvis konstriksyon ak renovasyon nou yo nan Ayiti. Telefòn: +509 4762 4431, Email: revkonstriksyon@gmail.com"
+        keywords="kontak Rev Konstriksyon, devis gratis konstriksyon, konsèltasyon renovasyon, telefòn konstriksyon Ayiti, imèl Rev Konstriksyon, WhatsApp konstriksyon"
+        canonicalUrl="https://www.revkonstriksyon.com/contact"
+        ogTitle="Kontakte Rev Konstriksyon - Devis Gratis ak Konsèltasyon"
+        ogDescription="Jwenn devis gratis ak konsèltasyon ekspè pou pwojè konstriksyon oswa renovasyon ou an. Kontakte nou kounye a!"
+      />
+      <OrganizationStructuredData type="localBusiness" />
       
-      {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-gradient-to-br from-primary to-primary/80">
-        <div className="container mx-auto px-4 text-center text-white">
-          <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-6">
-            Kominike Ak Nou
-          </h1>
-          <p className="font-inter text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
-            Pare pou kòmanse pwojè ou a? Kominike ak nou kònnye a pou konsèltasyon gratis ak devis ki fèt espesyalman pou ou.
-          </p>
-        </div>
-      </section>
-
-      {/* Contact Methods */}
-      <section className="py-16 bg-secondary">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {contactMethods.map((method, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-xl text-center hover:shadow-lg transition-all duration-300"
-              >
-                <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <method.icon className="w-8 h-8 text-accent" />
-                </div>
-                <h3 className="font-poppins font-bold text-lg text-primary mb-2">
-                  {method.title}
-                </h3>
-                <p className="font-inter font-semibold text-gray-800 mb-1">
-                  {method.primary}
-                </p>
-                {method.secondary && (
-                  <p className="font-inter text-gray-600 text-sm mb-3">
-                    {method.secondary}
-                  </p>
-                )}
-                <p className="font-inter text-gray-500 text-sm">
-                  {method.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Main Contact Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            
-            {/* Contact Form */}
-            <div className="bg-secondary rounded-2xl p-8">
-              <h2 className="font-poppins font-bold text-2xl text-primary mb-6">
-                Depo Devis Gratis
-              </h2>
-              <p className="font-inter text-gray-600 mb-8">
-                Ranpli fòm sa a ak nou pral kominike ak ou nan mwens pase 24 èdtan ak yon devis detaye.
-              </p>
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Personal Information */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="name" className="block font-inter font-medium text-primary mb-2">
-                      Non Konplè *
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                      placeholder="Antre non ou..."
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="phone" className="block font-inter font-medium text-primary mb-2">
-                      Telefòn *
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                      placeholder="+509 ..."
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block font-inter font-medium text-primary mb-2">
-                    Imèl *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                    placeholder="egzanp@email.com"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="projectType" className="block font-inter font-medium text-primary mb-2">
-                      Tip Pwojè *
-                    </label>
-                    <select
-                      id="projectType"
-                      name="projectType"
-                      value={formData.projectType}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                    >
-                      <option value="">Chwazi tip pwojè...</option>
-                      {projectTypes.map((type) => (
-                        <option key={type} value={type}>{type}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="budget" className="block font-inter font-medium text-primary mb-2">
-                      Bidjè Apprèximatif
-                    </label>
-                    <select
-                      id="budget"
-                      name="budget"
-                      value={formData.budget}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                    >
-                      <option value="">Chwazi bidjè...</option>
-                      {budgetRanges.map((range) => (
-                        <option key={range} value={range}>{range}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="timeline" className="block font-inter font-medium text-primary mb-2">
-                    Echeye Yo Prefere
-                  </label>
-                  <select
-                    id="timeline"
-                    name="timeline"
-                    value={formData.timeline}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                  >
-                    <option value="">Chwazi echeye...</option>
-                    {timelineOptions.map((option) => (
-                      <option key={option} value={option}>{option}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block font-inter font-medium text-primary mb-2">
-                    Deskripsyon Pwojè *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={5}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
-                    placeholder="Eksplike pwojè ou a ak detay yo, sètè ou a, ak objètif ou yo..."
-                  ></textarea>
-                </div>
-
-                <div>
-                  <label className="block font-inter font-medium text-primary mb-2">
-                    Kijan ou prefere nou kominike ak ou?
-                  </label>
-                  <div className="flex gap-4">
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="preferredContact"
-                        value="phone"
-                        checked={formData.preferredContact === 'phone'}
-                        onChange={handleChange}
-                        className="mr-2 text-accent focus:ring-accent"
-                      />
-                      <span className="font-inter">Telefòn</span>
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="preferredContact"
-                        value="email"
-                        checked={formData.preferredContact === 'email'}
-                        onChange={handleChange}
-                        className="mr-2 text-accent focus:ring-accent"
-                      />
-                      <span className="font-inter">Imèl</span>
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="preferredContact"
-                        value="whatsapp"
-                        checked={formData.preferredContact === 'whatsapp'}
-                        onChange={handleChange}
-                        className="mr-2 text-accent focus:ring-accent"
-                      />
-                      <span className="font-inter">WhatsApp</span>
-                    </label>
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-accent hover:bg-accent/90 disabled:bg-accent/50 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-2"
-                >
-                  <Send className="w-5 h-5" />
-                  {isSubmitting ? 'Ap voye...' : 'Voye Depo A'}
-                </button>
-              </form>
-
-              <p className="font-inter text-sm text-gray-600 mt-4 text-center">
-                * Nou pral kominike ak ou nan mwens pase 24 èdtan pou diskite pwojè ou a.
-              </p>
-            </div>
-
-            {/* Contact Information & Office Hours */}
-            <div className="space-y-8">
-              {/* Office Hours */}
-              <div className="bg-primary rounded-2xl p-8 text-white">
-                <div className="flex items-center gap-3 mb-6">
-                  <Clock className="w-8 h-8 text-accent" />
-                  <h3 className="font-poppins font-bold text-2xl">
-                    Otè Travay
-                  </h3>
-                </div>
-                <div className="space-y-4">
-                  <div className="py-2 border-b border-white/20">
-                    <p className="font-inter text-gray-200">Lendi - Vandredi: 7:00 AM - 5:00 PM</p>
-                    <p className="font-inter text-gray-200">Samdi: 8:00 AM - 2:00 PM</p>
-                  </div>
-                </div>
-                <div className="mt-6 p-4 bg-white/10 rounded-lg">
-                  <p className="font-inter text-sm text-gray-200">
-                    <strong>Kontak Urgans:</strong> Nan ka urgans sèlman (pwoblèm sekirite, aksidan), 
-                    nou disponib 24/7 nan +509 4762 4431
-                  </p>
-                </div>
-              </div>
-
-              {/* Quick Contact Options */}
-              <div className="bg-green-50 rounded-2xl p-8 border border-green-200">
-                <h3 className="font-poppins font-bold text-xl text-primary mb-4">
-                  Kontè Rapid
-                </h3>
-                <div className="space-y-4">
-                  <button 
-                    onClick={handleWhatsAppClick}
-                    className="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3"
-                  >
-                    <MessageCircle className="w-6 h-6" />
-                    WhatsApp Nou
-                  </button>
-                  <button 
-                    onClick={handleCallClick}
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3"
-                  >
-                    <Phone className="w-6 h-6" />
-                    Rele Nou Kounye A
-                  </button>
-                  <button className="w-full bg-gray-600 hover:bg-gray-700 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3">
-                    <Calendar className="w-6 h-6" />
-                    Rann Randevou
-                  </button>
-                </div>
-              </div>
-
-              {/* Location Map Placeholder */}
-              <div className="bg-gray-200 rounded-2xl h-64 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 font-inter">
-                    Google Map pral ajoute isit la byentò
-                  </p>
-                  <p className="text-gray-500 font-inter text-sm mt-2">
-                    Pòtoprens ak anviwon yo, Ayiti
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 bg-secondary">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="font-poppins font-bold text-3xl text-primary mb-4">
-              Kesyon ki Poze Souvan
-            </h2>
-            <p className="font-inter text-lg text-gray-600">
-              Jwenn reponn ak kesyon ki pi komen yo sou sèvis nou yo.
+      <div className="min-h-screen">
+        <Header />
+        
+        {/* Hero Section */}
+        <section className="pt-24 pb-16 bg-gradient-to-br from-primary to-primary/80">
+          <div className="container mx-auto px-4 text-center text-white">
+            <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-6">
+              Kominike Ak Nou
+            </h1>
+            <p className="font-inter text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
+              Pare pou kòmanse pwojè ou a? Kominike ak nou kònnye a pou konsèltasyon gratis ak devis ki fèt espesyalman pou ou.
             </p>
           </div>
+        </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="bg-white p-6 rounded-xl">
-              <h4 className="font-poppins font-semibold text-lg text-primary mb-3">
-                Konbyen tan li pran pou jwenn yon devis?
-              </h4>
-              <p className="font-inter text-gray-600">
-                Nou bay devis inisyal yo nan 24-48 èdtan. Pou devis detaye yo ak vizit sèt la, 
-                sa ka pran 3-5 jou travay depi nou resevwa tout enfòmasyon yo.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl">
-              <h4 className="font-poppins font-semibold text-lg text-primary mb-3">
-                Èske gen lajan pou konsèltasyon inisyal la?
-              </h4>
-              <p className="font-inter text-gray-600">
-                Non, premye konsèltasyon an ak devis inisyal la gratis nèt. 
-                Nou sèlman chaje lajan pou konsèltasyon detaye yo ak plan espesyal yo.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl">
-              <h4 className="font-poppins font-semibold text-lg text-primary mb-3">
-                Ki kalite garanti nou bay?
-              </h4>
-              <p className="font-inter text-gray-600">
-                Nou bay garanti 5 an sou travay nou yo ak 2 an sou materyèl yo. 
-                Nou gen tou sèvis aprè-vant ak sipo teknik.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl">
-              <h4 className="font-poppins font-semibold text-lg text-primary mb-3">
-                Èske nou travay nan tout Ayiti?
-              </h4>
-              <p className="font-inter text-gray-600">
-                Nou konsantre sou zòn Pòtoprens lan ak anviwon yo, men nou ka diskite 
-                pwojè yo nan lòt depatman yo selon kondisyon yo.
-              </p>
+        {/* Contact Methods */}
+        <section className="py-16 bg-secondary">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {contactMethods.map((method, index) => (
+                <div
+                  key={index}
+                  className="bg-white p-6 rounded-xl text-center hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <method.icon className="w-8 h-8 text-accent" />
+                  </div>
+                  <h3 className="font-poppins font-bold text-lg text-primary mb-2">
+                    {method.title}
+                  </h3>
+                  <p className="font-inter font-semibold text-gray-800 mb-1">
+                    {method.primary}
+                  </p>
+                  {method.secondary && (
+                    <p className="font-inter text-gray-600 text-sm mb-3">
+                      {method.secondary}
+                    </p>
+                  )}
+                  <p className="font-inter text-gray-500 text-sm">
+                    {method.description}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <Footer />
-    </div>
+        {/* Main Contact Section */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              
+              {/* Contact Form */}
+              <div className="bg-secondary rounded-2xl p-8">
+                <h2 className="font-poppins font-bold text-2xl text-primary mb-6">
+                  Depo Devis Gratis
+                </h2>
+                <p className="font-inter text-gray-600 mb-8">
+                  Ranpli fòm sa a ak nou pral kominike ak ou nan mwens pase 24 èdtan ak yon devis detaye.
+                </p>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Personal Information */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="name" className="block font-inter font-medium text-primary mb-2">
+                        Non Konplè *
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
+                        placeholder="Antre non ou..."
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="phone" className="block font-inter font-medium text-primary mb-2">
+                        Telefòn *
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
+                        placeholder="+509 ..."
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block font-inter font-medium text-primary mb-2">
+                      Imèl *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
+                      placeholder="egzanp@email.com"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="projectType" className="block font-inter font-medium text-primary mb-2">
+                        Tip Pwojè *
+                      </label>
+                      <select
+                        id="projectType"
+                        name="projectType"
+                        value={formData.projectType}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
+                      >
+                        <option value="">Chwazi tip pwojè...</option>
+                        {projectTypes.map((type) => (
+                          <option key={type} value={type}>{type}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="budget" className="block font-inter font-medium text-primary mb-2">
+                        Bidjè Apprèximatif
+                      </label>
+                      <select
+                        id="budget"
+                        name="budget"
+                        value={formData.budget}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
+                      >
+                        <option value="">Chwazi bidjè...</option>
+                        {budgetRanges.map((range) => (
+                          <option key={range} value={range}>{range}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="timeline" className="block font-inter font-medium text-primary mb-2">
+                      Echeye Yo Prefere
+                    </label>
+                    <select
+                      id="timeline"
+                      name="timeline"
+                      value={formData.timeline}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
+                    >
+                      <option value="">Chwazi echeye...</option>
+                      {timelineOptions.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block font-inter font-medium text-primary mb-2">
+                      Deskripsyon Pwojè *
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                      rows={5}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
+                      placeholder="Eksplike pwojè ou a ak detay yo, sètè ou a, ak objètif ou yo..."
+                    ></textarea>
+                  </div>
+
+                  <div>
+                    <label className="block font-inter font-medium text-primary mb-2">
+                      Kijan ou prefere nou kominike ak ou?
+                    </label>
+                    <div className="flex gap-4">
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="preferredContact"
+                          value="phone"
+                          checked={formData.preferredContact === 'phone'}
+                          onChange={handleChange}
+                          className="mr-2 text-accent focus:ring-accent"
+                        />
+                        <span className="font-inter">Telefòn</span>
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="preferredContact"
+                          value="email"
+                          checked={formData.preferredContact === 'email'}
+                          onChange={handleChange}
+                          className="mr-2 text-accent focus:ring-accent"
+                        />
+                        <span className="font-inter">Imèl</span>
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="preferredContact"
+                          value="whatsapp"
+                          checked={formData.preferredContact === 'whatsapp'}
+                          onChange={handleChange}
+                          className="mr-2 text-accent focus:ring-accent"
+                        />
+                        <span className="font-inter">WhatsApp</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-accent hover:bg-accent/90 disabled:bg-accent/50 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-2"
+                  >
+                    <Send className="w-5 h-5" />
+                    {isSubmitting ? 'Ap voye...' : 'Voye Depo A'}
+                  </button>
+                </form>
+
+                <p className="font-inter text-sm text-gray-600 mt-4 text-center">
+                  * Nou pral kominike ak ou nan mwens pase 24 èdtan pou diskite pwojè ou a.
+                </p>
+              </div>
+
+              {/* Contact Information & Office Hours */}
+              <div className="space-y-8">
+                {/* Office Hours */}
+                <div className="bg-primary rounded-2xl p-8 text-white">
+                  <div className="flex items-center gap-3 mb-6">
+                    <Clock className="w-8 h-8 text-accent" />
+                    <h3 className="font-poppins font-bold text-2xl">
+                      Otè Travay
+                    </h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="py-2 border-b border-white/20">
+                      <p className="font-inter text-gray-200">Lendi - Vandredi: 7:00 AM - 5:00 PM</p>
+                      <p className="font-inter text-gray-200">Samdi: 8:00 AM - 2:00 PM</p>
+                    </div>
+                  </div>
+                  <div className="mt-6 p-4 bg-white/10 rounded-lg">
+                    <p className="font-inter text-sm text-gray-200">
+                      <strong>Kontak Urgans:</strong> Nan ka urgans sèlman (pwoblèm sekirite, aksidan), 
+                      nou disponib 24/7 nan +509 4762 4431
+                    </p>
+                  </div>
+                </div>
+
+                {/* Quick Contact Options */}
+                <div className="bg-green-50 rounded-2xl p-8 border border-green-200">
+                  <h3 className="font-poppins font-bold text-xl text-primary mb-4">
+                    Kontè Rapid
+                  </h3>
+                  <div className="space-y-4">
+                    <button 
+                      onClick={handleWhatsAppClick}
+                      className="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3"
+                    >
+                      <MessageCircle className="w-6 h-6" />
+                      WhatsApp Nou
+                    </button>
+                    <button 
+                      onClick={handleCallClick}
+                      className="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3"
+                    >
+                      <Phone className="w-6 h-6" />
+                      Rele Nou Kounye A
+                    </button>
+                    <button className="w-full bg-gray-600 hover:bg-gray-700 text-white px-6 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 flex items-center justify-center gap-3">
+                      <Calendar className="w-6 h-6" />
+                      Rann Randevou
+                    </button>
+                  </div>
+                </div>
+
+                {/* Location Map Placeholder */}
+                <div className="bg-gray-200 rounded-2xl h-64 flex items-center justify-center">
+                  <div className="text-center">
+                    <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600 font-inter">
+                      Google Map pral ajoute isit la byentò
+                    </p>
+                    <p className="text-gray-500 font-inter text-sm mt-2">
+                      Pòtoprens ak anviwon yo, Ayiti
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-16 bg-secondary">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="font-poppins font-bold text-3xl text-primary mb-4">
+                Kesyon ki Poze Souvan
+              </h2>
+              <p className="font-inter text-lg text-gray-600">
+                Jwenn reponn ak kesyon ki pi komen yo sou sèvis nou yo.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <div className="bg-white p-6 rounded-xl">
+                <h4 className="font-poppins font-semibold text-lg text-primary mb-3">
+                  Konbyen tan li pran pou jwenn yon devis?
+                </h4>
+                <p className="font-inter text-gray-600">
+                  Nou bay devis inisyal yo nan 24-48 èdtan. Pou devis detaye yo ak vizit sèt la, 
+                  sa ka pran 3-5 jou travay depi nou resevwa tout enfòmasyon yo.
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl">
+                <h4 className="font-poppins font-semibold text-lg text-primary mb-3">
+                  Èske gen lajan pou konsèltasyon inisyal la?
+                </h4>
+                <p className="font-inter text-gray-600">
+                  Non, premye konsèltasyon an ak devis inisyal la gratis nèt. 
+                  Nou sèlman chaje lajan pou konsèltasyon detaye yo ak plan espesyal yo.
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl">
+                <h4 className="font-poppins font-semibold text-lg text-primary mb-3">
+                  Ki kalite garanti nou bay?
+                </h4>
+                <p className="font-inter text-gray-600">
+                  Nou bay garanti 5 an sou travay nou yo ak 2 an sou materyèl yo. 
+                  Nou gen tou sèvis aprè-vant ak sipo teknik.
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl">
+                <h4 className="font-poppins font-semibold text-lg text-primary mb-3">
+                  Èske nou travay nan tout Ayiti?
+                </h4>
+                <p className="font-inter text-gray-600">
+                  Nou konsantre sou zòn Pòtoprens lan ak anviwon yo, men nou ka diskite 
+                  pwojè yo nan lòt depatman yo selon kondisyon yo.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </div>
+    </>
   );
 };
 
