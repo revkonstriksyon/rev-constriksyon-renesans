@@ -1,11 +1,11 @@
 
-import { ArrowRight, Calendar, MapPin } from 'lucide-react';
+import { ArrowRight, Calendar, MapPin, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useProjects } from '@/hooks/useProjects';
+import { useFeaturedProjects } from '@/hooks/useProjects';
 import { useStaticContent } from '@/hooks/useStaticContent';
 
 const Projects = () => {
-  const { projects, isLoading } = useProjects();
+  const { projects, isLoading } = useFeaturedProjects();
   const { content } = useStaticContent();
 
   if (isLoading) {
@@ -32,7 +32,7 @@ const Projects = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.slice(0, 3).map((project) => (
+          {projects.map((project) => (
             <div
               key={project.id}
               className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group"
@@ -62,6 +62,12 @@ const Projects = () => {
                       </div>
                     </div>
                   </div>
+                ) : project.images.length > 0 ? (
+                  <img
+                    src={project.images[0]}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
                 ) : (
                   <img
                     src={project.image_url || 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}
@@ -69,11 +75,24 @@ const Projects = () => {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 )}
-                {project.before_image_url && project.after_image_url && (
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                    <div className="w-3 h-3 border-r-2 border-t-2 border-primary transform rotate-45"></div>
+                
+                {/* Video indicator */}
+                {project.video_url && (
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-black/50 rounded-full flex items-center justify-center">
+                    <Play className="w-6 h-6 text-white ml-1" />
                   </div>
                 )}
+
+                {/* Project type badge */}
+                <div className="absolute top-4 left-4">
+                  <span className={`px-3 py-1 rounded-full text-sm font-inter font-medium ${
+                    project.project_type === 'reyalize' 
+                      ? 'bg-green-500 text-white' 
+                      : 'bg-blue-500 text-white'
+                  }`}>
+                    {project.project_type === 'reyalize' ? 'Reyalize' : 'Konsèp'}
+                  </span>
+                </div>
               </div>
 
               {/* Content */}
@@ -93,6 +112,17 @@ const Projects = () => {
                 <p className="font-inter text-gray-600 mb-4 line-clamp-3">
                   {project.description}
                 </p>
+
+                {/* Tags */}
+                {project.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tags.slice(0, 3).map((tag, index) => (
+                      <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-inter">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
 
                 <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
                   {project.location && (

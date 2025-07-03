@@ -15,6 +15,12 @@ interface Project {
   date: string;
   category: string | null;
   published: boolean;
+  project_type: 'reyalize' | 'konsèp';
+  slug: string | null;
+  images: string[] | null;
+  video_url: string | null;
+  tags: string[] | null;
+  featured: boolean | null;
   // Multilang fields
   title_ht?: string;
   title_fr?: string;
@@ -41,9 +47,15 @@ export interface TranslatedProject {
   date: string;
   category: string | null;
   published: boolean;
+  project_type: 'reyalize' | 'konsèp';
+  slug: string | null;
+  images: string[];
+  video_url: string | null;
+  tags: string[];
+  featured: boolean;
 }
 
-export const useProjects = () => {
+export const useProjects = (projectType?: 'reyalize' | 'konsèp' | 'all') => {
   const [projects, setProjects] = useState<TranslatedProject[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { currentLanguage } = useLanguage();
@@ -60,16 +72,27 @@ export const useProjects = () => {
     date: project.date,
     category: getTranslatedContent(project, 'category', currentLanguage, project.category || ''),
     published: project.published,
+    project_type: project.project_type,
+    slug: project.slug,
+    images: project.images || [],
+    video_url: project.video_url,
+    tags: project.tags || [],
+    featured: project.featured || false,
   });
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const { data, error } = await supabase
+        let query = supabase
           .from('projects')
           .select('*')
-          .eq('published', true)
-          .order('created_at', { ascending: false });
+          .eq('published', true);
+
+        if (projectType && projectType !== 'all') {
+          query = query.eq('project_type', projectType);
+        }
+
+        const { data, error } = await query.order('created_at', { ascending: false });
 
         if (error) throw error;
         const translatedProjects = (data || []).map(translateProject);
@@ -102,6 +125,68 @@ export const useProjects = () => {
     return () => {
       supabase.removeChannel(channel);
     };
+  }, [currentLanguage, projectType]);
+
+  return { projects, isLoading };
+};
+
+// Hook for getting featured projects (for homepage)
+export const useFeaturedProjects = () => {
+  const [projects, setProjects] = useState<TranslatedProject[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { currentLanguage } = useLanguage();
+
+  const translateProject = (project: Project): TranslatedProject => ({
+    id: project.id,
+    title: getTranslatedContent(project, 'title', currentLanguage, project.title),
+    description: getTranslatedContent(project, 'description', currentLanguage, project.description),
+    image_url: project.image_url,
+    before_image_url: project.before_image_url,
+    after_image_url: project.after_image_url,
+    location: getTranslatedContent(project, 'location', currentLanguage, project.location || ''),
+    date: project.date,
+    category: getTranslatedContent(project, 'category', currentLanguage, project.category || ''),
+    published: project.published,
+    project_type: project.project_type,
+    slug: project.slug,
+    images: project.images || [],
+    video_url: project.video_url,
+    tags: project.tags || [],
+    featured: project.featured || false,
+  });
+
+  useEffect(() => {
+    const fetchFeaturedProjects = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .eq('published', true)
+          .eq('featured', true)
+          .order('created_at', { ascending: false })
+          .limit(3);
+
+        if (error) throw error;
+        const translatedProjects = (data || []).map(translateProject);
+        setProjects(translatedProjects);
+      } catch (error) {
+        console.error('Error fetching featured projects:', error);
+        // Fallback to latest projects if no featured projects
+        const { data } = await supabase
+          .from('projects')
+          .select('*')
+          .eq('published', true)
+          .order('created_at', { ascending: false })
+          .limit(3);
+        
+        const translatedProjects = (data || []).map(translateProject);
+        setProjects(translatedProjects);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFeaturedProjects();
   }, [currentLanguage]);
 
   return { projects, isLoading };

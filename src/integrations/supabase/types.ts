@@ -131,15 +131,24 @@ export type Database = {
           description_en: string | null
           description_fr: string | null
           description_ht: string | null
+          featured: boolean | null
           id: string
           image_url: string | null
+          images: string[] | null
           location: string | null
+          location_en: string | null
+          location_fr: string | null
+          location_ht: string | null
+          project_type: string | null
           published: boolean
+          slug: string | null
+          tags: string[] | null
           title: string
           title_en: string | null
           title_fr: string | null
           title_ht: string | null
           updated_at: string
+          video_url: string | null
         }
         Insert: {
           after_image_url?: string | null
@@ -154,15 +163,24 @@ export type Database = {
           description_en?: string | null
           description_fr?: string | null
           description_ht?: string | null
+          featured?: boolean | null
           id?: string
           image_url?: string | null
+          images?: string[] | null
           location?: string | null
+          location_en?: string | null
+          location_fr?: string | null
+          location_ht?: string | null
+          project_type?: string | null
           published?: boolean
+          slug?: string | null
+          tags?: string[] | null
           title: string
           title_en?: string | null
           title_fr?: string | null
           title_ht?: string | null
           updated_at?: string
+          video_url?: string | null
         }
         Update: {
           after_image_url?: string | null
@@ -177,15 +195,24 @@ export type Database = {
           description_en?: string | null
           description_fr?: string | null
           description_ht?: string | null
+          featured?: boolean | null
           id?: string
           image_url?: string | null
+          images?: string[] | null
           location?: string | null
+          location_en?: string | null
+          location_fr?: string | null
+          location_ht?: string | null
+          project_type?: string | null
           published?: boolean
+          slug?: string | null
+          tags?: string[] | null
           title?: string
           title_en?: string | null
           title_fr?: string | null
           title_ht?: string | null
           updated_at?: string
+          video_url?: string | null
         }
         Relationships: []
       }

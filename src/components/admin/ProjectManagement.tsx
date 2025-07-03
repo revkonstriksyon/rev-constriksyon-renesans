@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Edit, Trash2, Save, X } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Plus, Edit, Trash2, Save, X, Image, Video } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Project {
@@ -21,6 +22,12 @@ interface Project {
   date: string;
   category: string | null;
   published: boolean;
+  project_type: 'reyalize' | 'konsèp';
+  slug: string | null;
+  images: string[] | null;
+  video_url: string | null;
+  tags: string[] | null;
+  featured: boolean | null;
   created_at: string;
 }
 
@@ -40,6 +47,12 @@ const ProjectManagement = () => {
     location: '',
     date: new Date().getFullYear().toString(),
     category: '',
+    project_type: 'reyalize' as 'reyalize' | 'konsèp',
+    slug: '',
+    images: [''],
+    video_url: '',
+    tags: [''],
+    featured: false,
   });
 
   useEffect(() => {
@@ -68,13 +81,17 @@ const ProjectManagement = () => {
 
   const handleSave = async () => {
     try {
+      const projectData = {
+        ...formData,
+        images: formData.images.filter(img => img.trim() !== ''),
+        tags: formData.tags.filter(tag => tag.trim() !== ''),
+        updated_at: new Date().toISOString(),
+      };
+
       if (editingProject) {
         const { error } = await supabase
           .from('projects')
-          .update({
-            ...formData,
-            updated_at: new Date().toISOString(),
-          })
+          .update(projectData)
           .eq('id', editingProject.id);
 
         if (error) throw error;
@@ -83,7 +100,7 @@ const ProjectManagement = () => {
         const { error } = await supabase
           .from('projects')
           .insert([{
-            ...formData,
+            ...projectData,
             published: true,
           }]);
 
@@ -112,6 +129,27 @@ const ProjectManagement = () => {
       if (error) throw error;
       toast({
         title: !published ? 'Pwojè pibliye!' : 'Pwojè pa pibliye ankò!',
+      });
+      fetchProjects();
+    } catch (error: any) {
+      toast({
+        title: 'Erè',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleToggleFeatured = async (id: string, featured: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('projects')
+        .update({ featured: !featured })
+        .eq('id', id);
+
+      if (error) throw error;
+      toast({
+        title: !featured ? 'Pwojè mete kòm featured!' : 'Pwojè pa featured ankò!',
       });
       fetchProjects();
     } catch (error: any) {
@@ -155,6 +193,12 @@ const ProjectManagement = () => {
       location: project.location || '',
       date: project.date,
       category: project.category || '',
+      project_type: project.project_type,
+      slug: project.slug || '',
+      images: project.images && project.images.length > 0 ? project.images : [''],
+      video_url: project.video_url || '',
+      tags: project.tags && project.tags.length > 0 ? project.tags : [''],
+      featured: project.featured || false,
     });
     setIsCreating(true);
   };
@@ -171,7 +215,43 @@ const ProjectManagement = () => {
       location: '',
       date: new Date().getFullYear().toString(),
       category: '',
+      project_type: 'reyalize',
+      slug: '',
+      images: [''],
+      video_url: '',
+      tags: [''],
+      featured: false,
     });
+  };
+
+  const addImageField = () => {
+    setFormData({ ...formData, images: [...formData.images, ''] });
+  };
+
+  const updateImage = (index: number, value: string) => {
+    const newImages = [...formData.images];
+    newImages[index] = value;
+    setFormData({ ...formData, images: newImages });
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = formData.images.filter((_, i) => i !== index);
+    setFormData({ ...formData, images: newImages.length > 0 ? newImages : [''] });
+  };
+
+  const addTagField = () => {
+    setFormData({ ...formData, tags: [...formData.tags, ''] });
+  };
+
+  const updateTag = (index: number, value: string) => {
+    const newTags = [...formData.tags];
+    newTags[index] = value;
+    setFormData({ ...formData, tags: newTags });
+  };
+
+  const removeTag = (index: number) => {
+    const newTags = formData.tags.filter((_, i) => i !== index);
+    setFormData({ ...formData, tags: newTags.length > 0 ? newTags : [''] });
   };
 
   if (isLoading) {
@@ -196,7 +276,8 @@ const ProjectManagement = () => {
               {editingProject ? 'Modifye Pwojè' : 'Nouvo Pwojè'}
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
+            {/* Basic Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="title">Tit Pwojè</Label>
@@ -206,6 +287,30 @@ const ProjectManagement = () => {
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="Tit pwojè a"
                 />
+              </div>
+              <div>
+                <Label htmlFor="slug">Slug (URL)</Label>
+                <Input
+                  id="slug"
+                  value={formData.slug}
+                  onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                  placeholder="pwoje-kay-modern (optional - ap kreye otomatikman)"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="project_type">Tip Pwojè</Label>
+                <Select value={formData.project_type} onValueChange={(value: 'reyalize' | 'konsèp') => setFormData({ ...formData, project_type: value })}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Chwazi tip" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="reyalize">Reyalize</SelectItem>
+                    <SelectItem value="konsèp">Konsèp</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <Label htmlFor="category">Kategori</Label>
@@ -222,6 +327,14 @@ const ProjectManagement = () => {
                     <SelectItem value="Commercial">Commercial</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="featured"
+                  checked={formData.featured}
+                  onCheckedChange={(checked) => setFormData({ ...formData, featured: checked })}
+                />
+                <Label htmlFor="featured">Featured (parèt sou paj akey la)</Label>
               </div>
             </div>
 
@@ -245,38 +358,113 @@ const ProjectManagement = () => {
                 />
               </div>
             </div>
-            
+
+            {/* Images Section */}
+            <div className="space-y-4">
+              <h3 className="font-semibold flex items-center gap-2">
+                <Image className="w-4 h-4" />
+                Imaj yo
+              </h3>
+              
+              {/* Single main image */}
+              <div>
+                <Label htmlFor="image_url">URL Imaj Prensipal</Label>
+                <Input
+                  id="image_url"
+                  value={formData.image_url}
+                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                  placeholder="https://..."
+                />
+              </div>
+
+              {/* Before/After images */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="before_image_url">URL Imaj Avan</Label>
+                  <Input
+                    id="before_image_url"
+                    value={formData.before_image_url}
+                    onChange={(e) => setFormData({ ...formData, before_image_url: e.target.value })}
+                    placeholder="https://..."
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="after_image_url">URL Imaj Apre</Label>
+                  <Input
+                    id="after_image_url"
+                    value={formData.after_image_url}
+                    onChange={(e) => setFormData({ ...formData, after_image_url: e.target.value })}
+                    placeholder="https://..."
+                  />
+                </div>
+              </div>
+
+              {/* Gallery images */}
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <Label>Galri Imaj</Label>
+                  <Button type="button" variant="outline" size="sm" onClick={addImageField}>
+                    <Plus className="w-4 h-4 mr-1" />
+                    Ajoute Imaj
+                  </Button>
+                </div>
+                {formData.images.map((image, index) => (
+                  <div key={index} className="flex gap-2 mb-2">
+                    <Input
+                      value={image}
+                      onChange={(e) => updateImage(index, e.target.value)}
+                      placeholder="https://..."
+                    />
+                    {formData.images.length > 1 && (
+                      <Button type="button" variant="outline" size="sm" onClick={() => removeImage(index)}>
+                        <X className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Video Section */}
             <div>
-              <Label htmlFor="image_url">URL Imaj Prensipal</Label>
+              <Label htmlFor="video_url" className="flex items-center gap-2">
+                <Video className="w-4 h-4" />
+                URL Videyo (opsyonèl)
+              </Label>
               <Input
-                id="image_url"
-                value={formData.image_url}
-                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                placeholder="https://..."
+                id="video_url"
+                value={formData.video_url}
+                onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
+                placeholder="https://youtube.com/... oswa https://vimeo.com/..."
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="before_image_url">URL Imaj Avan</Label>
-                <Input
-                  id="before_image_url"
-                  value={formData.before_image_url}
-                  onChange={(e) => setFormData({ ...formData, before_image_url: e.target.value })}
-                  placeholder="https://..."
-                />
+            {/* Tags Section */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <Label>Tags</Label>
+                <Button type="button" variant="outline" size="sm" onClick={addTagField}>
+                  <Plus className="w-4 h-4 mr-1" />
+                  Ajoute Tag
+                </Button>
               </div>
-              <div>
-                <Label htmlFor="after_image_url">URL Imaj Apre</Label>
-                <Input
-                  id="after_image_url"
-                  value={formData.after_image_url}
-                  onChange={(e) => setFormData({ ...formData, after_image_url: e.target.value })}
-                  placeholder="https://..."
-                />
-              </div>
+              {formData.tags.map((tag, index) => (
+                <div key={index} className="flex gap-2 mb-2">
+                  <Input
+                    value={tag}
+                    onChange={(e) => updateTag(index, e.target.value)}
+                    placeholder="modern, pisin, depo, etc."
+                  />
+                  {formData.tags.length > 1 && (
+                    <Button type="button" variant="outline" size="sm" onClick={() => removeTag(index)}>
+                      <X className="w-4 h-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
             </div>
 
+            {/* Description */}
             <div>
               <Label htmlFor="description">Deskripsyon</Label>
               <Textarea
@@ -318,15 +506,50 @@ const ProjectManagement = () => {
                     }`}>
                       {project.published ? 'Pibliye' : 'Kache'}
                     </span>
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      project.project_type === 'reyalize'
+                        ? 'bg-blue-100 text-blue-800'
+                        : 'bg-purple-100 text-purple-800'
+                    }`}>
+                      {project.project_type === 'reyalize' ? 'Reyalize' : 'Konsèp'}
+                    </span>
+                    {project.featured && (
+                      <span className="px-2 py-1 rounded-full text-xs bg-orange-100 text-orange-800">
+                        Featured
+                      </span>
+                    )}
                   </div>
-                  <p className="text-gray-600 text-sm mb-2">{project.description}</p>
-                  <div className="flex gap-4 text-sm text-gray-500">
+                  <p className="text-gray-600 text-sm mb-2 line-clamp-2">{project.description}</p>
+                  <div className="flex gap-4 text-sm text-gray-500 mb-2">
                     <span>{project.category}</span>
                     <span>{project.location}</span>
                     <span>{project.date}</span>
                   </div>
+                  {project.tags && project.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-2">
+                      {project.tags.slice(0, 5).map((tag, index) => (
+                        <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
+                          {tag}
+                        </span>
+                      ))}
+                      {project.tags.length > 5 && (
+                        <span className="text-gray-400 text-xs">+{project.tags.length - 5}</span>
+                      )}
+                    </div>
+                  )}
+                  <div className="flex gap-2 text-xs text-gray-400">
+                    {project.images && project.images.length > 0 && <span>{project.images.length} imaj</span>}
+                    {project.video_url && <span>Gen videyo</span>}
+                  </div>
                 </div>
                 <div className="flex gap-2 ml-4">
+                  <Button
+                    size="sm"
+                    variant={project.featured ? "default" : "outline"}
+                    onClick={() => handleToggleFeatured(project.id, project.featured || false)}
+                  >
+                    {project.featured ? 'Featured' : 'Featured?'}
+                  </Button>
                   <Button
                     size="sm"
                     variant={project.published ? "destructive" : "default"}

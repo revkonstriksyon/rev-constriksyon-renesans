@@ -1,21 +1,23 @@
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEOManager from '@/components/SEO/SEOManager';
 import { OrganizationStructuredData } from '@/components/SEO/StructuredData';
 import { Link } from 'react-router-dom';
-import { Calendar, MapPin, ArrowRight, Eye } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, Eye, Play, Filter } from 'lucide-react';
 import { useState } from 'react';
 import { useProjects } from '@/hooks/useProjects';
 import { useStaticContent } from '@/hooks/useStaticContent';
 
 const ProjectsPage = () => {
+  const [selectedType, setSelectedType] = useState<'all' | 'reyalize' | 'konsèp'>('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const { projects, isLoading } = useProjects();
+  const { projects, isLoading } = useProjects(selectedType);
   const { content } = useStaticContent();
 
   // Get unique categories from projects
   const categories = [
-    { id: 'all', label: 'Tout Pwojè' },
+    { id: 'all', label: 'Tout Kategori' },
     ...Array.from(new Set(projects.map(project => project.category).filter(Boolean))).map(cat => ({
       id: cat,
       label: cat
@@ -68,28 +70,66 @@ const ProjectsPage = () => {
               Pwojè Rev Konstriksyon
             </h1>
             <p className="font-inter text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
-              Dekouvri kèk nan pwojè nou yo ki pi rekonèt, ki montre ekspètiz nou an ak kalite travay nou an nan divès domèn konstriksyon.
+              Dekouvri pwojè nou yo ki reyalize ak ide konsèp nou genyen. Nan plan achitekti ak renovasyon konplè.
             </p>
           </div>
         </section>
 
-        {/* Filter Categories */}
+        {/* Filter Section */}
         <section className="py-12 bg-secondary">
           <div className="container mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-4">
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`px-6 py-3 rounded-lg font-inter font-medium transition-all duration-300 ${
-                    selectedCategory === category.id
-                      ? 'bg-accent text-white shadow-lg'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-md'
-                  }`}
-                >
-                  {category.label}
-                </button>
-              ))}
+            <div className="flex items-center gap-2 mb-6">
+              <Filter className="w-5 h-5 text-primary" />
+              <h3 className="font-poppins font-semibold text-lg text-primary">Filtè Pwojè Yo</h3>
+            </div>
+            
+            {/* Project Type Filter */}
+            <div className="mb-6">
+              <h4 className="font-inter font-medium text-gray-700 mb-3">Tip Pwojè</h4>
+              <div className="flex flex-wrap gap-4">
+                {[
+                  { id: 'all', label: 'Tout Pwojè', count: projects.length },
+                  { id: 'reyalize', label: 'Pwojè Reyalize', count: projects.filter(p => p.project_type === 'reyalize').length },
+                  { id: 'konsèp', label: 'Pwojè Konsèp', count: projects.filter(p => p.project_type === 'konsèp').length }
+                ].map((type) => (
+                  <button
+                    key={type.id}
+                    onClick={() => setSelectedType(type.id as 'all' | 'reyalize' | 'konsèp')}
+                    className={`px-6 py-3 rounded-lg font-inter font-medium transition-all duration-300 flex items-center gap-2 ${
+                      selectedType === type.id
+                        ? 'bg-primary text-white shadow-lg'
+                        : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-md'
+                    }`}
+                  >
+                    {type.label}
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      selectedType === type.id ? 'bg-white/20' : 'bg-gray-200'
+                    }`}>
+                      {type.count}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Category Filter */}
+            <div>
+              <h4 className="font-inter font-medium text-gray-700 mb-3">Kategori</h4>
+              <div className="flex flex-wrap gap-4">
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`px-6 py-3 rounded-lg font-inter font-medium transition-all duration-300 ${
+                      selectedCategory === category.id
+                        ? 'bg-accent text-white shadow-lg'
+                        : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-md'
+                    }`}
+                  >
+                    {category.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -133,6 +173,12 @@ const ProjectsPage = () => {
                             </div>
                           </div>
                         </div>
+                      ) : project.images.length > 0 ? (
+                        <img
+                          src={project.images[0]}
+                          alt={project.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
                       ) : (
                         <img
                           src={project.image_url || 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}
@@ -140,11 +186,24 @@ const ProjectsPage = () => {
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                       )}
-                      {project.before_image_url && project.after_image_url && (
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                          <Eye className="w-5 h-5 text-primary" />
+                      
+                      {/* Video indicator */}
+                      {project.video_url && (
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-black/50 rounded-full flex items-center justify-center">
+                          <Play className="w-6 h-6 text-white ml-1" />
                         </div>
                       )}
+
+                      {/* Project type badge */}
+                      <div className="absolute top-4 left-4">
+                        <span className={`px-3 py-1 rounded-full text-sm font-inter font-medium ${
+                          project.project_type === 'reyalize' 
+                            ? 'bg-green-500 text-white' 
+                            : 'bg-blue-500 text-white'
+                        }`}>
+                          {project.project_type === 'reyalize' ? 'Reyalize' : 'Konsèp'}
+                        </span>
+                      </div>
                     </div>
 
                     {/* Content */}
@@ -164,6 +223,20 @@ const ProjectsPage = () => {
                       <p className="font-inter text-gray-600 mb-4 line-clamp-3">
                         {project.description}
                       </p>
+
+                      {/* Tags */}
+                      {project.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {project.tags.slice(0, 3).map((tag, index) => (
+                            <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-inter">
+                              {tag}
+                            </span>
+                          ))}
+                          {project.tags.length > 3 && (
+                            <span className="text-gray-400 text-xs font-inter">+{project.tags.length - 3} pi</span>
+                          )}
+                        </div>
+                      )}
 
                       <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
                         {project.location && (
