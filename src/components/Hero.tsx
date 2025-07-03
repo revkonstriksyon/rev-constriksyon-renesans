@@ -1,5 +1,5 @@
 
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Phone, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useStaticContent } from '@/hooks/useStaticContent';
 
@@ -7,59 +7,56 @@ const Hero = () => {
   const { content } = useStaticContent();
 
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center bg-gradient-to-br from-primary via-gray-900 to-black overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')`,
-        }}
-      >
-        <div className="absolute inset-0 bg-black/75"></div>
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] bg-repeat"></div>
       </div>
-
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 text-center text-white">
-        <div className="max-w-4xl mx-auto animate-fade-in">
-          <h1 className="font-poppins font-bold text-4xl md:text-6xl lg:text-7xl leading-tight mb-6">
-            Rev Konstriksyon
+      
+      <div className="container mx-auto px-4 text-center relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="font-poppins font-bold text-4xl md:text-6xl lg:text-7xl mb-6 leading-tight">
+            {content.hero_title || (
+              <>
+                <span className="block">Firme de Construction</span>
+                <span className="block text-accent">Rev Konstriksyon</span>
+              </>
+            )}
           </h1>
           
-          <p className="font-inter text-lg md:text-xl lg:text-2xl mb-8 text-gray-200 max-w-3xl mx-auto">
-            Nou konstwi rèv ou yo ak ekspètiz, presizyon ak pasyon. Chak pwojè gen pwòp istwa li, chak detay gen valè li.
+          <p className="font-inter text-lg md:text-xl lg:text-2xl mb-8 text-gray-200 max-w-3xl mx-auto leading-relaxed">
+            {content.hero_subtitle || 'Bureau d\'étude ak firme de construction ki gen pi gwo konfyans nan Ayiti. Nou konstwi rèv ou yo ak ekspètiz, presizyon ak pasyon. Plan achitekti, deviz estimatif, renovasyon kay ak siveyans chantye pwofesyonèl.'}
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link
               to="/contact"
-              className="bg-accent hover:bg-black hover:border-accent border-2 border-accent text-white px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
+              className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-colors duration-300 flex items-center justify-center gap-2 shadow-lg"
+              aria-label="Jwenn deviz gratis pou pwojè konstriksyon ou"
             >
-              Kòmanse Pwojè Ou A
+              Jwenn Deviz Gratis
               <ArrowRight className="w-5 h-5" />
             </Link>
             
-            <Link
-              to="/projects"
-              className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-all duration-300 flex items-center gap-2"
+            <a
+              href="tel:+50947624431"
+              className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-colors duration-300 flex items-center justify-center gap-2"
+              aria-label="Rele nou kounye a pou konsèltasyon"
             >
-              <Play className="w-5 h-5" />
-              Gade Travay Nou Yo
-            </Link>
+              <Phone className="w-5 h-5" />
+              Rele Nou Kounye A
+            </a>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-            <div className="text-center">
-              <div className="font-poppins font-bold text-3xl md:text-4xl text-accent mb-2">Kalite</div>
-              <div className="font-inter text-gray-200">Nan Chak Detay</div>
+          {/* Contact Info */}
+          <div className="flex flex-col md:flex-row gap-6 justify-center items-center text-gray-300">
+            <div className="flex items-center gap-2">
+              <Phone className="w-5 h-5 text-accent" />
+              <span className="font-inter">+509 4762-4431</span>
             </div>
-            <div className="text-center">
-              <div className="font-poppins font-bold text-3xl md:text-4xl text-accent mb-2">Pasyon</div>
-              <div className="font-inter text-gray-200">Nan Chak Pwojè</div>
-            </div>
-            <div className="text-center">
-              <div className="font-poppins font-bold text-3xl md:text-4xl text-accent mb-2">Ekspètiz</div>
-              <div className="font-inter text-gray-200">Ki Depase Limite</div>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-accent" />
+              <span className="font-inter">Pòtoprens, Ayiti</span>
             </div>
           </div>
         </div>
@@ -67,8 +64,8 @@ const Hero = () => {
 
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
+        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
     </section>

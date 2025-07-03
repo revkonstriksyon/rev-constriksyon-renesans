@@ -1,3 +1,4 @@
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Newsletter from '@/components/Newsletter';
@@ -36,9 +37,9 @@ const BlogPage = () => {
     return (
       <>
         <SEOManager
-          title="Blog Konstriksyon ak Konsèy Renovasyon nan Ayiti"
-          description="Dekouvri konsèy ekspè, nouvo tendans, ak enfòmasyon itil pou pwojè konstriksyon ak renovasyon ou yo nan Ayiti. Blog Rev Konstriksyon ak atik ki ka ede ou."
-          keywords="blog konstriksyon Ayiti, konsèy renovasyon Haiti, atik konstriksyon, tips bati lakay, Rev Konstriksyon blog, enfòmasyon konstriksyon"
+          title="Blog Konstriksyon ak Konsèy Firme de Construction nan Ayiti"
+          description="Dekouvri konsèy ekspè sou konstriksyon ak renovasyon nan Ayiti. Blog Rev Konstriksyon ak atik sou plan achitekti, deviz estimatif, ak nouvo tendans nan domèn konstriksyon ak bureau d'étude."
+          keywords="blog konstriksyon Ayiti, konsèy renovasyon Haiti, atik firme de construction, tips bati lakay, Rev Konstriksyon blog, enfòmasyon bureau d'étude, deviz konstriksyon, plan achitekti Haiti"
           canonicalUrl="https://www.revkonstriksyon.com/blog"
         />
         <div className="min-h-screen">
@@ -56,8 +57,8 @@ const BlogPage = () => {
     return (
       <>
         <SEOManager
-          title="Blog Konstriksyon ak Konsèy Renovasyon nan Ayiti"
-          description="Dekouvri konsèy ekspè, nouvo tendans, ak enfòmasyon itil pou pwojè konstriksyon ak renovasyon ou yo nan Ayiti."
+          title="Blog Konstriksyon ak Konsèy Firme de Construction nan Ayiti"
+          description="Dekouvri konsèy ekspè sou konstriksyon ak renovasyon nan Ayiti."
           keywords="blog konstriksyon Ayiti, konsèy renovasyon Haiti"
           canonicalUrl="https://www.revkonstriksyon.com/blog"
         />
@@ -82,12 +83,12 @@ const BlogPage = () => {
   return (
     <>
       <SEOManager
-        title="Blog Konstriksyon ak Konsèy Renovasyon nan Ayiti"
-        description="Dekouvri konsèy ekspè, nouvo tendans, ak enfòmasyon itil pou pwojè konstriksyon ak renovasyon ou yo nan Ayiti. Blog Rev Konstriksyon ak atik ki ka ede ou."
-        keywords="blog konstriksyon Ayiti, konsèy renovasyon Haiti, atik konstriksyon, tips bati lakay, Rev Konstriksyon blog, enfòmasyon konstriksyon"
+        title="Blog Konstriksyon ak Konsèy Firme de Construction nan Ayiti"
+        description="Dekouvri konsèy ekspè sou konstriksyon ak renovasyon nan Ayiti. Blog Rev Konstriksyon ak atik sou plan achitekti, deviz estimatif, siveyans chantye ak nouvo tendans nan domèn firme de construction ak bureau d'étude."
+        keywords="blog konstriksyon Ayiti, konsèy renovasyon Haiti, atik firme de construction, tips bati lakay, Rev Konstriksyon blog, enfòmasyon bureau d'étude, deviz konstriksyon, plan achitekti Haiti, siveyans chantye, entreprise de bâtiment Haiti"
         canonicalUrl="https://www.revkonstriksyon.com/blog"
-        ogTitle="Blog Rev Konstriksyon - Konsèy ak Enfòmasyon Konstriksyon"
-        ogDescription="Li konsèy ekspè ak atik itil sou konstriksyon ak renovasyon nan Ayiti. Blog Rev Konstriksyon ki ka ede ou nan pwojè ou yo."
+        ogTitle="Blog Rev Konstriksyon - Konsèy ak Enfòmasyon Firme de Construction"
+        ogDescription="Li konsèy ekspè ak atik itil sou konstriksyon ak renovasyon nan Ayiti. Blog firme de construction Rev Konstriksyon ki ka ede ou nan pwojè ou yo."
       />
       <OrganizationStructuredData />
       
@@ -98,10 +99,10 @@ const BlogPage = () => {
         <section className="pt-24 pb-16 bg-gradient-to-br from-primary to-primary/80">
           <div className="container mx-auto px-4 text-center text-white">
             <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-6">
-              {content.blog_section_title || 'Blog Rev Konstriksyon'}
+              {content.blog_section_title || 'Blog Firme de Construction Rev Konstriksyon'}
             </h1>
             <p className="font-inter text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
-              {content.blog_section_subtitle || 'Dekouvri konsèy ekspè, tendans nouvo yo, ak enfòmasyon itil pou pwojè konstriksyon ou yo nan Ayiti.'}
+              {content.blog_section_subtitle || 'Dekouvri konsèy ekspè, tendans nouvo yo, ak enfòmasyon itil sou plan achitekti, deviz estimatif, ak pwojè konstriksyon nan Ayiti. Bureau d\'étude ak firme de construction ki ka ede ou reyalize rèv ou yo.'}
             </p>
           </div>
         </section>
@@ -115,10 +116,11 @@ const BlogPage = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder="Chèche atik..."
+                  placeholder="Chèche atik sou konstriksyon..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
+                  aria-label="Chèche atik blog konstriksyon"
                 />
               </div>
 
@@ -133,6 +135,7 @@ const BlogPage = () => {
                         ? 'bg-accent text-white shadow-lg'
                         : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-md'
                     }`}
+                    aria-label={`Filtre atik pa kategori: ${category.label}`}
                   >
                     <Tag className="w-4 h-4" />
                     {category.label}
@@ -156,8 +159,9 @@ const BlogPage = () => {
                   <div className="relative h-64 lg:h-auto">
                     <img
                       src={filteredBlogs[0].image_url || 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'}
-                      alt={filteredBlogs[0].title}
+                      alt={`${filteredBlogs[0].title} - Rev Konstriksyon firme de construction`}
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                     <div className="absolute top-4 left-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-inter font-medium">
                       {filteredBlogs[0].category}
@@ -189,6 +193,7 @@ const BlogPage = () => {
                     <Link
                       to={`/blog/${filteredBlogs[0].slug}`}
                       className="flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300"
+                      aria-label={`Li atik konplè: ${filteredBlogs[0].title}`}
                     >
                       Li Atik Konplè A
                       <ArrowRight className="w-4 h-4" />
@@ -223,7 +228,7 @@ const BlogPage = () => {
                     <div className="relative h-48 overflow-hidden">
                       <img
                         src={blog.image_url || 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'}
-                        alt={blog.title}
+                        alt={`${blog.title} - Rev Konstriksyon firme de construction`}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         loading="lazy"
                       />
@@ -261,6 +266,7 @@ const BlogPage = () => {
                       <Link
                         to={`/blog/${blog.slug}`}
                         className="flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300"
+                        aria-label={`Li atik: ${blog.title}`}
                       >
                         Li Plis
                         <ArrowRight className="w-4 h-4" />
@@ -278,8 +284,8 @@ const BlogPage = () => {
           <div className="container mx-auto px-4">
             <Newsletter 
               variant="light"
-              title="Abònman Newsletter Nou An"
-              subtitle="Resevwa konsèy ekspè, nouvo atik yo, ak enfòmasyon sou tendans konstriksyon yo nan Ayiti chak semèn."
+              title="Abònman Newsletter Firme de Construction Nou An"
+              subtitle="Resevwa konsèy ekspè, nouvo atik yo, ak enfòmasyon sou tendans konstriksyon ak renovasyon nan Ayiti chak semèn."
             />
           </div>
         </section>

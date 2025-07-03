@@ -60,6 +60,8 @@ const SEOManager = ({
       <meta property="og:image" content={finalOgImage} />
       <meta property="og:site_name" content="Rev Konstriksyon" />
       <meta property="og:locale" content="ht_HT" />
+      <meta property="og:locale:alternate" content="fr_FR" />
+      <meta property="og:locale:alternate" content="en_US" />
       
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
@@ -86,11 +88,16 @@ const SEOManager = ({
       {noIndex && <meta name="robots" content="noindex,nofollow" />}
       
       {/* Additional SEO */}
-      <meta name="author" content="Rev Konstriksyon" />
-      <meta name="language" content="Haitian Creole" />
+      <meta name="author" content="Rev Konstriksyon - Firme de Construction Haiti" />
+      <meta name="language" content="Haitian Creole, French" />
       <meta name="geo.region" content="HT" />
       <meta name="geo.country" content="Haiti" />
-      <meta name="geo.placename" content="Port-au-Prince" />
+      <meta name="geo.placename" content="Port-au-Prince, Haïti" />
+      
+      {/* Hreflang for multilingual SEO */}
+      <link rel="alternate" hrefLang="ht" href={finalCanonicalUrl} />
+      <link rel="alternate" hrefLang="fr" href={finalCanonicalUrl} />
+      <link rel="alternate" hrefLang="x-default" href={finalCanonicalUrl} />
     </Helmet>
   );
 };

@@ -25,12 +25,12 @@ const Index = () => {
   return (
     <>
       <SEOManager
-        title="Rev Konstriksyon - Konpani Konstriksyon ak Renovasyon #1 nan Ayiti"
-        description="Rev Konstriksyon se konpani konstriksyon ak renovasyon prensipal nan Ayiti. Nou bay sèvis plan achitekti, siveyans chantye, visualisation 3D ak konsèltasyon pwojè. Jwenn devis gratis kounye a!"
-        keywords="konstriksyon kay Ayiti, renovasyon kay Haiti, plan achitekti, siveyans chantye, Rev Konstriksyon, bati lakay, deviz konstriksyon, konsèltasyon pwojè, konstriksyon Pòtoprens"
+        title="Firme de Construction | Rev Konstriksyon - Bureau d'Étude #1 nan Ayiti"
+        description="Rev Konstriksyon se firme de construction ak bureau d'étude prensipal nan Ayiti. Nou bay sèvis plan achitekti, deviz estimatif, renovasyon kay, siveyans chantye ak konsèltasyon pwojè. Jwenn devis gratis kounye a!"
+        keywords="firme de construction Haiti, bureau d'étude Ayiti, konstriksyon kay Haiti, renovasyon maison Haiti, plan achitekti, deviz estimatif, siveyans chantye, Rev Konstriksyon, bati lakay, entreprise de bâtiment, architectural firm Haiti, construction company Haiti, deviz konstriksyon, konsèltasyon pwojè, konstriksyon Pòtoprens, aménagement intérieur Haiti"
         canonicalUrl="https://www.revkonstriksyon.com/"
-        ogTitle="Rev Konstriksyon - Konpani Konstriksyon #1 nan Ayiti"
-        ogDescription="Nou konstwi rèv ou yo ak ekspètiz, presizyon ak pasyon. Jwenn devis gratis pou pwojè konstriksyon oswa renovasyon ou an kounye a!"
+        ogTitle="Rev Konstriksyon - Firme de Construction ak Bureau d'Étude #1 nan Ayiti"
+        ogDescription="Nou konstwi rèv ou yo ak ekspètiz, presizyon ak pasyon. Firme de construction ak bureau d'étude ki gen pi gwo konfyans nan Ayiti. Jwenn devis gratis pou pwojè konstriksyon oswa renovasyon ou an kounye a!"
         ogImage="https://www.revkonstriksyon.com/lovable-uploads/13fb6e7e-0f38-4087-a603-87332522b654.png"
       />
       <OrganizationStructuredData type="localBusiness" />
