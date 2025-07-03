@@ -17,7 +17,8 @@ const ContactPage = () => {
     contact_preference: 'email'
   });
 
-  const { submitContact, isSubmitting, isSuccess } = useContactForm();
+  const { submitForm, isSubmitting } = useContactForm();
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -29,9 +30,10 @@ const ContactPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await submitContact(formData);
+    const success = await submitForm(formData);
     
-    if (!isSubmitting) {
+    if (success) {
+      setIsSuccess(true);
       setFormData({
         name: '',
         email: '',

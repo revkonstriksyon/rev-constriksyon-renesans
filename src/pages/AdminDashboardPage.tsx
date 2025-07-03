@@ -1,20 +1,22 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { User } from '@supabase/supabase-js';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LogOut, Plus, FileText, Folder, Settings, Phone, Briefcase } from 'lucide-react';
+import { LogOut, Plus, FileText, Folder, Settings, Phone, Briefcase, Image } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import BlogManagement from '@/components/admin/BlogManagement';
 import ProjectManagement from '@/components/admin/ProjectManagement';
 import StaticContentManagement from '@/components/admin/StaticContentManagement';
 import ServicesManagement from '@/components/admin/ServicesManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
+import HomepageSliderManagement from '@/components/admin/HomepageSliderManagement';
 
 const AdminDashboardPage = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [activeTab, setActiveTab] = useState('blogs');
+  const [activeTab, setActiveTab] = useState('slider');
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -71,6 +73,7 @@ const AdminDashboardPage = () => {
   }
 
   const tabs = [
+    { id: 'slider', label: 'Slider Dakey', icon: Image },
     { id: 'blogs', label: 'Blog Management', icon: FileText },
     { id: 'projects', label: 'Pwojè Management', icon: Folder },
     { id: 'services', label: 'Sèvis Management', icon: Briefcase },
@@ -127,6 +130,7 @@ const AdminDashboardPage = () => {
 
         {/* Content */}
         <div>
+          {activeTab === 'slider' && <HomepageSliderManagement />}
           {activeTab === 'blogs' && <BlogManagement />}
           {activeTab === 'projects' && <ProjectManagement />}
           {activeTab === 'services' && <ServicesManagement />}

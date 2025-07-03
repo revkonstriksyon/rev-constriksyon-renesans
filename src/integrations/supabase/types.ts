@@ -93,6 +93,57 @@ export type Database = {
         }
         Relationships: []
       }
+      homepage_slider: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          link_url: string | null
+          main_image_url: string | null
+          order_position: number | null
+          subtitle: string | null
+          tags: string[] | null
+          thumbnail_url: string
+          title: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          link_url?: string | null
+          main_image_url?: string | null
+          order_position?: number | null
+          subtitle?: string | null
+          tags?: string[] | null
+          thumbnail_url: string
+          title: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          link_url?: string | null
+          main_image_url?: string | null
+          order_position?: number | null
+          subtitle?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string
+          title?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           active: boolean

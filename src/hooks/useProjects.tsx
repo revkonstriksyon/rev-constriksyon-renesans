@@ -15,7 +15,7 @@ interface Project {
   date: string;
   category: string | null;
   published: boolean;
-  project_type: 'reyalize' | 'konsèp';
+  project_type: 'reyalize' | 'konsèp' | null;
   slug: string | null;
   images: string[] | null;
   video_url: string | null;
@@ -72,7 +72,7 @@ export const useProjects = (projectType?: 'reyalize' | 'konsèp' | 'all') => {
     date: project.date,
     category: getTranslatedContent(project, 'category', currentLanguage, project.category || ''),
     published: project.published,
-    project_type: project.project_type,
+    project_type: (project.project_type || 'reyalize') as 'reyalize' | 'konsèp',
     slug: project.slug,
     images: project.images || [],
     video_url: project.video_url,
@@ -147,7 +147,7 @@ export const useFeaturedProjects = () => {
     date: project.date,
     category: getTranslatedContent(project, 'category', currentLanguage, project.category || ''),
     published: project.published,
-    project_type: project.project_type,
+    project_type: (project.project_type || 'reyalize') as 'reyalize' | 'konsèp',
     slug: project.slug,
     images: project.images || [],
     video_url: project.video_url,
@@ -179,8 +179,10 @@ export const useFeaturedProjects = () => {
           .order('created_at', { ascending: false })
           .limit(3);
         
-        const translatedProjects = (data || []).map(translateProject);
-        setProjects(translatedProjects);
+        if (data) {
+          const translatedProjects = data.map(translateProject);
+          setProjects(translatedProjects);
+        }
       } finally {
         setIsLoading(false);
       }
