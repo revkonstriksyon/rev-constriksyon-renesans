@@ -104,7 +104,7 @@ export const useProjects = (projectType?: 'reyalize' | 'an-kour' | 'planifye' | 
         const { data, error } = await query.order('created_at', { ascending: false });
 
         if (error) throw error;
-        const translatedProjects = (data || []).map(translateProject);
+        const translatedProjects = (data || []).map((project: any) => translateProject(project));
         setProjects(translatedProjects);
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -179,7 +179,7 @@ export const useFeaturedProjects = () => {
           .limit(3);
 
         if (error) throw error;
-        const translatedProjects = (data || []).map(translateProject);
+        const translatedProjects = (data || []).map((project: any) => translateProject(project));
         setProjects(translatedProjects);
       } catch (error) {
         console.error('Error fetching featured projects:', error);
@@ -192,7 +192,7 @@ export const useFeaturedProjects = () => {
           .limit(3);
         
         if (data) {
-          const translatedProjects = data.map(translateProject);
+          const translatedProjects = data.map((project: any) => translateProject(project));
           setProjects(translatedProjects);
         }
       } finally {
