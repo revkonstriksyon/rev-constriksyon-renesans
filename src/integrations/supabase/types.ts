@@ -144,6 +144,48 @@ export type Database = {
         }
         Relationships: []
       }
+      inspiration_gallery: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string
+          is_active: boolean | null
+          order_position: number | null
+          source_url: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url: string
+          is_active?: boolean | null
+          order_position?: number | null
+          source_url?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string
+          is_active?: boolean | null
+          order_position?: number | null
+          source_url?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           active: boolean
@@ -176,6 +218,7 @@ export type Database = {
           category_en: string | null
           category_fr: string | null
           category_ht: string | null
+          content: string | null
           created_at: string
           date: string
           description: string
@@ -190,6 +233,8 @@ export type Database = {
           location_en: string | null
           location_fr: string | null
           location_ht: string | null
+          meta_description: string | null
+          meta_title: string | null
           project_type: string | null
           published: boolean
           slug: string | null
@@ -208,6 +253,7 @@ export type Database = {
           category_en?: string | null
           category_fr?: string | null
           category_ht?: string | null
+          content?: string | null
           created_at?: string
           date: string
           description: string
@@ -222,6 +268,8 @@ export type Database = {
           location_en?: string | null
           location_fr?: string | null
           location_ht?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
           project_type?: string | null
           published?: boolean
           slug?: string | null
@@ -240,6 +288,7 @@ export type Database = {
           category_en?: string | null
           category_fr?: string | null
           category_ht?: string | null
+          content?: string | null
           created_at?: string
           date?: string
           description?: string
@@ -254,6 +303,8 @@ export type Database = {
           location_en?: string | null
           location_fr?: string | null
           location_ht?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
           project_type?: string | null
           published?: boolean
           slug?: string | null

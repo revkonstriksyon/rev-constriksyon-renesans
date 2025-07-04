@@ -8,11 +8,12 @@ import { Calendar, MapPin, ArrowRight, Eye, Play, Filter } from 'lucide-react';
 import { useState } from 'react';
 import { useProjects } from '@/hooks/useProjects';
 import { useStaticContent } from '@/hooks/useStaticContent';
+import InspirationGallery from '@/components/InspirationGallery';
 
 const ProjectsPage = () => {
-  const [selectedType, setSelectedType] = useState<'all' | 'reyalize' | 'konsèp'>('all');
+  const [selectedType, setSelectedType] = useState<'all' | 'reyalize' | 'an-kour' | 'planifye'>('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const { projects, isLoading } = useProjects(selectedType);
+  const { projects, isLoading } = useProjects(selectedType === 'all' ? undefined : selectedType);
   const { content } = useStaticContent();
 
   // Get unique categories from projects
@@ -70,31 +71,48 @@ const ProjectsPage = () => {
               Pwojè Rev Konstriksyon
             </h1>
             <p className="font-inter text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
-              Dekouvri pwojè nou yo ki reyalize ak ide konsèp nou genyen. Nan plan achitekti ak renovasyon konplè.
+              Dekouvri pwojè nou yo ki reyalize, ki an kour reyalizasyon, ak pwojè nou yo ki planifye ak ideyòm modèn ak kvalite pwofesyonèl.
             </p>
           </div>
         </section>
 
-        {/* Filter Section */}
-        <section className="py-12 bg-secondary">
+        {/* Navigation Menu */}
+        <section className="py-8 bg-white border-b">
+          <div className="container mx-auto px-4">
+            <nav className="flex justify-center">
+              <div className="flex space-x-8">
+                <a href="#projects" className="text-primary hover:text-primary/80 font-medium">
+                  Pwojè yo
+                </a>
+                <a href="#inspiration" className="text-primary hover:text-primary/80 font-medium">
+                  Enspirasyon
+                </a>
+              </div>
+            </nav>
+          </div>
+        </section>
+
+        {/* Projects Section */}
+        <section id="projects" className="py-12 bg-secondary">
           <div className="container mx-auto px-4">
             <div className="flex items-center gap-2 mb-6">
               <Filter className="w-5 h-5 text-primary" />
-              <h3 className="font-poppins font-semibold text-lg text-primary">Filtè Pwojè Yo</h3>
+              <h2 className="font-poppins font-semibold text-2xl text-primary">Nou Pwojè yo</h2>
             </div>
             
             {/* Project Type Filter */}
             <div className="mb-6">
-              <h4 className="font-inter font-medium text-gray-700 mb-3">Tip Pwojè</h4>
+              <h3 className="font-inter font-medium text-gray-700 mb-3">Tip Pwojè</h3>
               <div className="flex flex-wrap gap-4">
                 {[
                   { id: 'all', label: 'Tout Pwojè', count: projects.length },
                   { id: 'reyalize', label: 'Pwojè Reyalize', count: projects.filter(p => p.project_type === 'reyalize').length },
-                  { id: 'konsèp', label: 'Pwojè Konsèp', count: projects.filter(p => p.project_type === 'konsèp').length }
+                  { id: 'an-kour', label: 'Pwojè An Kour', count: projects.filter(p => p.project_type === 'an-kour').length },
+                  { id: 'planifye', label: 'Pwojè Planifye', count: projects.filter(p => p.project_type === 'planifye').length }
                 ].map((type) => (
                   <button
                     key={type.id}
-                    onClick={() => setSelectedType(type.id as 'all' | 'reyalize' | 'konsèp')}
+                    onClick={() => setSelectedType(type.id as any)}
                     className={`px-6 py-3 rounded-lg font-inter font-medium transition-all duration-300 flex items-center gap-2 ${
                       selectedType === type.id
                         ? 'bg-primary text-white shadow-lg'
@@ -113,8 +131,8 @@ const ProjectsPage = () => {
             </div>
 
             {/* Category Filter */}
-            <div>
-              <h4 className="font-inter font-medium text-gray-700 mb-3">Kategori</h4>
+            <div className="mb-8">
+              <h3 className="font-inter font-medium text-gray-700 mb-3">Kategori</h3>
               <div className="flex flex-wrap gap-4">
                 {categories.map((category) => (
                   <button
@@ -199,9 +217,12 @@ const ProjectsPage = () => {
                         <span className={`px-3 py-1 rounded-full text-sm font-inter font-medium ${
                           project.project_type === 'reyalize' 
                             ? 'bg-green-500 text-white' 
-                            : 'bg-blue-500 text-white'
+                            : project.project_type === 'an-kour'
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-purple-500 text-white'
                         }`}>
-                          {project.project_type === 'reyalize' ? 'Reyalize' : 'Konsèp'}
+                          {project.project_type === 'reyalize' ? 'Reyalize' : 
+                           project.project_type === 'an-kour' ? 'An Kour' : 'Planifye'}
                         </span>
                       </div>
                     </div>
@@ -251,13 +272,25 @@ const ProjectsPage = () => {
                         </div>
                       </div>
 
-                      <Link
-                        to="/contact"
-                        className="inline-flex items-center gap-2 text-accent hover:text-accent/80 font-inter font-medium transition-colors duration-300"
-                      >
-                        Diskite Pwojè Ou A
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
+                      <div className="flex gap-2">
+                        {project.slug ? (
+                          <Link
+                            to={`/projects/${project.slug}`}
+                            className="flex-1 bg-primary hover:bg-primary/90 text-white px-4 py-3 rounded-lg font-inter font-medium text-center transition-colors"
+                          >
+                            <Eye className="w-4 h-4 inline mr-2" />
+                            Gade Detay
+                          </Link>
+                        ) : (
+                          <Link
+                            to="/contact"
+                            className="flex-1 bg-primary hover:bg-primary/90 text-white px-4 py-3 rounded-lg font-inter font-medium text-center transition-colors"
+                          >
+                            <ArrowRight className="w-4 h-4 inline mr-2" />
+                            Li Plis
+                          </Link>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -265,6 +298,9 @@ const ProjectsPage = () => {
             )}
           </div>
         </section>
+
+        {/* Inspiration Gallery Section */}
+        <InspirationGallery />
 
         {/* CTA Section */}
         <section className="py-16 bg-primary text-white">
@@ -275,13 +311,23 @@ const ProjectsPage = () => {
             <p className="font-inter text-lg mb-8 text-gray-200 max-w-2xl mx-auto">
               Ann travay ansanm pou reyalize rèv konstriksyon ou a ak menm nivo kalite ak presizyon.
             </p>
-            <Link
-              to="/contact"
-              className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors duration-300 inline-flex items-center gap-2"
-            >
-              Kòmanse Pwojè Ou A
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/contact"
+                className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors"
+              >
+                Kòmanse Pwojè Ou A
+              </Link>
+              <a
+                href="https://wa.me/50934567890"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors inline-flex items-center gap-2 justify-center"
+              >
+                <ArrowRight className="w-5 h-5" />
+                WhatsApp
+              </a>
+            </div>
           </div>
         </section>
 

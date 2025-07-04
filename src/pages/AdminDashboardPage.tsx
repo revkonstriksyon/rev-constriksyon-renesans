@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { User } from '@supabase/supabase-js';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LogOut, Plus, FileText, Folder, Settings, Phone, Briefcase, Image } from 'lucide-react';
+import { LogOut, Plus, FileText, Folder, Settings, Phone, Briefcase, Image, Lightbulb } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import BlogManagement from '@/components/admin/BlogManagement';
 import ProjectManagement from '@/components/admin/ProjectManagement';
@@ -13,6 +13,7 @@ import StaticContentManagement from '@/components/admin/StaticContentManagement'
 import ServicesManagement from '@/components/admin/ServicesManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
 import HomepageSliderManagement from '@/components/admin/HomepageSliderManagement';
+import InspirationGalleryManagement from '@/components/admin/InspirationGalleryManagement';
 
 const AdminDashboardPage = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -74,8 +75,9 @@ const AdminDashboardPage = () => {
 
   const tabs = [
     { id: 'slider', label: 'Slider Dakey', icon: Image },
-    { id: 'blogs', label: 'Blog Management', icon: FileText },
     { id: 'projects', label: 'Pwojè Management', icon: Folder },
+    { id: 'inspiration', label: 'Galri Enspirasyon', icon: Lightbulb },
+    { id: 'blogs', label: 'Blog Management', icon: FileText },
     { id: 'services', label: 'Sèvis Management', icon: Briefcase },
     { id: 'contact', label: 'Enfòmasyon Kontak', icon: Phone },
     { id: 'content', label: 'Kontni Estatik', icon: Settings },
@@ -110,12 +112,12 @@ const AdminDashboardPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Navigation Tabs */}
         <div className="mb-8">
-          <nav className="flex space-x-8">
+          <nav className="flex space-x-8 overflow-x-auto">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'bg-primary text-white'
                     : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
@@ -131,8 +133,9 @@ const AdminDashboardPage = () => {
         {/* Content */}
         <div>
           {activeTab === 'slider' && <HomepageSliderManagement />}
-          {activeTab === 'blogs' && <BlogManagement />}
           {activeTab === 'projects' && <ProjectManagement />}
+          {activeTab === 'inspiration' && <InspirationGalleryManagement />}
+          {activeTab === 'blogs' && <BlogManagement />}
           {activeTab === 'services' && <ServicesManagement />}
           {activeTab === 'contact' && <ContactManagement />}
           {activeTab === 'content' && <StaticContentManagement />}
