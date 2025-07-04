@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -22,12 +21,15 @@ interface Project {
   date: string;
   category: string | null;
   published: boolean;
-  project_type: 'reyalize' | 'konsèp';
+  project_type: 'reyalize' | 'an-kour' | 'planifye' | 'konsèp';
   slug: string | null;
   images: string[] | null;
   video_url: string | null;
   tags: string[] | null;
   featured: boolean | null;
+  content: string | null;
+  meta_title: string | null;
+  meta_description: string | null;
   created_at: string;
 }
 
@@ -47,12 +49,15 @@ const ProjectManagement = () => {
     location: '',
     date: new Date().getFullYear().toString(),
     category: '',
-    project_type: 'reyalize' as 'reyalize' | 'konsèp',
+    project_type: 'reyalize' as 'reyalize' | 'an-kour' | 'planifye' | 'konsèp',
     slug: '',
     images: [''],
     video_url: '',
     tags: [''],
     featured: false,
+    content: '',
+    meta_title: '',
+    meta_description: '',
   });
 
   useEffect(() => {
@@ -199,6 +204,9 @@ const ProjectManagement = () => {
       video_url: project.video_url || '',
       tags: project.tags && project.tags.length > 0 ? project.tags : [''],
       featured: project.featured || false,
+      content: project.content || '',
+      meta_title: project.meta_title || '',
+      meta_description: project.meta_description || '',
     });
     setIsCreating(true);
   };
@@ -221,6 +229,9 @@ const ProjectManagement = () => {
       video_url: '',
       tags: [''],
       featured: false,
+      content: '',
+      meta_title: '',
+      meta_description: '',
     });
   };
 
@@ -302,12 +313,14 @@ const ProjectManagement = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <Label htmlFor="project_type">Tip Pwojè</Label>
-                <Select value={formData.project_type} onValueChange={(value: 'reyalize' | 'konsèp') => setFormData({ ...formData, project_type: value })}>
+                <Select value={formData.project_type} onValueChange={(value: 'reyalize' | 'an-kour' | 'planifye' | 'konsèp') => setFormData({ ...formData, project_type: value })}>
                   <SelectTrigger>
                     <SelectValue placeholder="Chwazi tip" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="reyalize">Reyalize</SelectItem>
+                    <SelectItem value="an-kour">An Kour</SelectItem>
+                    <SelectItem value="planifye">Planifye</SelectItem>
                     <SelectItem value="konsèp">Konsèp</SelectItem>
                   </SelectContent>
                 </Select>
@@ -355,6 +368,28 @@ const ProjectManagement = () => {
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                   placeholder="2024"
+                />
+              </div>
+            </div>
+
+            {/* Meta fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="meta_title">Meta Title (SEO)</Label>
+                <Input
+                  id="meta_title"
+                  value={formData.meta_title}
+                  onChange={(e) => setFormData({ ...formData, meta_title: e.target.value })}
+                  placeholder="Tit pou motè rechèch yo"
+                />
+              </div>
+              <div>
+                <Label htmlFor="meta_description">Meta Description (SEO)</Label>
+                <Input
+                  id="meta_description"
+                  value={formData.meta_description}
+                  onChange={(e) => setFormData({ ...formData, meta_description: e.target.value })}
+                  placeholder="Deskripsyon pou motè rechèch yo"
                 />
               </div>
             </div>
@@ -466,12 +501,24 @@ const ProjectManagement = () => {
 
             {/* Description */}
             <div>
-              <Label htmlFor="description">Deskripsyon</Label>
+              <Label htmlFor="description">Deskripsyon Kout</Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Deskripsyon pwojè a..."
+                placeholder="Deskripsyon kout pwojè a..."
+                rows={3}
+              />
+            </div>
+
+            {/* Content */}
+            <div>
+              <Label htmlFor="content">Kontni Konplè (pou paj detay la)</Label>
+              <Textarea
+                id="content"
+                value={formData.content}
+                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                placeholder="Kontni konplè pwojè a..."
                 rows={6}
               />
             </div>
@@ -509,9 +556,15 @@ const ProjectManagement = () => {
                     <span className={`px-2 py-1 rounded-full text-xs ${
                       project.project_type === 'reyalize'
                         ? 'bg-blue-100 text-blue-800'
-                        : 'bg-purple-100 text-purple-800'
+                        : project.project_type === 'an-kour'
+                        ? 'bg-orange-100 text-orange-800'
+                        : project.project_type === 'planifye'
+                        ? 'bg-purple-100 text-purple-800'
+                        : 'bg-gray-100 text-gray-800'
                     }`}>
-                      {project.project_type === 'reyalize' ? 'Reyalize' : 'Konsèp'}
+                      {project.project_type === 'reyalize' ? 'Reyalize' : 
+                       project.project_type === 'an-kour' ? 'An Kour' :
+                       project.project_type === 'planifye' ? 'Planifye' : 'Konsèp'}
                     </span>
                     {project.featured && (
                       <span className="px-2 py-1 rounded-full text-xs bg-orange-100 text-orange-800">

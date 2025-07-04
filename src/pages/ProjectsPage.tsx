@@ -11,7 +11,7 @@ import { useStaticContent } from '@/hooks/useStaticContent';
 import InspirationGallery from '@/components/InspirationGallery';
 
 const ProjectsPage = () => {
-  const [selectedType, setSelectedType] = useState<'all' | 'reyalize' | 'an-kour' | 'planifye'>('all');
+  const [selectedType, setSelectedType] = useState<'all' | 'reyalize' | 'an-kour' | 'planifye' | 'konsèp'>('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const { projects, isLoading } = useProjects(selectedType === 'all' ? undefined : selectedType);
   const { content } = useStaticContent();
@@ -108,7 +108,8 @@ const ProjectsPage = () => {
                   { id: 'all', label: 'Tout Pwojè', count: projects.length },
                   { id: 'reyalize', label: 'Pwojè Reyalize', count: projects.filter(p => p.project_type === 'reyalize').length },
                   { id: 'an-kour', label: 'Pwojè An Kour', count: projects.filter(p => p.project_type === 'an-kour').length },
-                  { id: 'planifye', label: 'Pwojè Planifye', count: projects.filter(p => p.project_type === 'planifye').length }
+                  { id: 'planifye', label: 'Pwojè Planifye', count: projects.filter(p => p.project_type === 'planifye').length },
+                  { id: 'konsèp', label: 'Konsèp 3D', count: projects.filter(p => p.project_type === 'konsèp').length }
                 ].map((type) => (
                   <button
                     key={type.id}
@@ -219,10 +220,13 @@ const ProjectsPage = () => {
                             ? 'bg-green-500 text-white' 
                             : project.project_type === 'an-kour'
                             ? 'bg-blue-500 text-white'
-                            : 'bg-purple-500 text-white'
+                            : project.project_type === 'planifye'
+                            ? 'bg-purple-500 text-white'
+                            : 'bg-orange-500 text-white'
                         }`}>
                           {project.project_type === 'reyalize' ? 'Reyalize' : 
-                           project.project_type === 'an-kour' ? 'An Kour' : 'Planifye'}
+                           project.project_type === 'an-kour' ? 'An Kour' : 
+                           project.project_type === 'planifye' ? 'Planifye' : 'Konsèp'}
                         </span>
                       </div>
                     </div>

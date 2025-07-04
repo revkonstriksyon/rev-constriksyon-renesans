@@ -15,12 +15,15 @@ interface Project {
   date: string;
   category: string | null;
   published: boolean;
-  project_type: 'reyalize' | 'konsèp' | null;
+  project_type: 'reyalize' | 'an-kour' | 'planifye' | 'konsèp';
   slug: string | null;
   images: string[] | null;
   video_url: string | null;
   tags: string[] | null;
   featured: boolean | null;
+  content: string | null;
+  meta_title: string | null;
+  meta_description: string | null;
   // Multilang fields
   title_ht?: string;
   title_fr?: string;
@@ -47,15 +50,18 @@ export interface TranslatedProject {
   date: string;
   category: string | null;
   published: boolean;
-  project_type: 'reyalize' | 'konsèp';
+  project_type: 'reyalize' | 'an-kour' | 'planifye' | 'konsèp';
   slug: string | null;
   images: string[];
   video_url: string | null;
   tags: string[];
   featured: boolean;
+  content: string | null;
+  meta_title: string | null;
+  meta_description: string | null;
 }
 
-export const useProjects = (projectType?: 'reyalize' | 'konsèp' | 'all') => {
+export const useProjects = (projectType?: 'reyalize' | 'an-kour' | 'planifye' | 'konsèp' | 'all') => {
   const [projects, setProjects] = useState<TranslatedProject[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { currentLanguage } = useLanguage();
@@ -72,12 +78,15 @@ export const useProjects = (projectType?: 'reyalize' | 'konsèp' | 'all') => {
     date: project.date,
     category: getTranslatedContent(project, 'category', currentLanguage, project.category || ''),
     published: project.published,
-    project_type: (project.project_type || 'reyalize') as 'reyalize' | 'konsèp',
+    project_type: project.project_type as 'reyalize' | 'an-kour' | 'planifye' | 'konsèp',
     slug: project.slug,
     images: project.images || [],
     video_url: project.video_url,
     tags: project.tags || [],
     featured: project.featured || false,
+    content: project.content,
+    meta_title: project.meta_title,
+    meta_description: project.meta_description,
   });
 
   useEffect(() => {
@@ -147,12 +156,15 @@ export const useFeaturedProjects = () => {
     date: project.date,
     category: getTranslatedContent(project, 'category', currentLanguage, project.category || ''),
     published: project.published,
-    project_type: (project.project_type || 'reyalize') as 'reyalize' | 'konsèp',
+    project_type: project.project_type as 'reyalize' | 'an-kour' | 'planifye' | 'konsèp',
     slug: project.slug,
     images: project.images || [],
     video_url: project.video_url,
     tags: project.tags || [],
     featured: project.featured || false,
+    content: project.content,
+    meta_title: project.meta_title,
+    meta_description: project.meta_description,
   });
 
   useEffect(() => {
