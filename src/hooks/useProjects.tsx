@@ -15,7 +15,7 @@ interface Project {
   date: string;
   category: string | null;
   published: boolean;
-  project_type: 'reyalize' | 'an-kour' | 'planifye' | 'konsèp';
+  project_type: string;
   slug: string | null;
   images: string[] | null;
   video_url: string | null;
@@ -50,7 +50,7 @@ export interface TranslatedProject {
   date: string;
   category: string | null;
   published: boolean;
-  project_type: 'reyalize' | 'an-kour' | 'planifye' | 'konsèp';
+  project_type: string;
   slug: string | null;
   images: string[];
   video_url: string | null;
@@ -78,7 +78,7 @@ export const useProjects = (projectType?: 'reyalize' | 'an-kour' | 'planifye' | 
     date: project.date,
     category: getTranslatedContent(project, 'category', currentLanguage, project.category || ''),
     published: project.published,
-    project_type: project.project_type as 'reyalize' | 'an-kour' | 'planifye' | 'konsèp',
+    project_type: project.project_type,
     slug: project.slug,
     images: project.images || [],
     video_url: project.video_url,
@@ -156,7 +156,7 @@ export const useFeaturedProjects = () => {
     date: project.date,
     category: getTranslatedContent(project, 'category', currentLanguage, project.category || ''),
     published: project.published,
-    project_type: project.project_type as 'reyalize' | 'an-kour' | 'planifye' | 'konsèp',
+    project_type: project.project_type,
     slug: project.slug,
     images: project.images || [],
     video_url: project.video_url,

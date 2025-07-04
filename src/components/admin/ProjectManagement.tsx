@@ -21,7 +21,7 @@ interface Project {
   date: string;
   category: string | null;
   published: boolean;
-  project_type: 'reyalize' | 'an-kour' | 'planifye' | 'konsèp';
+  project_type: string;
   slug: string | null;
   images: string[] | null;
   video_url: string | null;
@@ -49,7 +49,7 @@ const ProjectManagement = () => {
     location: '',
     date: new Date().getFullYear().toString(),
     category: '',
-    project_type: 'reyalize' as 'reyalize' | 'an-kour' | 'planifye' | 'konsèp',
+    project_type: 'reyalize',
     slug: '',
     images: [''],
     video_url: '',

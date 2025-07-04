@@ -30,7 +30,17 @@ const ContactPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = await submitForm(formData);
+    const contactFormData = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      projectType: formData.project_type,
+      budget: '',
+      timeline: '',
+      message: formData.message,
+      preferredContact: formData.contact_preference as 'phone' | 'email' | 'whatsapp'
+    };
+    const success = await submitForm(contactFormData);
     
     if (success) {
       setIsSuccess(true);
