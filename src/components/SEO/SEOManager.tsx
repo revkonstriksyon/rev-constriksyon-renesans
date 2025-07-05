@@ -17,6 +17,10 @@ interface SEOManagerProps {
   robots?: string;
   viewport?: string;
   language?: string;
+  noIndex?: boolean;
+  articlePublishedTime?: string;
+  articleAuthor?: string;
+  articleSection?: string;
 }
 
 const SEOManager: React.FC<SEOManagerProps> = ({
@@ -33,8 +37,14 @@ const SEOManager: React.FC<SEOManagerProps> = ({
   twitterCreator = "@revkonstriksyon",
   robots = "index, follow",
   viewport = "width=device-width, initial-scale=1.0",
-  language = "ht"
+  language = "ht",
+  noIndex = false,
+  articlePublishedTime,
+  articleAuthor,
+  articleSection
 }) => {
+  const robotsContent = noIndex ? "noindex, nofollow" : robots;
+
   try {
     return (
       <Helmet>
@@ -42,7 +52,7 @@ const SEOManager: React.FC<SEOManagerProps> = ({
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
-        <meta name="robots" content={robots} />
+        <meta name="robots" content={robotsContent} />
         <meta name="viewport" content={viewport} />
         <meta httpEquiv="Content-Language" content={language} />
         <link rel="canonical" href={canonicalUrl} />
@@ -55,6 +65,17 @@ const SEOManager: React.FC<SEOManagerProps> = ({
         <meta property="og:type" content={ogType} />
         <meta property="og:locale" content="ht_HT" />
         <meta property="og:site_name" content="Rev Konstriksyon" />
+
+        {/* Article-specific Open Graph tags */}
+        {articlePublishedTime && (
+          <meta property="article:published_time" content={articlePublishedTime} />
+        )}
+        {articleAuthor && (
+          <meta property="article:author" content={articleAuthor} />
+        )}
+        {articleSection && (
+          <meta property="article:section" content={articleSection} />
+        )}
 
         {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content={twitterCard} />

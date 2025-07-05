@@ -193,3 +193,60 @@ export const ProjectStructuredData: React.FC<ProjectStructuredDataProps> = ({ pr
     </SafeStructuredData>
   );
 };
+
+interface BlogPostStructuredDataProps {
+  title: string;
+  description: string;
+  author: string;
+  datePublished: string;
+  image?: string;
+  url: string;
+}
+
+export const BlogPostStructuredData: React.FC<BlogPostStructuredDataProps> = ({
+  title,
+  description,
+  author,
+  datePublished,
+  image,
+  url
+}) => {
+  const blogData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": title,
+    "description": description,
+    "author": {
+      "@type": "Person",
+      "name": author
+    },
+    "datePublished": datePublished,
+    "dateModified": datePublished,
+    "publisher": {
+      "@type": "Organization",
+      "name": "Rev Konstriksyon",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.revkonstriksyon.com/lovable-uploads/13fb6e7e-0f38-4087-a603-87332522b654.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": url
+    },
+    "image": image ? {
+      "@type": "ImageObject",
+      "url": image
+    } : undefined,
+    "url": url,
+    "inLanguage": "ht"
+  };
+
+  return (
+    <SafeStructuredData>
+      <script type="application/ld+json">
+        {JSON.stringify(blogData)}
+      </script>
+    </SafeStructuredData>
+  );
+};
