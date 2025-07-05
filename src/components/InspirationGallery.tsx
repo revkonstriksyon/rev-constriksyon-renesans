@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useInspirationGallery } from '@/hooks/useInspirationGallery';
-import { X, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ExternalLink, MessageCircle, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const InspirationGallery = () => {
@@ -10,12 +10,27 @@ const InspirationGallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const categories = [
-    { id: 'all', label: 'Tout Kategori' },
+    { id: 'all', label: 'Tout Enspirasyon', icon: '✨' },
     ...Array.from(new Set(items.map(item => item.category).filter(Boolean))).map(cat => ({
       id: cat,
-      label: cat
+      label: cat,
+      icon: getIconForCategory(cat)
     }))
   ];
+
+  function getIconForCategory(category: string) {
+    const icons: { [key: string]: string } = {
+      'Dekorasyon': '🎨',
+      'Pisin': '🏊',
+      'Fasad': '🏠',
+      'Lakou': '🌿',
+      'Entèyè': '🛋️',
+      'Kwizin': '🍽️',
+      'Chanm': '🛏️',
+      'Sal de ben': '🚿'
+    };
+    return icons[category] || '📸';
+  }
 
   const filteredItems = selectedCategory === 'all' 
     ? items 
@@ -43,10 +58,10 @@ const InspirationGallery = () => {
 
   if (isLoading) {
     return (
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-gray-600">Ap chaje enspirasyon yo...</p>
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-accent mx-auto"></div>
+          <p className="mt-4 text-gray-600 font-inter">Ap chaje enspirasyon yo...</p>
         </div>
       </section>
     );
@@ -54,14 +69,19 @@ const InspirationGallery = () => {
 
   return (
     <>
-      <section id="inspiration" className="py-20 bg-gray-50">
+      <section id="inspiration" className="py-20 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4">
+          {/* Section Header */}
           <div className="text-center mb-16">
-            <h2 className="font-poppins font-bold text-3xl md:text-4xl text-primary mb-4">
-              Galri Enspirasyon
-            </h2>
-            <p className="font-inter text-lg text-gray-600 max-w-2xl mx-auto">
-              Dekouvri ide ak enspirasyon pou pwojè dekorasyon, renovasyon, ak amenajman ou yo.
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <Sparkles className="w-8 h-8 text-accent animate-pulse" />
+              <h2 className="font-poppins font-bold text-3xl md:text-4xl text-primary">
+                Galri Enspirasyon
+              </h2>
+            </div>
+            <p className="font-inter text-lg text-gray-600 max-w-3xl mx-auto">
+              Dekouvri ide ak enspirasyon pou pwojè dekorasyon, renovasyon, ak amenajman ou yo. 
+              Klike sou foto yo pou wè yo pi gwo ak diskite sou yo.
             </p>
           </div>
 
@@ -71,47 +91,70 @@ const InspirationGallery = () => {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-6 py-3 rounded-lg font-inter font-medium transition-all duration-300 ${
+                className={`px-6 py-4 rounded-2xl font-inter font-semibold transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl transform hover:-translate-y-1 ${
                   selectedCategory === category.id
-                    ? 'bg-primary text-white shadow-lg'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-md'
+                    ? 'bg-accent text-white scale-105'
+                    : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
               >
-                {category.label}
+                <span className="text-xl">{category.icon}</span>
+                <span>{category.label}</span>
               </button>
             ))}
           </div>
 
           {/* Gallery Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredItems.map((item, index) => (
-              <div
-                key={item.id}
-                className="relative group cursor-pointer bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
-                onClick={() => openLightbox(index)}
-              >
-                <div className="aspect-square">
-                  <img
-                    src={item.image_url}
-                    alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-end">
-                  <div className="p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <h3 className="font-medium text-sm mb-1">{item.title}</h3>
-                    {item.description && (
-                      <p className="text-xs text-gray-200">{item.description}</p>
-                    )}
+          {filteredItems.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="bg-white rounded-3xl shadow-xl p-16 max-w-2xl mx-auto">
+                <Sparkles className="w-16 h-16 text-gray-400 mx-auto mb-6" />
+                <p className="text-gray-600 font-inter text-lg mb-8">
+                  Pa gen enspirasyon nan kategori sa a pou kounye a.
+                </p>
+                <Link
+                  to="/contact"
+                  className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-xl font-inter font-semibold transition-all duration-300 inline-flex items-center gap-2 shadow-lg hover:shadow-xl"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Mande Enspirasyon ou a
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              {filteredItems.map((item, index) => (
+                <div
+                  key={item.id}
+                  className="relative group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
+                  onClick={() => openLightbox(index)}
+                >
+                  <div className="aspect-square overflow-hidden">
+                    <img
+                      src={item.image_url}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
+                      }}
+                    />
+                  </div>
+                  
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                    <div className="p-4 text-white w-full">
+                      <h3 className="font-semibold text-sm mb-1 line-clamp-2">{item.title}</h3>
+                      {item.description && (
+                        <p className="text-xs text-gray-200 line-clamp-2">{item.description}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Hover Icon */}
+                  <div className="absolute top-4 right-4 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg">
+                    <Sparkles className="w-5 h-5 text-accent" />
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-
-          {filteredItems.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-600 font-inter text-lg">Pa gen enspirasyon nan kategori sa a.</p>
+              ))}
             </div>
           )}
         </div>
@@ -119,57 +162,66 @@ const InspirationGallery = () => {
 
       {/* Lightbox Modal */}
       {selectedImage !== null && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+          {/* Close Button */}
           <button
             onClick={closeLightbox}
-            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
+            className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors z-10 backdrop-blur-sm"
           >
-            <X className="w-8 h-8" />
+            <X className="w-6 h-6" />
           </button>
 
+          {/* Navigation Buttons */}
           <button
             onClick={prevImage}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors z-10"
+            className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors z-10 backdrop-blur-sm"
           >
-            <ChevronLeft className="w-8 h-8" />
+            <ChevronLeft className="w-6 h-6" />
           </button>
 
           <button
             onClick={nextImage}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors z-10"
+            className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors z-10 backdrop-blur-sm"
           >
-            <ChevronRight className="w-8 h-8" />
+            <ChevronRight className="w-6 h-6" />
           </button>
 
-          <div className="max-w-4xl max-h-full w-full">
-            <img
-              src={filteredItems[selectedImage]?.image_url}
-              alt={filteredItems[selectedImage]?.title}
-              className="w-full h-full object-contain"
-            />
-            <div className="text-center mt-4 px-4">
-              <h3 className="text-white font-medium text-lg mb-2">
+          {/* Image and Content */}
+          <div className="max-w-6xl max-h-full w-full flex flex-col items-center">
+            <div className="relative max-h-[70vh] w-full flex items-center justify-center mb-8">
+              <img
+                src={filteredItems[selectedImage]?.image_url}
+                alt={filteredItems[selectedImage]?.title}
+                className="max-w-full max-h-full object-contain rounded-2xl shadow-2xl"
+              />
+            </div>
+
+            {/* Content */}
+            <div className="text-center px-8 max-w-2xl">
+              <h3 className="text-white font-poppins font-bold text-2xl mb-4">
                 {filteredItems[selectedImage]?.title}
               </h3>
               {filteredItems[selectedImage]?.description && (
-                <p className="text-gray-300 mb-4">
+                <p className="text-gray-300 font-inter mb-8 leading-relaxed">
                   {filteredItems[selectedImage]?.description}
                 </p>
               )}
-              <div className="flex justify-center gap-4">
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/contact"
-                  className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                  className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-xl font-inter font-semibold transition-all duration-300 inline-flex items-center gap-2 shadow-lg hover:shadow-xl"
                 >
+                  <MessageCircle className="w-5 h-5" />
                   Diskite Enspirasyon Sa A
                 </Link>
                 <a
                   href="https://wa.me/50934567890"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center gap-2"
+                  className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-inter font-semibold transition-all duration-300 inline-flex items-center gap-2 shadow-lg hover:shadow-xl"
                 >
-                  <ExternalLink className="w-4 h-4" />
+                  <ExternalLink className="w-5 h-5" />
                   WhatsApp
                 </a>
               </div>
