@@ -33,8 +33,6 @@ const Index = () => {
         ogDescription="Nou konstwi rèv ou yo ak ekspètiz, presizyon ak pasyon. Firme de construction ak bureau d'étude ki gen pi gwo konfyans nan Ayiti. Jwenn devis gratis pou pwojè konstriksyon oswa renovasyon ou an kounye a!"
         ogImage="https://www.revkonstriksyon.com/lovable-uploads/13fb6e7e-0f38-4087-a603-87332522b654.png"
       />
-      <OrganizationStructuredData type="localBusiness" />
-      <ServiceStructuredData services={services} />
       
       <div className="min-h-screen">
         <Header />

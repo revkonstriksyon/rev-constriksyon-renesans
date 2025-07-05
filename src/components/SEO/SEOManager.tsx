@@ -1,105 +1,88 @@
 
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
-interface SEOProps {
-  title: string;
-  description: string;
+interface SEOManagerProps {
+  title?: string;
+  description?: string;
   keywords?: string;
   canonicalUrl?: string;
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
-  ogType?: 'website' | 'article';
-  articlePublishedTime?: string;
-  articleModifiedTime?: string;
-  articleAuthor?: string;
-  articleSection?: string;
-  noIndex?: boolean;
+  ogType?: string;
+  twitterCard?: string;
+  twitterSite?: string;
+  twitterCreator?: string;
+  robots?: string;
+  viewport?: string;
+  language?: string;
 }
 
-const SEOManager = ({
-  title,
-  description,
-  keywords,
-  canonicalUrl,
+const SEOManager: React.FC<SEOManagerProps> = ({
+  title = "Rev Konstriksyon - Firme de Construction nan Ayiti",
+  description = "Firme de construction ak bureau d'étude prensipal nan Ayiti. Plan achitekti, renovasyon kay, siveyans chantye.",
+  keywords = "firme de construction Haiti, bureau d'étude Ayiti, konstriksyon kay Haiti",
+  canonicalUrl = "https://www.revkonstriksyon.com",
   ogTitle,
   ogDescription,
-  ogImage,
-  ogType = 'website',
-  articlePublishedTime,
-  articleModifiedTime,
-  articleAuthor,
-  articleSection,
-  noIndex = false
-}: SEOProps) => {
-  const baseUrl = 'https://www.revkonstriksyon.com';
-  const defaultImage = `${baseUrl}/lovable-uploads/13fb6e7e-0f38-4087-a603-87332522b654.png`;
-  
-  const fullTitle = title === 'Rev Konstriksyon' ? title : `${title} | Rev Konstriksyon`;
-  const finalOgTitle = ogTitle || title;
-  const finalOgDescription = ogDescription || description;
-  const finalOgImage = ogImage || defaultImage;
-  const finalCanonicalUrl = canonicalUrl || baseUrl;
+  ogImage = "https://www.revkonstriksyon.com/lovable-uploads/13fb6e7e-0f38-4087-a603-87332522b654.png",
+  ogType = "website",
+  twitterCard = "summary_large_image",
+  twitterSite = "@revkonstriksyon",
+  twitterCreator = "@revkonstriksyon",
+  robots = "index, follow",
+  viewport = "width=device-width, initial-scale=1.0",
+  language = "ht"
+}) => {
+  try {
+    return (
+      <Helmet>
+        {/* Basic Meta Tags */}
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta name="keywords" content={keywords} />
+        <meta name="robots" content={robots} />
+        <meta name="viewport" content={viewport} />
+        <meta httpEquiv="Content-Language" content={language} />
+        <link rel="canonical" href={canonicalUrl} />
 
-  return (
-    <Helmet>
-      {/* Primary Meta Tags */}
-      <title>{fullTitle}</title>
-      <meta name="title" content={fullTitle} />
-      <meta name="description" content={description} />
-      {keywords && <meta name="keywords" content={keywords} />}
-      
-      {/* Canonical URL */}
-      <link rel="canonical" href={finalCanonicalUrl} />
-      
-      {/* Open Graph / Facebook */}
-      <meta property="og:type" content={ogType} />
-      <meta property="og:url" content={finalCanonicalUrl} />
-      <meta property="og:title" content={finalOgTitle} />
-      <meta property="og:description" content={finalOgDescription} />
-      <meta property="og:image" content={finalOgImage} />
-      <meta property="og:site_name" content="Rev Konstriksyon" />
-      <meta property="og:locale" content="ht_HT" />
-      <meta property="og:locale:alternate" content="fr_FR" />
-      <meta property="og:locale:alternate" content="en_US" />
-      
-      {/* Twitter */}
-      <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content={finalCanonicalUrl} />
-      <meta property="twitter:title" content={finalOgTitle} />
-      <meta property="twitter:description" content={finalOgDescription} />
-      <meta property="twitter:image" content={finalOgImage} />
-      
-      {/* Article specific meta tags */}
-      {ogType === 'article' && articlePublishedTime && (
-        <meta property="article:published_time" content={articlePublishedTime} />
-      )}
-      {ogType === 'article' && articleModifiedTime && (
-        <meta property="article:modified_time" content={articleModifiedTime} />
-      )}
-      {ogType === 'article' && articleAuthor && (
-        <meta property="article:author" content={articleAuthor} />
-      )}
-      {ogType === 'article' && articleSection && (
-        <meta property="article:section" content={articleSection} />
-      )}
-      
-      {/* Robots */}
-      {noIndex && <meta name="robots" content="noindex,nofollow" />}
-      
-      {/* Additional SEO */}
-      <meta name="author" content="Rev Konstriksyon - Firme de Construction Haiti" />
-      <meta name="language" content="Haitian Creole, French" />
-      <meta name="geo.region" content="HT" />
-      <meta name="geo.country" content="Haiti" />
-      <meta name="geo.placename" content="Port-au-Prince, Haïti" />
-      
-      {/* Hreflang for multilingual SEO */}
-      <link rel="alternate" hrefLang="ht" href={finalCanonicalUrl} />
-      <link rel="alternate" hrefLang="fr" href={finalCanonicalUrl} />
-      <link rel="alternate" hrefLang="x-default" href={finalCanonicalUrl} />
-    </Helmet>
-  );
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content={ogTitle || title} />
+        <meta property="og:description" content={ogDescription || description} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content={ogType} />
+        <meta property="og:locale" content="ht_HT" />
+        <meta property="og:site_name" content="Rev Konstriksyon" />
+
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content={twitterCard} />
+        <meta name="twitter:site" content={twitterSite} />
+        <meta name="twitter:creator" content={twitterCreator} />
+        <meta name="twitter:title" content={ogTitle || title} />
+        <meta name="twitter:description" content={ogDescription || description} />
+        <meta name="twitter:image" content={ogImage} />
+
+        {/* Additional Meta Tags */}
+        <meta name="author" content="Rev Konstriksyon" />
+        <meta name="theme-color" content="#C8102E" />
+        <meta name="msapplication-TileColor" content="#C8102E" />
+        
+        {/* Favicon */}
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href={ogImage} />
+      </Helmet>
+    );
+  } catch (error) {
+    console.warn('SEO Manager error:', error);
+    return (
+      <Helmet>
+        <title>Rev Konstriksyon - Firme de Construction nan Ayiti</title>
+        <meta name="description" content="Firme de construction ak bureau d'étude prensipal nan Ayiti." />
+      </Helmet>
+    );
+  }
 };
 
 export default SEOManager;

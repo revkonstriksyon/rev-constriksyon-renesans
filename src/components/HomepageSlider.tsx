@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { useHomepageSlider } from '@/hooks/useHomepageSlider';
+import Hero from '@/components/Hero';
 
 const HomepageSlider = () => {
   const { sliderItems, isLoading } = useHomepageSlider();
@@ -36,7 +37,8 @@ const HomepageSlider = () => {
     );
   };
 
-  if (isLoading || sliderItems.length === 0) {
+  // If loading or no slider items, show Hero component as fallback
+  if (isLoading) {
     return (
       <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-primary via-primary/90 to-primary/80">
         <div className="text-center text-white">
@@ -45,6 +47,12 @@ const HomepageSlider = () => {
         </div>
       </section>
     );
+  }
+
+  // If no slider items, show Hero component as fallback
+  if (sliderItems.length === 0) {
+    console.log('No slider items found, showing Hero component as fallback');
+    return <Hero />;
   }
 
   const currentItem = sliderItems[currentIndex];
