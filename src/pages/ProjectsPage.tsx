@@ -4,13 +4,11 @@ import Footer from '@/components/Footer';
 import SEOManager from '@/components/SEO/SEOManager';
 import { OrganizationStructuredData } from '@/components/SEO/StructuredData';
 import { Link } from 'react-router-dom';
-import { Calendar, MapPin, ArrowRight, Eye, Play, Filter } from 'lucide-react';
-import { useState } from 'react';
-import { useProjects } from '@/hooks/useProjects';
+import { ArrowRight } from 'lucide-react';
 import { useStaticContent } from '@/hooks/useStaticContent';
-import InspirationGallery from '@/components/InspirationGallery';
 import ProjectTypeSection from '@/components/ProjectTypeSection';
 import ConceptSection from '@/components/ConceptSection';
+import InspirationGallery from '@/components/InspirationGallery';
 
 const ProjectsPage = () => {
   const { content } = useStaticContent();
@@ -27,34 +25,43 @@ const ProjectsPage = () => {
       />
       <OrganizationStructuredData />
       
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-gray-50">
         <Header />
         
         {/* Hero Section */}
-        <section className="pt-24 pb-16 bg-gradient-to-br from-primary to-primary/80">
+        <section className="pt-24 pb-16 bg-gradient-to-br from-primary via-primary/90 to-accent">
           <div className="container mx-auto px-4 text-center text-white">
-            <h1 className="font-poppins font-bold text-4xl md:text-5xl mb-6">
+            <h1 className="font-poppins font-bold text-4xl md:text-6xl mb-6 leading-tight">
               Pwojè Rev Konstriksyon
             </h1>
-            <p className="font-inter text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
+            <p className="font-inter text-lg md:text-xl max-w-4xl mx-auto text-gray-100 leading-relaxed">
               Dekouvri pwojè nou yo ki reyalize, ki an kour reyalizasyon, ak pwojè nou yo ki planifye ak ideyòm modèn ak kvalite pwofesyonèl.
             </p>
           </div>
         </section>
 
         {/* Navigation Menu */}
-        <section className="py-8 bg-white border-b">
+        <section className="py-12 bg-white shadow-sm sticky top-20 z-10">
           <div className="container mx-auto px-4">
             <nav className="flex justify-center">
-              <div className="flex space-x-8">
-                <a href="#projects" className="text-primary hover:text-primary/80 font-medium transition-colors">
-                  Pwojè yo
+              <div className="flex flex-wrap justify-center gap-8">
+                <a 
+                  href="#projects" 
+                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-6 py-3 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+                >
+                  🏗️ <span>Pwojè yo</span>
                 </a>
-                <a href="#concepts" className="text-primary hover:text-primary/80 font-medium transition-colors">
-                  Konsepsyon 3D
+                <a 
+                  href="#concepts" 
+                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-6 py-3 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+                >
+                  🎯 <span>Konsepsyon 3D</span>
                 </a>
-                <a href="#inspiration" className="text-primary hover:text-primary/80 font-medium transition-colors">
-                  Enspirasyon
+                <a 
+                  href="#inspiration" 
+                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-6 py-3 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+                >
+                  ✨ <span>Enspirasyon</span>
                 </a>
               </div>
             </nav>
@@ -71,29 +78,30 @@ const ProjectsPage = () => {
         <InspirationGallery />
 
         {/* CTA Section */}
-        <section className="py-16 bg-primary text-white">
+        <section className="py-20 bg-gradient-to-r from-primary to-accent text-white">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="font-poppins font-bold text-3xl mb-4">
+            <h2 className="font-poppins font-bold text-3xl md:text-4xl mb-6">
               Ou Gen Yon Pwojè nan Tèt Ou?
             </h2>
-            <p className="font-inter text-lg mb-8 text-gray-200 max-w-2xl mx-auto">
-              Ann travay ansanm pou reyalize rèv konstriksyon ou a ak menm nivo kalite ak presizyon.
+            <p className="font-inter text-lg md:text-xl mb-10 text-gray-100 max-w-3xl mx-auto leading-relaxed">
+              Ann travay ansanm pou reyalize rèv konstriksyon ou a ak menm nivo kalite ak presizyon ki fè nou diferan.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link
                 to="/contact"
-                className="bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors"
+                className="bg-white hover:bg-gray-100 text-primary px-10 py-5 rounded-xl font-inter font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-3"
               >
-                Kòmanse Pwojè Ou A
+                <span>Kòmanse Pwojè Ou A</span>
+                <ArrowRight className="w-5 h-5" />
               </Link>
               <a
                 href="https://wa.me/50934567890"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-inter font-semibold transition-colors inline-flex items-center gap-2 justify-center"
+                className="bg-green-600 hover:bg-green-700 text-white px-10 py-5 rounded-xl font-inter font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-3"
               >
+                <span>WhatsApp</span>
                 <ArrowRight className="w-5 h-5" />
-                WhatsApp
               </a>
             </div>
           </div>

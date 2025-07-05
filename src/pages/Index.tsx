@@ -4,7 +4,6 @@ import HomepageSlider from '@/components/HomepageSlider';
 import Services from '@/components/Services';
 import Projects from '@/components/Projects';
 import Testimonials from '@/components/Testimonials';
-import Team from '@/components/Team';
 import Values from '@/components/Values';
 import Blog from '@/components/Blog';
 import Contact from '@/components/Contact';
@@ -41,7 +40,6 @@ const Index = () => {
           <Services />
           <Projects />
           <Testimonials />
-          <Team />
           <Values />
           <Blog />
           <Contact />
