@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -28,6 +27,7 @@ const HomepageSliderManagement = () => {
     category: '',
     tags: '',
     link_url: '',
+    button_text: '',
     is_active: true
   });
 
@@ -67,6 +67,7 @@ const HomepageSliderManagement = () => {
       category: '',
       tags: '',
       link_url: '',
+      button_text: '',
       is_active: true
     });
     setEditingItem(null);
@@ -84,6 +85,7 @@ const HomepageSliderManagement = () => {
       category: item.category || '',
       tags: item.tags.join(', '),
       link_url: item.link_url || '',
+      button_text: item.button_text || 'Gade Pwojè Sa A',
       is_active: item.is_active
     });
     setEditingItem(item);
@@ -107,6 +109,7 @@ const HomepageSliderManagement = () => {
         category: formData.category || null,
         tags: tagsArray,
         link_url: formData.link_url || null,
+        button_text: formData.button_text || 'Gade Pwojè Sa A',
         is_active: formData.is_active,
         order_position: editingItem ? editingItem.order_position : nextPosition
       };
@@ -333,14 +336,26 @@ const HomepageSliderManagement = () => {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Lyen (URL)</label>
-                <Input
-                  type="url"
-                  value={formData.link_url}
-                  onChange={(e) => setFormData({ ...formData, link_url: e.target.value })}
-                  placeholder="https://example.com/project"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Lyen (URL)</label>
+                  <Input
+                    type="url"
+                    value={formData.link_url}
+                    onChange={(e) => setFormData({ ...formData, link_url: e.target.value })}
+                    placeholder="https://example.com/project"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2">Tèks Bouton</label>
+                  <Input
+                    type="text"
+                    value={formData.button_text}
+                    onChange={(e) => setFormData({ ...formData, button_text: e.target.value })}
+                    placeholder="Gade Pwojè Sa A"
+                  />
+                </div>
               </div>
 
               <div className="flex items-center space-x-2">
@@ -383,6 +398,9 @@ const HomepageSliderManagement = () => {
                   <h3 className="font-semibold text-lg">{item.title}</h3>
                   {item.subtitle && (
                     <p className="text-gray-600 text-sm">{item.subtitle}</p>
+                  )}
+                  {item.button_text && (
+                    <p className="text-accent text-sm font-medium">Bouton: "{item.button_text}"</p>
                   )}
                   <div className="flex items-center gap-2 mt-2">
                     {item.category && (

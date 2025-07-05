@@ -107,7 +107,7 @@ const HomepageSlider = () => {
                 className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-white px-8 py-4 rounded-lg font-inter font-semibold text-lg transition-colors duration-300 shadow-lg"
               >
                 {currentItem.video_url && <Play className="w-5 h-5" />}
-                Gade Pwojè Sa A
+                {currentItem.button_text || 'Gade Pwojè Sa A'}
               </a>
             )}
           </div>

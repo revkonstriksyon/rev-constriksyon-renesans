@@ -13,6 +13,7 @@ export interface SliderItem {
   category: string | null;
   tags: string[];
   link_url: string | null;
+  button_text: string | null;
   order_position: number;
   is_active: boolean;
 }

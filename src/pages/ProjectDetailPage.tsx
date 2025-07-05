@@ -7,6 +7,14 @@ import Footer from '@/components/Footer';
 import SEOManager from '@/components/SEO/SEOManager';
 import { ArrowLeft, Calendar, MapPin, Tag, ExternalLink, Play, ChevronLeft, ChevronRight, X, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
 
 interface ProjectDetail {
   id: string;
@@ -60,11 +68,15 @@ const ProjectDetailPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <Header />
-        <div className="pt-24 pb-16 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-gray-600 font-inter">Ap chaje pwojè a...</p>
+        <div className="pt-32 pb-20">
+          <div className="container mx-auto px-4 text-center">
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 shadow-xl max-w-md mx-auto">
+              <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent mx-auto mb-6"></div>
+              <p className="text-lg font-medium text-gray-700">Ap chaje pwojè a...</p>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -72,13 +84,24 @@ const ProjectDetailPage = () => {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <Header />
-        <div className="pt-24 pb-16 text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">Pwojè pa jwenn</h1>
-          <Link to="/projects" className="text-primary hover:underline font-semibold">
-            Retounen nan lis pwojè yo
-          </Link>
+        <div className="pt-32 pb-20">
+          <div className="container mx-auto px-4 text-center">
+            <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-12 shadow-xl max-w-lg mx-auto">
+              <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-4xl">🏗️</span>
+              </div>
+              <h1 className="text-3xl font-bold text-gray-800 mb-6">Pwojè pa jwenn</h1>
+              <Link 
+                to="/projects" 
+                className="inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                Retounen nan Pwojè yo
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -108,76 +131,108 @@ const ProjectDetailPage = () => {
         ogImage={project.image_url || undefined}
       />
       
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
         <Header />
         
         <main className="pt-24">
-          {/* Navigation */}
-          <section className="py-8 bg-white shadow-sm">
+          {/* Breadcrumb Navigation */}
+          <section className="py-8 bg-white/80 backdrop-blur-sm border-b border-gray-100">
             <div className="container mx-auto px-4">
-              <Link
-                to="/projects"
-                className="inline-flex items-center gap-3 text-primary hover:text-accent font-semibold transition-colors duration-300 px-6 py-3 rounded-lg hover:bg-gray-50"
-              >
-                <ArrowLeft className="w-5 h-5" />
-                Retounen nan Pwojè yo
-              </Link>
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink asChild>
+                      <Link to="/" className="text-gray-500 hover:text-primary transition-colors font-medium">
+                        🏠 Akèy
+                      </Link>
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink asChild>
+                      <Link to="/projects" className="text-gray-500 hover:text-primary transition-colors font-medium">
+                        🏗️ Pwojè yo
+                      </Link>
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage className="text-primary font-semibold">
+                      {project.title}
+                    </BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
             </div>
           </section>
 
           {/* Project Header */}
-          <section className="py-16 bg-white">
+          <section className="py-20 bg-white">
             <div className="container mx-auto px-4">
-              <div className="max-w-5xl mx-auto">
-                <div className="flex flex-wrap items-center gap-4 mb-8">
-                  <span className={`px-6 py-3 rounded-full text-sm font-bold text-white shadow-lg ${
+              <div className="max-w-6xl mx-auto">
+                <div className="flex flex-wrap items-center gap-6 mb-10 animate-fade-in">
+                  <span className={`px-8 py-4 rounded-full text-sm font-bold text-white shadow-xl transform hover:scale-105 transition-all duration-300 ${
                     project.project_type === 'reyalize' 
-                      ? 'bg-green-500' 
+                      ? 'bg-gradient-to-r from-green-500 to-green-600' 
                       : project.project_type === 'an-kour'
-                      ? 'bg-blue-500'
-                      : 'bg-purple-500'
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-600'
+                      : 'bg-gradient-to-r from-purple-500 to-purple-600'
                   }`}>
-                    {project.project_type === 'reyalize' ? 'Reyalize' : 
-                     project.project_type === 'an-kour' ? 'An Kour' : 'Sou Wout'}
+                    {project.project_type === 'reyalize' ? '✅ Reyalize' : 
+                     project.project_type === 'an-kour' ? '🚧 An Kour' : '📋 Sou Wout'}
                   </span>
                   {project.category && (
-                    <span className="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-bold">
+                    <span className="bg-gradient-to-r from-accent/20 to-accent/10 text-accent px-6 py-3 rounded-full text-sm font-bold border border-accent/20">
                       {project.category}
                     </span>
                   )}
                 </div>
 
-                <h1 className="font-poppins font-bold text-3xl md:text-5xl text-primary mb-6 leading-tight">
+                <h1 className="font-poppins font-bold text-4xl md:text-6xl lg:text-7xl text-primary mb-8 leading-tight animate-fade-in">
                   {project.title}
                 </h1>
 
-                <p className="font-inter text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
-                  {project.description}
-                </p>
+                <div className="bg-gradient-to-r from-secondary to-secondary/50 rounded-3xl p-8 mb-12 animate-fade-in">
+                  <p className="font-inter text-xl md:text-2xl text-gray-700 leading-relaxed">
+                    {project.description}
+                  </p>
+                </div>
 
-                <div className="flex flex-wrap items-center gap-8 text-gray-500 mb-8">
+                <div className="flex flex-wrap items-center gap-8 text-gray-600 mb-12 animate-fade-in">
                   {project.location && (
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                        <MapPin className="w-5 h-5" />
+                    <div className="flex items-center gap-4 bg-white rounded-2xl px-6 py-4 shadow-lg border border-gray-100">
+                      <div className="w-12 h-12 bg-gradient-to-r from-primary/10 to-primary/5 rounded-full flex items-center justify-center">
+                        <MapPin className="w-6 h-6 text-primary" />
                       </div>
-                      <span className="font-medium">{project.location}</span>
+                      <div>
+                        <p className="text-sm text-gray-500 font-medium">Kote</p>
+                        <span className="font-semibold text-gray-800">{project.location}</span>
+                      </div>
                     </div>
                   )}
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                      <Calendar className="w-5 h-5" />
+                  <div className="flex items-center gap-4 bg-white rounded-2xl px-6 py-4 shadow-lg border border-gray-100">
+                    <div className="w-12 h-12 bg-gradient-to-r from-accent/10 to-accent/5 rounded-full flex items-center justify-center">
+                      <Calendar className="w-6 h-6 text-accent" />
                     </div>
-                    <span className="font-medium">{project.date}</span>
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">Dat</p>
+                      <span className="font-semibold text-gray-800">{project.date}</span>
+                    </div>
                   </div>
                 </div>
 
                 {project.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-3 mb-8">
-                    <Tag className="w-5 h-5 text-gray-500 mt-1" />
+                  <div className="flex flex-wrap gap-4 mb-12 animate-fade-in">
+                    <div className="flex items-center gap-3">
+                      <Tag className="w-6 h-6 text-primary" />
+                      <span className="text-gray-600 font-medium">Tags:</span>
+                    </div>
                     {project.tags.map((tag, index) => (
-                      <span key={index} className="bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold">
-                        {tag}
+                      <span 
+                        key={index} 
+                        className="bg-gradient-to-r from-primary/10 to-primary/5 text-primary px-4 py-2 rounded-full text-sm font-semibold border border-primary/20 hover:shadow-md transition-shadow duration-300"
+                      >
+                        #{tag}
                       </span>
                     ))}
                   </div>
