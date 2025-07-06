@@ -2,40 +2,47 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Edit, Trash2, Save, X, Globe } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import { useLanguage } from '@/contexts/LanguageContext';
-import TranslationForm from './TranslationManagement';
+import { Plus, Edit, Trash2, Save, X } from 'lucide-react';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
-interface Blog {
+interface BlogPost {
   id: string;
   title: string;
-  slug: string;
+  title_en?: string;
+  title_fr?: string;
+  title_ht?: string;
   excerpt: string;
+  excerpt_en?: string;
+  excerpt_fr?: string;
+  excerpt_ht?: string;
   content: string;
-  image_url: string | null;
+  content_en?: string;
+  content_fr?: string;
+  content_ht?: string;
+  image_url?: string;
   category: string;
+  category_en?: string;
+  category_fr?: string;
+  category_ht?: string;
   author: string;
   date: string;
   read_time: string;
+  slug: string;
   published: boolean;
   created_at: string;
+  updated_at: string;
 }
 
 const BlogManagement = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
-  const [isCreating, setIsCreating] = useState(false);
-  const [isTranslating, setIsTranslating] = useState(false);
-  const [translatingBlog, setTranslatingBlog] = useState<Blog | null>(null);
+  const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
+  const [showForm, setShowForm] = useState(false);
   const { toast } = useToast();
-  const { t } = useLanguage();
 
   const [formData, setFormData] = useState({
     title: '',
@@ -43,16 +50,16 @@ const BlogManagement = () => {
     content: '',
     image_url: '',
     category: '',
-    author: 'Rev Konstriksyon',
-    date: new Date().toLocaleDateString('fr-FR'),
-    read_time: '5 min',
+    author: '',
+    read_time: '',
+    published: true
   });
 
   useEffect(() => {
-    fetchBlogs();
+    fetchBlogPosts();
   }, []);
 
-  const fetchBlogs = async () => {
+  const fetchBlogPosts = async () => {
     try {
       const { data, error } = await supabase
         .from('blogs')
@@ -60,11 +67,12 @@ const BlogManagement = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setBlogs(data || []);
+      setBlogPosts(data || []);
     } catch (error) {
+      console.error('Error fetching blog posts:', error);
       toast({
         title: 'Erè',
-        description: 'Pa ka chaje blog yo.',
+        description: 'Pwoblèm nan chajman atik yo.',
         variant: 'destructive',
       });
     } finally {
@@ -75,76 +83,101 @@ const BlogManagement = () => {
   const generateSlug = (title: string) => {
     return title
       .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/[^a-z0-9\s]/g, '')
       .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
       .trim();
   };
 
-  const handleSave = async () => {
+  const resetForm = () => {
+    setFormData({
+      title: '',
+      excerpt: '',
+      content: '',
+      image_url: '',
+      category: '',
+      author: '',
+      read_time: '',
+      published: true
+    });
+    setEditingPost(null);
+    setShowForm(false);
+  };
+
+  const handleEdit = (post: BlogPost) => {
+    setFormData({
+      title: post.title,
+      excerpt: post.excerpt,
+      content: post.content,
+      image_url: post.image_url || '',
+      category: post.category,
+      author: post.author,
+      read_time: post.read_time,
+      published: post.published
+    });
+    setEditingPost(post);
+    setShowForm(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
     try {
       const slug = generateSlug(formData.title);
-      
-      if (editingBlog) {
+      const currentDate = new Date().toISOString().split('T')[0];
+
+      const blogData = {
+        title: formData.title,
+        excerpt: formData.excerpt,
+        content: formData.content,
+        image_url: formData.image_url || null,
+        category: formData.category,
+        author: formData.author,
+        date: currentDate,
+        read_time: formData.read_time,
+        slug: editingPost ? editingPost.slug : slug,
+        published: formData.published
+      };
+
+      if (editingPost) {
         const { error } = await supabase
           .from('blogs')
-          .update({
-            ...formData,
-            slug,
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', editingBlog.id);
+          .update(blogData)
+          .eq('id', editingPost.id);
 
         if (error) throw error;
-        toast({ title: 'Blog modifye ak siksè!' });
+        
+        toast({
+          title: 'Siksè',
+          description: 'Atik la modifye ak siksè.',
+        });
       } else {
         const { error } = await supabase
           .from('blogs')
-          .insert([{
-            ...formData,
-            slug,
-            published: false,
-          }]);
+          .insert([blogData]);
 
         if (error) throw error;
-        toast({ title: 'Blog kreye ak siksè!' });
+        
+        toast({
+          title: 'Siksè',
+          description: 'Nouvo atik la ajoute ak siksè.',
+        });
       }
 
-      fetchBlogs();
       resetForm();
-    } catch (error: any) {
+      fetchBlogPosts();
+    } catch (error) {
+      console.error('Error saving blog post:', error);
       toast({
         title: 'Erè',
-        description: error.message,
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const handlePublish = async (id: string, published: boolean) => {
-    try {
-      const { error } = await supabase
-        .from('blogs')
-        .update({ published: !published })
-        .eq('id', id);
-
-      if (error) throw error;
-      toast({
-        title: !published ? 'Blog pibliye!' : 'Blog pa pibliye ankò!',
-      });
-      fetchBlogs();
-    } catch (error: any) {
-      toast({
-        title: 'Erè',
-        description: error.message,
+        description: 'Pwoblèm nan anrejistre atik la.',
         variant: 'destructive',
       });
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Ou kwè ou vle efase blog sa a?')) return;
-
+    if (!confirm('Èske ou vle efase atik sa a?')) return;
+    
     try {
       const { error } = await supabase
         .from('blogs')
@@ -152,219 +185,197 @@ const BlogManagement = () => {
         .eq('id', id);
 
       if (error) throw error;
-      toast({ title: 'Blog efase ak siksè!' });
-      fetchBlogs();
-    } catch (error: any) {
+      
       toast({
-        title: 'Erè',
-        description: error.message,
-        variant: 'destructive',
+        title: 'Siksè',
+        description: 'Atik la efase ak siksè.',
       });
-    }
-  };
-
-  const startEdit = (blog: Blog) => {
-    setEditingBlog(blog);
-    setFormData({
-      title: blog.title,
-      excerpt: blog.excerpt,
-      content: blog.content,
-      image_url: blog.image_url || '',
-      category: blog.category,
-      author: blog.author,
-      date: blog.date,
-      read_time: blog.read_time,
-    });
-    setIsCreating(true);
-  };
-
-  const startTranslation = (blog: Blog) => {
-    setTranslatingBlog(blog);
-    setIsTranslating(true);
-  };
-
-  const handleSaveTranslations = async (translations: Record<string, any>) => {
-    if (!translatingBlog) return;
-
-    try {
-      const { error } = await supabase
-        .from('blogs')
-        .update(translations)
-        .eq('id', translatingBlog.id);
-
-      if (error) throw error;
-
-      toast({
-        title: 'Siksè!',
-        description: 'Tradiksyon yo konsève avèk siksè.',
-      });
-
-      setIsTranslating(false);
-      setTranslatingBlog(null);
-      fetchBlogs();
+      
+      fetchBlogPosts();
     } catch (error) {
+      console.error('Error deleting blog post:', error);
       toast({
         title: 'Erè',
-        description: 'Gen pwoblèm nan konsève tradiksyon yo.',
+        description: 'Pwoblèm nan efase atik la.',
         variant: 'destructive',
       });
     }
-  };
-
-  const resetForm = () => {
-    setEditingBlog(null);
-    setIsCreating(false);
-    setFormData({
-      title: '',
-      excerpt: '',
-      content: '',
-      image_url: '',
-      category: '',
-      author: 'Rev Konstriksyon',
-      date: new Date().toLocaleDateString('fr-FR'),
-      read_time: '5 min',
-    });
   };
 
   if (isLoading) {
-    return <div className="text-center py-8">Ap chaje blog yo...</div>;
+    return (
+      <div className="text-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+        <p className="mt-2 text-gray-600">Ap chaje atik yo...</p>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Blog Management</h2>
-        <Button onClick={() => setIsCreating(true)} className="flex items-center gap-2">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Jesyon Blog</h2>
+          <p className="text-gray-600">Jere atik blog yo ak rich text editor</p>
+        </div>
+        <Button 
+          onClick={() => setShowForm(true)}
+          className="flex items-center gap-2"
+        >
           <Plus className="w-4 h-4" />
-          Nouvo Blog
+          Ajoute Nouvo Atik
         </Button>
       </div>
 
-      {/* Create/Edit Form */}
-      {isCreating && (
+      {showForm && (
         <Card>
           <CardHeader>
-            <CardTitle>
-              {editingBlog ? 'Modifye Blog' : 'Nouvo Blog'}
-            </CardTitle>
+            <CardTitle>{editingPost ? 'Modifye Atik' : 'Nouvo Atik'}</CardTitle>
+            <CardDescription>
+              {editingPost ? 'Modifye enfòmasyon atik la' : 'Ajoute nouvo atik pou blog la'}
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Tit *</label>
+                  <Input
+                    type="text"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2">Kategori *</label>
+                  <Input
+                    type="text"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
+
               <div>
-                <Label htmlFor="title">Tit</Label>
-                <Input
-                  id="title"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Tit blog la"
+                <label className="block text-sm font-medium mb-2">Reziume (Excerpt) *</label>
+                <RichTextEditor
+                  content={formData.excerpt}
+                  onChange={(content) => setFormData({ ...formData, excerpt: content })}
+                  placeholder="Ekri yon kout reziume sou atik la..."
                 />
               </div>
+
               <div>
-                <Label htmlFor="category">Kategori</Label>
-                <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Chwazi kategori" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Konsèy Renovasyon">Konsèy Renovasyon</SelectItem>
-                    <SelectItem value="Teknoloji">Teknoloji</SelectItem>
-                    <SelectItem value="Design Interyè">Design Interyè</SelectItem>
-                    <SelectItem value="Konstriksyon">Konstriksyon</SelectItem>
-                  </SelectContent>
-                </Select>
+                <label className="block text-sm font-medium mb-2">Kontni Konplè *</label>
+                <RichTextEditor
+                  content={formData.content}
+                  onChange={(content) => setFormData({ ...formData, content: content })}
+                  placeholder="Ekri kontni konplè atik la ak tout fòmatting ou vle..."
+                />
               </div>
-            </div>
-            
-            <div>
-              <Label htmlFor="image_url">URL Imaj</Label>
-              <Input
-                id="image_url"
-                value={formData.image_url}
-                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                placeholder="https://..."
-              />
-            </div>
 
-            <div>
-              <Label htmlFor="excerpt">Rezime</Label>
-              <Textarea
-                id="excerpt"
-                value={formData.excerpt}
-                onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                placeholder="Yon kout deskripsyon blog la..."
-                rows={3}
-              />
-            </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Imaj (URL)</label>
+                  <Input
+                    type="url"
+                    value={formData.image_url}
+                    onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2">Otè *</label>
+                  <Input
+                    type="text"
+                    value={formData.author}
+                    onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
 
-            <div>
-              <Label htmlFor="content">Kontni</Label>
-              <Textarea
-                id="content"
-                value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                placeholder="Kontni konplè blog la..."
-                rows={10}
-              />
-            </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Tan Lekti (ex: 5 min) *</label>
+                  <Input
+                    type="text"
+                    value={formData.read_time}
+                    onChange={(e) => setFormData({ ...formData, read_time: e.target.value })}
+                    required
+                    placeholder="5 min"
+                  />
+                </div>
+                
+                <div className="flex items-center space-x-2 pt-6">
+                  <Switch
+                    checked={formData.published}
+                    onCheckedChange={(checked) => setFormData({ ...formData, published: checked })}
+                  />
+                  <label className="text-sm font-medium">Pibliye</label>
+                </div>
+              </div>
 
-            <div className="flex gap-2">
-              <Button onClick={handleSave} className="flex items-center gap-2">
-                <Save className="w-4 h-4" />
-                Sove
-              </Button>
-              <Button variant="outline" onClick={resetForm} className="flex items-center gap-2">
-                <X className="w-4 h-4" />
-                Anile
-              </Button>
-            </div>
+              <div className="flex gap-2">
+                <Button type="submit" className="flex items-center gap-2">
+                  <Save className="w-4 h-4" />
+                  {editingPost ? 'Modifye' : 'Ajoute'}
+                </Button>
+                <Button type="button" variant="outline" onClick={resetForm}>
+                  <X className="w-4 h-4" />
+                  Anile
+                </Button>
+              </div>
+            </form>
           </CardContent>
         </Card>
       )}
 
-      {/* Blogs List */}
       <div className="grid gap-4">
-        {blogs.map((blog) => (
-          <Card key={blog.id}>
-            <CardContent className="p-6">
-              <div className="flex justify-between items-start">
+        {blogPosts.map((post) => (
+          <Card key={post.id}>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-4">
+                {post.image_url && (
+                  <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                    <img
+                      src={post.image_url}
+                      alt={post.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="text-lg font-semibold">{blog.title}</h3>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      blog.published 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-yellow-100 text-yellow-800'
+                  <h3 className="font-semibold text-lg">{post.title}</h3>
+                  <p className="text-gray-600 text-sm">{post.category} • {post.author}</p>
+                  <p className="text-gray-500 text-sm">{post.date} • {post.read_time}</p>
+                  <div className="mt-2">
+                    <span className={`inline-block px-2 py-1 rounded-full text-xs ${
+                      post.published ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
-                      {blog.published ? 'Pibliye' : 'Draf'}
+                      {post.published ? 'Pibliye' : 'Pa Pibliye'}
                     </span>
                   </div>
-                  <p className="text-gray-600 text-sm mb-2">{blog.excerpt}</p>
-                  <div className="flex gap-4 text-sm text-gray-500">
-                    <span>{blog.category}</span>
-                    <span>{blog.date}</span>
-                    <span>{blog.read_time}</span>
-                  </div>
                 </div>
-                <div className="flex gap-2 ml-4">
+                
+                <div className="flex items-center gap-2">
                   <Button
+                    variant="outline"
                     size="sm"
-                    variant={blog.published ? "destructive" : "default"}
-                    onClick={() => handlePublish(blog.id, blog.published)}
+                    onClick={() => handleEdit(post)}
                   >
-                    {blog.published ? 'Pa pibliye' : 'Pibliye'}
-                  </Button>
-                  <Button size="sm" variant="outline" onClick={() => startEdit(blog)}>
                     <Edit className="w-4 h-4" />
                   </Button>
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    onClick={() => startTranslation(blog)}
-                    title="Modifye tradiksyon"
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleDelete(post.id)}
                   >
-                    <Globe className="w-4 h-4" />
-                  </Button>
-                  <Button size="sm" variant="destructive" onClick={() => handleDelete(blog.id)}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
@@ -374,37 +385,16 @@ const BlogManagement = () => {
         ))}
       </div>
 
-      {blogs.length === 0 && (
+      {blogPosts.length === 0 && (
         <Card>
-          <CardContent className="text-center py-8">
-            <p className="text-gray-500">Pa gen blog ankò. Kòmanse kreye premye blog ou a!</p>
+          <CardContent className="p-8 text-center">
+            <p className="text-gray-500 mb-4">Pa gen atik ankò</p>
+            <Button onClick={() => setShowForm(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              Ajoute Premye Atik Ou A
+            </Button>
           </CardContent>
         </Card>
-      )}
-
-      {/* Translation Modal */}
-      {isTranslating && translatingBlog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <TranslationForm
-              title={`Tradiksyon pou: ${translatingBlog.title}`}
-              description="Ajoute tradiksyon yo nan 3 lang yo: Kreyòl Ayisyen, Français, ak English"
-              initialData={translatingBlog}
-              fields={[
-                { key: 'title', label: 'Tit', type: 'text', required: true },
-                { key: 'excerpt', label: 'Egzètè', type: 'textarea', required: true },
-                { key: 'content', label: 'Kontni', type: 'textarea', required: true },
-                { key: 'category', label: 'Kategori', type: 'text', required: true },
-                { key: 'author', label: 'Otè', type: 'text', required: true },
-              ]}
-              onSave={handleSaveTranslations}
-              onCancel={() => {
-                setIsTranslating(false);
-                setTranslatingBlog(null);
-              }}
-            />
-          </div>
-        </div>
       )}
     </div>
   );

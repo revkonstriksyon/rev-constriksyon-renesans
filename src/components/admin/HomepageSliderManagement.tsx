@@ -43,7 +43,25 @@ const HomepageSliderManagement = () => {
         .order('order_position', { ascending: true });
 
       if (error) throw error;
-      setSliderItems(data || []);
+      
+      // Transform data to match SliderItem interface
+      const transformedData: SliderItem[] = (data || []).map(item => ({
+        id: item.id,
+        title: item.title,
+        subtitle: item.subtitle,
+        main_image_url: item.main_image_url,
+        video_url: item.video_url,
+        thumbnail_url: item.thumbnail_url,
+        description: item.description,
+        category: item.category,
+        tags: item.tags || [],
+        link_url: item.link_url,
+        button_text: item.button_text,
+        order_position: item.order_position || 0,
+        is_active: item.is_active || false
+      }));
+      
+      setSliderItems(transformedData);
     } catch (error) {
       console.error('Error fetching slider items:', error);
       toast({
@@ -348,12 +366,13 @@ const HomepageSliderManagement = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Tèks Bouton</label>
+                  <label className="block text-sm font-medium mb-2">Tèks Bouton *</label>
                   <Input
                     type="text"
                     value={formData.button_text}
                     onChange={(e) => setFormData({ ...formData, button_text: e.target.value })}
-                    placeholder="Gade Pwojè Sa A"
+                    placeholder="Eksplore Solisyon A"
+                    required
                   />
                 </div>
               </div>

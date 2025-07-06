@@ -95,6 +95,7 @@ export type Database = {
       }
       homepage_slider: {
         Row: {
+          button_text: string | null
           category: string | null
           created_at: string
           description: string | null
@@ -111,6 +112,7 @@ export type Database = {
           video_url: string | null
         }
         Insert: {
+          button_text?: string | null
           category?: string | null
           created_at?: string
           description?: string | null
@@ -127,6 +129,7 @@ export type Database = {
           video_url?: string | null
         }
         Update: {
+          button_text?: string | null
           category?: string | null
           created_at?: string
           description?: string | null
