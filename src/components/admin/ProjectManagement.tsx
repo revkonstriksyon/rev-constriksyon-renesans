@@ -7,8 +7,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, Edit, Trash2, Save, X, Image, Video } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import RichTextEditor from '@/components/ui/rich-text-editor';
 
 interface Project {
   id: string;
@@ -35,6 +37,7 @@ interface Project {
 
 const ProjectManagement = () => {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -62,6 +65,7 @@ const ProjectManagement = () => {
 
   useEffect(() => {
     fetchProjects();
+    fetchCategories();
   }, []);
 
   const fetchProjects = async () => {
@@ -81,6 +85,22 @@ const ProjectManagement = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('category')
+        .not('category', 'is', null);
+
+      if (error) throw error;
+      
+      const uniqueCategories = [...new Set(data?.map(item => item.category).filter(Boolean))];
+      setCategories(uniqueCategories);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
     }
   };
 
@@ -114,6 +134,7 @@ const ProjectManagement = () => {
       }
 
       fetchProjects();
+      fetchCategories();
       resetForm();
     } catch (error: any) {
       toast({
@@ -287,243 +308,259 @@ const ProjectManagement = () => {
               {editingProject ? 'Modifye Pwojè' : 'Nouvo Pwojè'}
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Basic Info */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="title">Tit Pwojè</Label>
-                <Input
-                  id="title"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Tit pwojè a"
-                />
-              </div>
-              <div>
-                <Label htmlFor="slug">Slug (URL)</Label>
-                <Input
-                  id="slug"
-                  value={formData.slug}
-                  onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                  placeholder="pwoje-kay-modern (optional - ap kreye otomatikman)"
-                />
-              </div>
-            </div>
+          <CardContent>
+            <Tabs defaultValue="basic" className="w-full">
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="basic">Enfòmasyon</TabsTrigger>
+                <TabsTrigger value="content">Kontni</TabsTrigger>
+                <TabsTrigger value="media">Medya</TabsTrigger>
+                <TabsTrigger value="seo">SEO</TabsTrigger>
+              </TabsList>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <Label htmlFor="project_type">Tip Pwojè</Label>
-                <Select value={formData.project_type} onValueChange={(value: 'reyalize' | 'an-kour' | 'planifye' | 'konsèp') => setFormData({ ...formData, project_type: value })}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Chwazi tip" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="reyalize">Reyalize</SelectItem>
-                    <SelectItem value="an-kour">An Kour</SelectItem>
-                    <SelectItem value="planifye">Planifye</SelectItem>
-                    <SelectItem value="konsèp">Konsèp</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="category">Kategori</Label>
-                <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Chwazi kategori" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Construction Neuve">Construction Neuve</SelectItem>
-                    <SelectItem value="Rénovation">Rénovation</SelectItem>
-                    <SelectItem value="Extension">Extension</SelectItem>
-                    <SelectItem value="Construction Verte">Construction Verte</SelectItem>
-                    <SelectItem value="Rénovation Premium">Rénovation Premium</SelectItem>
-                    <SelectItem value="Commercial">Commercial</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="featured"
-                  checked={formData.featured}
-                  onCheckedChange={(checked) => setFormData({ ...formData, featured: checked })}
-                />
-                <Label htmlFor="featured">Featured (parèt sou paj akey la)</Label>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="location">Kote</Label>
-                <Input
-                  id="location"
-                  value={formData.location}
-                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  placeholder="Kote pwojè a ye"
-                />
-              </div>
-              <div>
-                <Label htmlFor="date">Dat</Label>
-                <Input
-                  id="date"
-                  value={formData.date}
-                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  placeholder="2024"
-                />
-              </div>
-            </div>
-
-            {/* Meta fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="meta_title">Meta Title (SEO)</Label>
-                <Input
-                  id="meta_title"
-                  value={formData.meta_title}
-                  onChange={(e) => setFormData({ ...formData, meta_title: e.target.value })}
-                  placeholder="Tit pou motè rechèch yo"
-                />
-              </div>
-              <div>
-                <Label htmlFor="meta_description">Meta Description (SEO)</Label>
-                <Input
-                  id="meta_description"
-                  value={formData.meta_description}
-                  onChange={(e) => setFormData({ ...formData, meta_description: e.target.value })}
-                  placeholder="Deskripsyon pou motè rechèch yo"
-                />
-              </div>
-            </div>
-
-            {/* Images Section */}
-            <div className="space-y-4">
-              <h3 className="font-semibold flex items-center gap-2">
-                <Image className="w-4 h-4" />
-                Imaj yo
-              </h3>
-              
-              {/* Single main image */}
-              <div>
-                <Label htmlFor="image_url">URL Imaj Prensipal</Label>
-                <Input
-                  id="image_url"
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  placeholder="https://..."
-                />
-              </div>
-
-              {/* Before/After images */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="before_image_url">URL Imaj Avan</Label>
-                  <Input
-                    id="before_image_url"
-                    value={formData.before_image_url}
-                    onChange={(e) => setFormData({ ...formData, before_image_url: e.target.value })}
-                    placeholder="https://..."
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="after_image_url">URL Imaj Apre</Label>
-                  <Input
-                    id="after_image_url"
-                    value={formData.after_image_url}
-                    onChange={(e) => setFormData({ ...formData, after_image_url: e.target.value })}
-                    placeholder="https://..."
-                  />
-                </div>
-              </div>
-
-              {/* Gallery images */}
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <Label>Galri Imaj</Label>
-                  <Button type="button" variant="outline" size="sm" onClick={addImageField}>
-                    <Plus className="w-4 h-4 mr-1" />
-                    Ajoute Imaj
-                  </Button>
-                </div>
-                {formData.images.map((image, index) => (
-                  <div key={index} className="flex gap-2 mb-2">
+              <TabsContent value="basic" className="space-y-6">
+                {/* Basic Info */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="title">Tit Pwojè</Label>
                     <Input
-                      value={image}
-                      onChange={(e) => updateImage(index, e.target.value)}
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      placeholder="Tit pwojè a"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="slug">Slug (URL)</Label>
+                    <Input
+                      id="slug"
+                      value={formData.slug}
+                      onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                      placeholder="pwoje-kay-modern (optional - ap kreye otomatikman)"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <Label htmlFor="project_type">Tip Pwojè</Label>
+                    <Select value={formData.project_type} onValueChange={(value: 'reyalize' | 'an-kour' | 'planifye' | 'konsèp') => setFormData({ ...formData, project_type: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Chwazi tip" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="reyalize">Reyalize</SelectItem>
+                        <SelectItem value="an-kour">An Kour</SelectItem>
+                        <SelectItem value="planifye">Planifye</SelectItem>
+                        <SelectItem value="konsèp">Konsèp</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="category">Kategori</Label>
+                    <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Chwazi kategori" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map((cat) => (
+                          <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                        ))}
+                        <SelectItem value="Construction Neuve">Construction Neuve</SelectItem>
+                        <SelectItem value="Rénovation">Rénovation</SelectItem>
+                        <SelectItem value="Extension">Extension</SelectItem>
+                        <SelectItem value="Construction Verte">Construction Verte</SelectItem>
+                        <SelectItem value="Rénovation Premium">Rénovation Premium</SelectItem>
+                        <SelectItem value="Commercial">Commercial</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="featured"
+                      checked={formData.featured}
+                      onCheckedChange={(checked) => setFormData({ ...formData, featured: checked })}
+                    />
+                    <Label htmlFor="featured">Featured (parèt sou paj akey la)</Label>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="location">Kote</Label>
+                    <Input
+                      id="location"
+                      value={formData.location}
+                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                      placeholder="Kote pwojè a ye"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="date">Dat</Label>
+                    <Input
+                      id="date"
+                      value={formData.date}
+                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                      placeholder="2024"
+                    />
+                  </div>
+                </div>
+
+                {/* Tags Section */}
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <Label>Tags</Label>
+                    <Button type="button" variant="outline" size="sm" onClick={addTagField}>
+                      <Plus className="w-4 h-4 mr-1" />
+                      Ajoute Tag
+                    </Button>
+                  </div>
+                  {formData.tags.map((tag, index) => (
+                    <div key={index} className="flex gap-2 mb-2">
+                      <Input
+                        value={tag}
+                        onChange={(e) => updateTag(index, e.target.value)}
+                        placeholder="modern, pisin, depo, etc."
+                      />
+                      {formData.tags.length > 1 && (
+                        <Button type="button" variant="outline" size="sm" onClick={() => removeTag(index)}>
+                          <X className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="content" className="space-y-6">
+                {/* Description */}
+                <div>
+                  <Label htmlFor="description">Deskripsyon Kout</Label>
+                  <RichTextEditor
+                    content={formData.description}
+                    onChange={(content) => setFormData({ ...formData, description: content })}
+                    placeholder="Deskripsyon kout pwojè a..."
+                  />
+                </div>
+
+                {/* Content */}
+                <div>
+                  <Label htmlFor="content">Kontni Konplè (pou paj detay la)</Label>
+                  <RichTextEditor
+                    content={formData.content}
+                    onChange={(content) => setFormData({ ...formData, content: content })}
+                    placeholder="Kontni konplè pwojè a..."
+                  />
+                </div>
+              </TabsContent>
+
+              <TabsContent value="media" className="space-y-6">
+                {/* Images Section */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <Image className="w-4 h-4" />
+                    Imaj yo
+                  </h3>
+                  
+                  {/* Single main image */}
+                  <div>
+                    <Label htmlFor="image_url">URL Imaj Prensipal</Label>
+                    <Input
+                      id="image_url"
+                      value={formData.image_url}
+                      onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                       placeholder="https://..."
                     />
-                    {formData.images.length > 1 && (
-                      <Button type="button" variant="outline" size="sm" onClick={() => removeImage(index)}>
-                        <X className="w-4 h-4" />
-                      </Button>
-                    )}
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Video Section */}
-            <div>
-              <Label htmlFor="video_url" className="flex items-center gap-2">
-                <Video className="w-4 h-4" />
-                URL Videyo (opsyonèl)
-              </Label>
-              <Input
-                id="video_url"
-                value={formData.video_url}
-                onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
-                placeholder="https://youtube.com/... oswa https://vimeo.com/..."
-              />
-            </div>
+                  {/* Before/After images */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="before_image_url">URL Imaj Avan</Label>
+                      <Input
+                        id="before_image_url"
+                        value={formData.before_image_url}
+                        onChange={(e) => setFormData({ ...formData, before_image_url: e.target.value })}
+                        placeholder="https://..."
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="after_image_url">URL Imaj Apre</Label>
+                      <Input
+                        id="after_image_url"
+                        value={formData.after_image_url}
+                        onChange={(e) => setFormData({ ...formData, after_image_url: e.target.value })}
+                        placeholder="https://..."
+                      />
+                    </div>
+                  </div>
 
-            {/* Tags Section */}
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <Label>Tags</Label>
-                <Button type="button" variant="outline" size="sm" onClick={addTagField}>
-                  <Plus className="w-4 h-4 mr-1" />
-                  Ajoute Tag
-                </Button>
-              </div>
-              {formData.tags.map((tag, index) => (
-                <div key={index} className="flex gap-2 mb-2">
-                  <Input
-                    value={tag}
-                    onChange={(e) => updateTag(index, e.target.value)}
-                    placeholder="modern, pisin, depo, etc."
-                  />
-                  {formData.tags.length > 1 && (
-                    <Button type="button" variant="outline" size="sm" onClick={() => removeTag(index)}>
-                      <X className="w-4 h-4" />
-                    </Button>
-                  )}
+                  {/* Gallery images */}
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <Label>Galri Imaj</Label>
+                      <Button type="button" variant="outline" size="sm" onClick={addImageField}>
+                        <Plus className="w-4 h-4 mr-1" />
+                        Ajoute Imaj
+                      </Button>
+                    </div>
+                    {formData.images.map((image, index) => (
+                      <div key={index} className="flex gap-2 mb-2">
+                        <Input
+                          value={image}
+                          onChange={(e) => updateImage(index, e.target.value)}
+                          placeholder="https://..."
+                        />
+                        {formData.images.length > 1 && (
+                          <Button type="button" variant="outline" size="sm" onClick={() => removeImage(index)}>
+                            <X className="w-4 h-4" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
-            </div>
 
-            {/* Description */}
-            <div>
-              <Label htmlFor="description">Deskripsyon Kout</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Deskripsyon kout pwojè a..."
-                rows={3}
-              />
-            </div>
+                {/* Video Section */}
+                <div>
+                  <Label htmlFor="video_url" className="flex items-center gap-2">
+                    <Video className="w-4 h-4" />
+                    URL Videyo (opsyonèl)
+                  </Label>
+                  <Input
+                    id="video_url"
+                    value={formData.video_url}
+                    onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
+                    placeholder="https://youtube.com/... oswa https://vimeo.com/..."
+                  />
+                </div>
+              </TabsContent>
 
-            {/* Content */}
-            <div>
-              <Label htmlFor="content">Kontni Konplè (pou paj detay la)</Label>
-              <Textarea
-                id="content"
-                value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                placeholder="Kontni konplè pwojè a..."
-                rows={6}
-              />
-            </div>
+              <TabsContent value="seo" className="space-y-6">
+                {/* Meta fields */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="meta_title">Meta Title (SEO)</Label>
+                    <Input
+                      id="meta_title"
+                      value={formData.meta_title}
+                      onChange={(e) => setFormData({ ...formData, meta_title: e.target.value })}
+                      placeholder="Tit pou motè rechèch yo"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="meta_description">Meta Description (SEO)</Label>
+                    <Input
+                      id="meta_description"
+                      value={formData.meta_description}
+                      onChange={(e) => setFormData({ ...formData, meta_description: e.target.value })}
+                      placeholder="Deskripsyon pou motè rechèch yo"
+                    />
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 mt-6">
               <Button onClick={handleSave} className="flex items-center gap-2">
                 <Save className="w-4 h-4" />
                 Sove
@@ -572,7 +609,7 @@ const ProjectManagement = () => {
                       </span>
                     )}
                   </div>
-                  <p className="text-gray-600 text-sm mb-2 line-clamp-2">{project.description}</p>
+                  <div className="text-gray-600 text-sm mb-2 line-clamp-2" dangerouslySetInnerHTML={{ __html: project.description }} />
                   <div className="flex gap-4 text-sm text-gray-500 mb-2">
                     <span>{project.category}</span>
                     <span>{project.location}</span>

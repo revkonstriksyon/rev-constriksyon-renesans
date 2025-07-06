@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEOManager from '@/components/SEO/SEOManager';
-import { ArrowLeft, Calendar, MapPin, Tag, ExternalLink, Play, ChevronLeft, ChevronRight, X, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Tag, ExternalLink, Play, ChevronLeft, ChevronRight, X, MessageCircle, Phone, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
   Breadcrumb,
@@ -217,9 +217,22 @@ const ProjectDetailPage = () => {
                 <div className="bg-gradient-to-r from-secondary to-secondary/50 rounded-3xl p-8 mb-12 animate-fade-in">
                   <div 
                     className="project-content prose prose-lg max-w-none
-                      prose-p:text-gray-700 prose-p:leading-relaxed prose-p:text-justify prose-p:mb-4 prose-p:text-xl
+                      prose-headings:text-gray-900 prose-headings:font-bold prose-headings:mb-6 prose-headings:mt-8
+                      prose-h1:text-3xl prose-h1:mb-8 prose-h1:mt-10 prose-h1:text-primary prose-h1:border-b prose-h1:border-gray-200 prose-h1:pb-4
+                      prose-h2:text-2xl prose-h2:mb-6 prose-h2:mt-8 prose-h2:text-primary
+                      prose-h3:text-xl prose-h3:mb-4 prose-h3:mt-6 prose-h3:text-gray-800
+                      prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6 prose-p:text-justify prose-p:text-xl
+                      prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-a:transition-all
                       prose-strong:text-gray-900 prose-strong:font-semibold
-                      prose-em:text-gray-800 prose-em:italic"
+                      prose-em:text-gray-800 prose-em:italic
+                      prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-gray-50 
+                      prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic 
+                      prose-blockquote:text-gray-700 prose-blockquote:font-medium prose-blockquote:shadow-sm
+                      prose-ul:space-y-3 prose-ol:space-y-3 prose-ul:my-6 prose-ol:my-6
+                      prose-li:text-gray-700 prose-li:leading-relaxed prose-li:marker:text-primary
+                      prose-img:rounded-lg prose-img:shadow-md prose-img:my-8
+                      prose-hr:border-gray-200 prose-hr:my-8
+                      first:prose-p:mt-0 last:prose-p:mb-0"
                     dangerouslySetInnerHTML={{ __html: project.description }}
                   />
                 </div>
@@ -403,7 +416,7 @@ const ProjectDetailPage = () => {
             </section>
           )}
 
-          {/* CTA Section */}
+          {/* Enhanced Contact Section */}
           <section className="py-20 bg-gradient-to-r from-primary to-accent text-white">
             <div className="container mx-auto px-4 text-center">
               <h2 className="font-poppins font-bold text-3xl md:text-4xl mb-6">
@@ -413,22 +426,29 @@ const ProjectDetailPage = () => {
                 Ann diskite sou pwojè ou a ak ekip Rev Konstriksyon. Nou la pou ede w reyalize rèv ou yo ak menm nivo kalite.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Link
-                  to="/contact"
-                  className="bg-white hover:bg-gray-100 text-primary px-10 py-5 rounded-xl font-inter font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 inline-flex items-center justify-center gap-3"
-                >
-                  <MessageCircle className="w-6 h-6" />
-                  Diskite Pwojè Ou A
-                </Link>
                 <a
-                  href="https://wa.me/50934567890"
+                  href="https://wa.me/50947624431"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-green-600 hover:bg-green-700 text-white px-10 py-5 rounded-xl font-inter font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 inline-flex items-center justify-center gap-3"
                 >
-                  <ExternalLink className="w-6 h-6" />
+                  <Phone className="w-6 h-6" />
                   WhatsApp
                 </a>
+                <a
+                  href="mailto:revkonstriksyon@gmail.com"
+                  className="bg-white hover:bg-gray-100 text-primary px-10 py-5 rounded-xl font-inter font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 inline-flex items-center justify-center gap-3"
+                >
+                  <Mail className="w-6 h-6" />
+                  Email
+                </a>
+                <Link
+                  to="/contact"
+                  className="bg-secondary hover:bg-secondary/90 text-white px-10 py-5 rounded-xl font-inter font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 inline-flex items-center justify-center gap-3"
+                >
+                  <MessageCircle className="w-6 h-6" />
+                  Diskite Pwojè Ou A
+                </Link>
               </div>
             </div>
           </section>

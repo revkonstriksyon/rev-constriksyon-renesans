@@ -1,5 +1,5 @@
 
-import { Phone, Mail, MapPin, Facebook, Instagram } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
 import { useContactInfo } from '@/hooks/useContactInfo';
 import { useStaticContent } from '@/hooks/useStaticContent';
 import { useFooterServices } from '@/hooks/useFooterServices';
@@ -19,6 +19,12 @@ const Footer = () => {
       </footer>
     );
   }
+
+  const TikTokIcon = () => (
+    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19.321 5.562a5.124 5.124 0 01-.443-.258 6.228 6.228 0 01-1.137-.966c-.849-.93-1.4-2.16-1.4-3.538v-.364C16.341.436 15.905 0 15.369 0h-2.454c-.536 0-.972.436-.972.972v10.024c0 1.696-1.377 3.072-3.072 3.072s-3.072-1.377-3.072-3.072 1.377-3.072 3.072-3.072c.169 0 .336.014.5.04V5.506c-.164-.026-.331-.04-.5-.04-3.632 0-6.576 2.944-6.576 6.576s2.944 6.576 6.576 6.576 6.576-2.944 6.576-6.576V8.851c1.035.606 2.23.951 3.497.951v-3.503c-.65 0-1.266-.137-1.823-.387-.557-.25-1.057-.607-1.448-1.05z"/>
+    </svg>
+  );
 
   return (
     <footer className="bg-black text-white">
@@ -41,42 +47,46 @@ const Footer = () => {
               Nou konstwi rèv ou yo ak ekspètiz, presizyon ak pasyon. Chak pwojè gen pwòp istwa li, chak detay gen valè li.
             </p>
             <div className="flex space-x-4">
-              <a 
-                href="https://www.facebook.com/revkonstriksyon" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://www.instagram.com/revkonstriksyon" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://www.tiktok.com/@revkonstriksyon" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
-              >
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.321 5.562a5.124 5.124 0 01-.443-.258 6.228 6.228 0 01-1.137-.966c-.849-.93-1.4-2.16-1.4-3.538v-.364C16.341.436 15.905 0 15.369 0h-2.454c-.536 0-.972.436-.972.972v10.024c0 1.696-1.377 3.072-3.072 3.072s-3.072-1.377-3.072-3.072 1.377-3.072 3.072-3.072c.169 0 .336.014.5.04V5.506c-.164-.026-.331-.04-.5-.04-3.632 0-6.576 2.944-6.576 6.576s2.944 6.576 6.576 6.576 6.576-2.944 6.576-6.576V8.851c1.035.606 2.23.951 3.497.951v-3.503c-.65 0-1.266-.137-1.823-.387-.557-.25-1.057-.607-1.448-1.05z"/>
-                </svg>
-              </a>
-              <a 
-                href="https://www.youtube.com/@revkonstriksyon" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
-              >
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-              </a>
+              {contactInfo.social_facebook && (
+                <a 
+                  href={contactInfo.social_facebook} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
+                >
+                  <Facebook className="w-5 h-5" />
+                </a>
+              )}
+              {contactInfo.social_instagram && (
+                <a 
+                  href={contactInfo.social_instagram} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
+                >
+                  <Instagram className="w-5 h-5" />
+                </a>
+              )}
+              {contactInfo.social_tiktok && (
+                <a 
+                  href={contactInfo.social_tiktok} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
+                >
+                  <TikTokIcon />
+                </a>
+              )}
+              {contactInfo.social_youtube && (
+                <a 
+                  href={contactInfo.social_youtube} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-accent transition-colors duration-300"
+                >
+                  <Youtube className="w-5 h-5" />
+                </a>
+              )}
             </div>
           </div>
 
@@ -125,23 +135,23 @@ const Footer = () => {
               <div className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-accent" />
                 <div>
-                  <a href="tel:+50947624431" className="hover:text-accent transition-colors">
-                    +509 4762 4431
+                  <a href={`tel:${contactInfo.contact_phone_1 || '+50947624431'}`} className="hover:text-accent transition-colors">
+                    {contactInfo.contact_phone_1 || '+509 4762 4431'}
                   </a>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-accent" />
                 <div>
-                  <a href="mailto:revkonstriksyon@gmail.com" className="hover:text-accent transition-colors">
-                    revkonstriksyon@gmail.com
+                  <a href={`mailto:${contactInfo.contact_email_1 || 'revkonstriksyon@gmail.com'}`} className="hover:text-accent transition-colors">
+                    {contactInfo.contact_email_1 || 'revkonstriksyon@gmail.com'}
                   </a>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-accent mt-1" />
                 <div>
-                  <p>Pòtoprens ak anviwon yo, Ayiti</p>
+                  <p>{contactInfo.contact_address || 'Pòtoprens ak anviwon yo, Ayiti'}</p>
                 </div>
               </div>
             </div>
