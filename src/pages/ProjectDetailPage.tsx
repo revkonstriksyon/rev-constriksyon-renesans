@@ -1,4 +1,3 @@
-
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -65,6 +64,29 @@ const ProjectDetailPage = () => {
 
     fetchProject();
   }, [slug]);
+
+  useEffect(() => {
+    // Smooth scroll animations for project content
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fade-in-up');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observe project content elements
+    const elements = document.querySelectorAll('.project-content p, .project-content h1, .project-content h2, .project-content h3, .project-content blockquote, .project-content ul, .project-content ol');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [project]);
 
   if (isLoading) {
     return (
@@ -193,9 +215,13 @@ const ProjectDetailPage = () => {
                 </h1>
 
                 <div className="bg-gradient-to-r from-secondary to-secondary/50 rounded-3xl p-8 mb-12 animate-fade-in">
-                  <p className="font-inter text-xl md:text-2xl text-gray-700 leading-relaxed">
-                    {project.description}
-                  </p>
+                  <div 
+                    className="project-content prose prose-lg max-w-none
+                      prose-p:text-gray-700 prose-p:leading-relaxed prose-p:text-justify prose-p:mb-4 prose-p:text-xl
+                      prose-strong:text-gray-900 prose-strong:font-semibold
+                      prose-em:text-gray-800 prose-em:italic"
+                    dangerouslySetInnerHTML={{ __html: project.description }}
+                  />
                 </div>
 
                 <div className="flex flex-wrap items-center gap-8 text-gray-600 mb-12 animate-fade-in">
@@ -246,7 +272,6 @@ const ProjectDetailPage = () => {
             <section className="py-16 bg-gray-100">
               <div className="container mx-auto px-4">
                 <div className="max-w-7xl mx-auto">
-                  {/* Main Image */}
                   <div className="relative mb-10">
                     <div 
                       className="aspect-video bg-white rounded-3xl overflow-hidden shadow-2xl cursor-pointer"
@@ -266,7 +291,6 @@ const ProjectDetailPage = () => {
                       )}
                     </div>
                     
-                    {/* Navigation arrows */}
                     {allImages.length > 1 && (
                       <>
                         <button
@@ -285,7 +309,6 @@ const ProjectDetailPage = () => {
                     )}
                   </div>
 
-                  {/* Thumbnail Gallery */}
                   {allImages.length > 1 && (
                     <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
                       {allImages.map((image, index) => (
@@ -354,13 +377,26 @@ const ProjectDetailPage = () => {
                 <div className="max-w-4xl mx-auto">
                   <div className="bg-white rounded-3xl p-12 shadow-xl">
                     <h2 className="font-poppins font-bold text-2xl text-primary mb-8">Detay Pwojè a</h2>
-                    <div className="prose prose-lg max-w-none">
-                      {project.content.split('\n').map((paragraph, index) => (
-                        <p key={index} className="font-inter text-gray-700 mb-6 leading-relaxed text-lg">
-                          {paragraph}
-                        </p>
-                      ))}
-                    </div>
+                    <div 
+                      className="project-content prose prose-lg max-w-none
+                        prose-headings:text-gray-900 prose-headings:font-bold prose-headings:mb-6 prose-headings:mt-8
+                        prose-h1:text-3xl prose-h1:mb-8 prose-h1:mt-10 prose-h1:text-primary prose-h1:border-b prose-h1:border-gray-200 prose-h1:pb-4
+                        prose-h2:text-2xl prose-h2:mb-6 prose-h2:mt-8 prose-h2:text-primary
+                        prose-h3:text-xl prose-h3:mb-4 prose-h3:mt-6 prose-h3:text-gray-800
+                        prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6 prose-p:text-justify prose-p:text-base
+                        prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-a:transition-all
+                        prose-strong:text-gray-900 prose-strong:font-semibold
+                        prose-em:text-gray-800 prose-em:italic
+                        prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-gray-50 
+                        prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic 
+                        prose-blockquote:text-gray-700 prose-blockquote:font-medium prose-blockquote:shadow-sm
+                        prose-ul:space-y-3 prose-ol:space-y-3 prose-ul:my-6 prose-ol:my-6
+                        prose-li:text-gray-700 prose-li:leading-relaxed prose-li:marker:text-primary
+                        prose-img:rounded-lg prose-img:shadow-md prose-img:my-8
+                        prose-hr:border-gray-200 prose-hr:my-8
+                        first:prose-p:mt-0 last:prose-p:mb-0"
+                      dangerouslySetInnerHTML={{ __html: project.content }}
+                    />
                   </div>
                 </div>
               </div>
@@ -436,6 +472,114 @@ const ProjectDetailPage = () => {
         )}
 
         <Footer />
+
+        <style>
+          {`
+            @keyframes fadeInUp {
+              from {
+                opacity: 0;
+                transform: translateY(30px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+            
+            .animate-fade-in-up {
+              animation: fadeInUp 0.6s ease-out forwards;
+            }
+            
+            .project-content > * {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            
+            /* Enhanced typography and spacing for project content */
+            .project-content p {
+              text-align: justify;
+              margin-bottom: 1.5rem;
+              line-height: 1.8;
+              color: #374151;
+              font-size: 1rem;
+              padding: 0 1rem;
+            }
+            
+            .project-content h1, .project-content h2, .project-content h3 {
+              margin-top: 2.5rem;
+              margin-bottom: 1.5rem;
+              font-weight: 700;
+              padding: 0 1rem;
+            }
+            
+            .project-content h1 {
+              color: hsl(var(--primary));
+              border-bottom: 2px solid #e5e7eb;
+              padding-bottom: 1rem;
+            }
+            
+            .project-content h2 {
+              color: hsl(var(--primary));
+            }
+            
+            .project-content ul, .project-content ol {
+              padding-left: 2rem;
+              margin: 1.5rem 0;
+            }
+            
+            .project-content li {
+              margin-bottom: 0.75rem;
+              line-height: 1.7;
+              color: #374151;
+            }
+            
+            .project-content li::marker {
+              color: hsl(var(--primary));
+              font-weight: 600;
+            }
+            
+            .project-content blockquote {
+              background: #f9fafb;
+              border-left: 4px solid hsl(var(--primary));
+              padding: 1.5rem;
+              margin: 2rem 1rem;
+              border-radius: 0 8px 8px 0;
+              box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+            
+            .project-content a {
+              color: hsl(var(--primary));
+              font-weight: 500;
+              transition: all 0.2s ease;
+            }
+            
+            .project-content a:hover {
+              text-decoration: underline;
+              color: hsl(var(--accent));
+            }
+            
+            .project-content img {
+              margin: 2rem auto;
+              border-radius: 8px;
+              box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            
+            .project-content hr {
+              margin: 2.5rem 0;
+              border-color: #e5e7eb;
+            }
+            
+            @media (max-width: 768px) {
+              .project-content p, .project-content h1, .project-content h2, .project-content h3 {
+                padding: 0 0.5rem;
+              }
+              
+              .project-content blockquote {
+                margin: 2rem 0.5rem;
+              }
+            }
+          `}
+        </style>
       </div>
     </>
   );

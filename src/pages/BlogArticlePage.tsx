@@ -221,19 +221,22 @@ const BlogArticlePage = () => {
           <div className="bg-white rounded-2xl p-8 shadow-sm">
             <div 
               className="blog-content prose prose-lg max-w-none
-                prose-headings:text-gray-900 prose-headings:font-bold
-                prose-h1:text-3xl prose-h1:mb-6 prose-h1:mt-8
-                prose-h2:text-2xl prose-h2:mb-4 prose-h2:mt-8 prose-h2:text-primary
-                prose-h3:text-xl prose-h3:mb-3 prose-h3:mt-6
-                prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6
-                prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                prose-headings:text-gray-900 prose-headings:font-bold prose-headings:mb-6 prose-headings:mt-8
+                prose-h1:text-3xl prose-h1:mb-8 prose-h1:mt-10 prose-h1:text-primary prose-h1:border-b prose-h1:border-gray-200 prose-h1:pb-4
+                prose-h2:text-2xl prose-h2:mb-6 prose-h2:mt-8 prose-h2:text-primary
+                prose-h3:text-xl prose-h3:mb-4 prose-h3:mt-6 prose-h3:text-gray-800
+                prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6 prose-p:text-justify prose-p:text-base
+                prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-a:transition-all
                 prose-strong:text-gray-900 prose-strong:font-semibold
-                prose-blockquote:border-l-4 prose-blockquote:border-primary
-                prose-blockquote:bg-gray-50 prose-blockquote:pl-6 prose-blockquote:py-4
-                prose-blockquote:rounded-r-lg prose-blockquote:not-italic
-                prose-ul:space-y-2 prose-ol:space-y-2
-                prose-li:text-gray-700
-                prose-img:rounded-lg prose-img:shadow-md"
+                prose-em:text-gray-800 prose-em:italic
+                prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-gray-50 
+                prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic 
+                prose-blockquote:text-gray-700 prose-blockquote:font-medium prose-blockquote:shadow-sm
+                prose-ul:space-y-3 prose-ol:space-y-3 prose-ul:my-6 prose-ol:my-6
+                prose-li:text-gray-700 prose-li:leading-relaxed prose-li:marker:text-primary
+                prose-img:rounded-lg prose-img:shadow-md prose-img:my-8
+                prose-hr:border-gray-200 prose-hr:my-8
+                first:prose-p:mt-0 last:prose-p:mb-0"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
           </div>
@@ -295,27 +298,113 @@ const BlogArticlePage = () => {
 
       <Footer />
 
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
+      <style>
+        {`
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+          }
+          
+          .blog-content > * {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(20px);
           }
-          to {
-            opacity: 1;
-            transform: translateY(0);
+          
+          /* Enhanced typography and spacing */
+          .blog-content p {
+            text-align: justify;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            color: #374151;
+            font-size: 1rem;
+            padding: 0 1rem;
           }
-        }
-        
-        .animate-fade-in-up {
-          animation: fadeInUp 0.6s ease-out forwards;
-        }
-        
-        .blog-content > * {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-      `}</style>
+          
+          .blog-content h1, .blog-content h2, .blog-content h3 {
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            padding: 0 1rem;
+          }
+          
+          .blog-content h1 {
+            color: hsl(var(--primary));
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 1rem;
+          }
+          
+          .blog-content h2 {
+            color: hsl(var(--primary));
+          }
+          
+          .blog-content ul, .blog-content ol {
+            padding-left: 2rem;
+            margin: 1.5rem 0;
+          }
+          
+          .blog-content li {
+            margin-bottom: 0.75rem;
+            line-height: 1.7;
+            color: #374151;
+          }
+          
+          .blog-content li::marker {
+            color: hsl(var(--primary));
+            font-weight: 600;
+          }
+          
+          .blog-content blockquote {
+            background: #f9fafb;
+            border-left: 4px solid hsl(var(--primary));
+            padding: 1.5rem;
+            margin: 2rem 1rem;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+          }
+          
+          .blog-content a {
+            color: hsl(var(--primary));
+            font-weight: 500;
+            transition: all 0.2s ease;
+          }
+          
+          .blog-content a:hover {
+            text-decoration: underline;
+            color: hsl(var(--accent));
+          }
+          
+          .blog-content img {
+            margin: 2rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          }
+          
+          .blog-content hr {
+            margin: 2.5rem 0;
+            border-color: #e5e7eb;
+          }
+          
+          @media (max-width: 768px) {
+            .blog-content p, .blog-content h1, .blog-content h2, .blog-content h3 {
+              padding: 0 0.5rem;
+            }
+            
+            .blog-content blockquote {
+              margin: 2rem 0.5rem;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };
