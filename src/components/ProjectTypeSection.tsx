@@ -11,7 +11,7 @@ const ProjectTypeSection = () => {
   const projectTypes = [
     { 
       id: 'all', 
-      label: 'Tout Pwojè', 
+      label: 'Tout', 
       icon: Filter,
       count: projects.length,
       color: 'bg-gray-600',
@@ -19,7 +19,7 @@ const ProjectTypeSection = () => {
     },
     { 
       id: 'reyalize', 
-      label: 'Pwojè Reyalize', 
+      label: 'Reyalize', 
       icon: Building2,
       count: projects.filter(p => p.project_type === 'reyalize').length,
       color: 'bg-green-600',
@@ -27,7 +27,7 @@ const ProjectTypeSection = () => {
     },
     { 
       id: 'an-kour', 
-      label: 'Pwojè An Kour', 
+      label: 'An Kour', 
       icon: Construction,
       count: projects.filter(p => p.project_type === 'an-kour').length,
       color: 'bg-blue-600',
@@ -35,7 +35,7 @@ const ProjectTypeSection = () => {
     },
     { 
       id: 'planifye', 
-      label: 'Sou Wout Reyalizasyon', 
+      label: 'Planifye', 
       icon: Clock,
       count: projects.filter(p => p.project_type === 'planifye').length,
       color: 'bg-purple-600',
@@ -72,51 +72,44 @@ const ProjectTypeSection = () => {
           </p>
         </div>
 
-        {/* Project Type Filter */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {projectTypes.map((type) => {
-            const IconComponent = type.icon;
-            return (
-              <button
-                key={type.id}
-                onClick={() => setSelectedType(type.id as any)}
-                className={`group p-8 rounded-3xl font-inter font-semibold transition-all duration-300 text-left shadow-lg hover:shadow-2xl transform hover:-translate-y-2 ${
-                  selectedType === type.id
-                    ? 'bg-gradient-to-br from-primary to-primary/80 text-white scale-105'
-                    : 'bg-white text-gray-700 hover:bg-gray-50'
-                }`}
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${
-                    selectedType === type.id 
-                      ? 'bg-white/20' 
-                      : `${type.color}/10`
-                  }`}>
-                    <IconComponent className={`w-7 h-7 ${
-                      selectedType === type.id 
-                        ? 'text-white' 
-                        : type.color.replace('bg-', 'text-')
-                    }`} />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold">{type.label}</h3>
-                    <span className={`inline-block px-4 py-2 rounded-full text-sm font-bold mt-2 ${
+        {/* Modern Tab Filter */}
+        <div className="mb-16">
+          <div className="flex items-center justify-center mb-4">
+            <div className="bg-gray-100 rounded-full p-1 inline-flex">
+              {projectTypes.map((type) => {
+                const IconComponent = type.icon;
+                return (
+                  <button
+                    key={type.id}
+                    onClick={() => setSelectedType(type.id as any)}
+                    className={`flex items-center gap-2 px-4 py-3 rounded-full font-inter font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
+                      selectedType === type.id
+                        ? 'bg-primary text-white shadow-lg'
+                        : 'text-gray-600 hover:text-primary hover:bg-white'
+                    }`}
+                  >
+                    <IconComponent className="w-4 h-4" />
+                    <span className="hidden sm:inline">{type.label}</span>
+                    <span className="sm:hidden">{type.label}</span>
+                    <span className={`text-xs px-2 py-1 rounded-full ${
                       selectedType === type.id 
                         ? 'bg-white/20 text-white' 
-                        : 'bg-gray-100 text-gray-600'
+                        : 'bg-gray-200 text-gray-600'
                     }`}>
-                      {type.count} pwojè
+                      {type.count}
                     </span>
-                  </div>
-                </div>
-                <p className={`text-sm leading-relaxed ${
-                  selectedType === type.id ? 'text-gray-100' : 'text-gray-500'
-                }`}>
-                  {type.description}
-                </p>
-              </button>
-            );
-          })}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* Description for selected type */}
+          <div className="text-center">
+            <p className="text-gray-500 font-inter">
+              {projectTypes.find(t => t.id === selectedType)?.description}
+            </p>
+          </div>
         </div>
 
         {/* Projects Grid */}
@@ -138,14 +131,14 @@ const ProjectTypeSection = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project) => (
               <div
                 key={project.id}
-                className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3"
+                className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
               >
                 {/* Project Image */}
-                <div className="relative h-80 overflow-hidden">
+                <div className="relative h-64 overflow-hidden">
                   {project.before_image_url && project.after_image_url ? (
                     <div className="absolute inset-0 flex">
                       <div className="w-1/2 relative overflow-hidden">
@@ -157,7 +150,7 @@ const ProjectTypeSection = () => {
                             e.currentTarget.src = 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
                           }}
                         />
-                        <div className="absolute top-6 left-6 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                        <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
                           Avan
                         </div>
                       </div>
@@ -170,7 +163,7 @@ const ProjectTypeSection = () => {
                             e.currentTarget.src = 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
                           }}
                         />
-                        <div className="absolute top-6 right-6 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                        <div className="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
                           Apre
                         </div>
                       </div>
@@ -188,14 +181,14 @@ const ProjectTypeSection = () => {
                   
                   {/* Video indicator */}
                   {project.video_url && (
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-black/60 rounded-full flex items-center justify-center shadow-2xl">
-                      <Play className="w-10 h-10 text-white ml-1" />
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-black/60 rounded-full flex items-center justify-center shadow-2xl">
+                      <Play className="w-8 h-8 text-white ml-1" />
                     </div>
                   )}
 
                   {/* Project type badge */}
-                  <div className="absolute top-6 left-6">
-                    <span className={`px-4 py-2 rounded-full text-sm font-bold text-white shadow-lg ${
+                  <div className="absolute top-3 left-3">
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold text-white shadow-lg ${
                       project.project_type === 'reyalize' 
                         ? 'bg-green-500' 
                         : project.project_type === 'an-kour'
@@ -203,72 +196,74 @@ const ProjectTypeSection = () => {
                         : 'bg-purple-500'
                     }`}>
                       {project.project_type === 'reyalize' ? 'Reyalize' : 
-                       project.project_type === 'an-kour' ? 'An Kour' : 'Sou Wout'}
+                       project.project_type === 'an-kour' ? 'An Kour' : 'Planifye'}
                     </span>
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-8">
+                <div className="p-6">
                   {project.category && (
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-bold">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-semibold">
                         {project.category}
                       </span>
                     </div>
                   )}
 
-                  <h3 className="font-poppins font-bold text-xl text-primary mb-4 line-clamp-2">
+                  <h3 className="font-poppins font-bold text-lg text-primary mb-3 line-clamp-2">
                     {project.title}
                   </h3>
 
-                  <p className="font-inter text-gray-600 mb-6 line-clamp-3 leading-relaxed">
+                  <p className="font-inter text-gray-600 mb-4 line-clamp-2 leading-relaxed text-sm">
                     {project.description}
                   </p>
 
-                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
+                  <div className="flex items-center gap-3 text-xs text-gray-500 mb-4">
                     {project.location && (
-                      <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4" />
+                      <div className="flex items-center gap-1">
+                        <MapPin className="w-3 h-3" />
                         <span>{project.location}</span>
                       </div>
                     )}
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
                       <span>{project.date}</span>
                     </div>
                   </div>
 
                   {/* Tags */}
                   {project.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-8">
-                      {project.tags.slice(0, 4).map((tag, index) => (
-                        <span key={index} className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold">
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {project.tags.slice(0, 3).map((tag, index) => (
+                        <span key={index} className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-medium">
                           {tag}
                         </span>
                       ))}
-                      {project.tags.length > 4 && (
-                        <span className="text-gray-400 text-xs font-medium">+{project.tags.length - 4}</span>
+                      {project.tags.length > 3 && (
+                        <span className="text-gray-400 text-xs font-medium">+{project.tags.length - 3}</span>
                       )}
                     </div>
                   )}
 
-                  <div className="flex gap-3">
+                  <div className="flex gap-2">
                     {project.slug ? (
                       <Link
                         to={`/projects/${project.slug}`}
-                        className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-white px-6 py-4 rounded-xl font-inter font-bold text-center transition-all duration-300 inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                        className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-white px-4 py-3 rounded-xl font-inter font-semibold text-center transition-all duration-300 inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-sm"
                       >
-                        <Eye className="w-5 h-5" />
-                        Gade Detay
+                        <Eye className="w-4 h-4" />
+                        <span className="hidden sm:inline">Gade Detay</span>
+                        <span className="sm:hidden">Detay</span>
                       </Link>
                     ) : (
                       <Link
                         to="/contact"
-                        className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-white px-6 py-4 rounded-xl font-inter font-bold text-center transition-all duration-300 inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                        className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-white px-4 py-3 rounded-xl font-inter font-semibold text-center transition-all duration-300 inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-sm"
                       >
-                        <ArrowRight className="w-5 h-5" />
-                        Diskite Pwojè Sa
+                        <ArrowRight className="w-4 h-4" />
+                        <span className="hidden sm:inline">Diskite</span>
+                        <span className="sm:hidden">Kontak</span>
                       </Link>
                     )}
                   </div>
