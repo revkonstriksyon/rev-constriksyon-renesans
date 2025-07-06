@@ -13,6 +13,12 @@ interface ContactInfo {
   [key: string]: string;
 }
 
+const TikTokIcon = () => (
+  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19.321 5.562a5.124 5.124 0 01-.443-.258 6.228 6.228 0 01-1.137-.966c-.849-.93-1.4-2.16-1.4-3.538v-.364C16.341.436 15.905 0 15.369 0h-2.454c-.536 0-.972.436-.972.972v10.024c0 1.696-1.377 3.072-3.072 3.072s-3.072-1.377-3.072-3.072 1.377-3.072 3.072-3.072c.169 0 .336.014.5.04V5.506c-.164-.026-.331-.04-.5-.04-3.632 0-6.576 2.944-6.576 6.576s2.944 6.576 6.576 6.576 6.576-2.944 6.576-6.576V8.851c1.035.606 2.23.951 3.497.951v-3.503c-.65 0-1.266-.137-1.823-.387-.557-.25-1.057-.607-1.448-1.05z"/>
+  </svg>
+);
+
 const ContactManagement = () => {
   const [contactInfo, setContactInfo] = useState<ContactInfo>({});
   const [isLoading, setIsLoading] = useState(true);
@@ -29,11 +35,7 @@ const ContactManagement = () => {
     { key: 'social_facebook', label: 'Facebook URL', icon: Facebook, type: 'url' },
     { key: 'social_instagram', label: 'Instagram URL', icon: Instagram, type: 'url' },
     { key: 'social_twitter', label: 'Twitter URL', icon: Twitter, type: 'url' },
-    { key: 'social_tiktok', label: 'TikTok URL', icon: () => (
-      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M19.321 5.562a5.124 5.124 0 01-.443-.258 6.228 6.228 0 01-1.137-.966c-.849-.93-1.4-2.16-1.4-3.538v-.364C16.341.436 15.905 0 15.369 0h-2.454c-.536 0-.972.436-.972.972v10.024c0 1.696-1.377 3.072-3.072 3.072s-3.072-1.377-3.072-3.072 1.377-3.072 3.072-3.072c.169 0 .336.014.5.04V5.506c-.164-.026-.331-.04-.5-.04-3.632 0-6.576 2.944-6.576 6.576s2.944 6.576 6.576 6.576 6.576-2.944 6.576-6.576V8.851c1.035.606 2.23.951 3.497.951v-3.503c-.65 0-1.266-.137-1.823-.387-.557-.25-1.057-.607-1.448-1.05z"/>
-      </svg>
-    ), type: 'url' },
+    { key: 'social_tiktok', label: 'TikTok URL', icon: TikTokIcon, type: 'url' },
     { key: 'social_youtube', label: 'YouTube URL', icon: Youtube, type: 'url' },
   ];
 
@@ -136,31 +138,34 @@ const ContactManagement = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {contactFields.slice(0, 6).map((field) => (
-              <div key={field.key}>
-                <Label htmlFor={field.key} className="flex items-center gap-2">
-                  <field.icon className="w-4 h-4" />
-                  {field.label}
-                </Label>
-                {field.type === 'textarea' ? (
-                  <Textarea
-                    id={field.key}
-                    value={contactInfo[field.key] || ''}
-                    onChange={(e) => handleInputChange(field.key, e.target.value)}
-                    placeholder={field.label}
-                    rows={3}
-                  />
-                ) : (
-                  <Input
-                    id={field.key}
-                    type={field.type}
-                    value={contactInfo[field.key] || ''}
-                    onChange={(e) => handleInputChange(field.key, e.target.value)}
-                    placeholder={field.label}
-                  />
-                )}
-              </div>
-            ))}
+            {contactFields.slice(0, 6).map((field) => {
+              const IconComponent = field.icon;
+              return (
+                <div key={field.key}>
+                  <Label htmlFor={field.key} className="flex items-center gap-2">
+                    <IconComponent className="w-4 h-4" />
+                    {field.label}
+                  </Label>
+                  {field.type === 'textarea' ? (
+                    <Textarea
+                      id={field.key}
+                      value={contactInfo[field.key] || ''}
+                      onChange={(e) => handleInputChange(field.key, e.target.value)}
+                      placeholder={field.label}
+                      rows={3}
+                    />
+                  ) : (
+                    <Input
+                      id={field.key}
+                      type={field.type}
+                      value={contactInfo[field.key] || ''}
+                      onChange={(e) => handleInputChange(field.key, e.target.value)}
+                      placeholder={field.label}
+                    />
+                  )}
+                </div>
+              );
+            })}
           </CardContent>
         </Card>
 
@@ -170,21 +175,24 @@ const ContactManagement = () => {
             <CardTitle>Rezo Sosyal</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {contactFields.slice(6).map((field) => (
-              <div key={field.key}>
-                <Label htmlFor={field.key} className="flex items-center gap-2">
-                  {typeof field.icon === 'function' ? <field.icon /> : <field.icon className="w-4 h-4" />}
-                  {field.label}
-                </Label>
-                <Input
-                  id={field.key}
-                  type={field.type}
-                  value={contactInfo[field.key] || ''}
-                  onChange={(e) => handleInputChange(field.key, e.target.value)}
-                  placeholder={field.label}
-                />
-              </div>
-            ))}
+            {contactFields.slice(6).map((field) => {
+              const IconComponent = field.icon;
+              return (
+                <div key={field.key}>
+                  <Label htmlFor={field.key} className="flex items-center gap-2">
+                    <IconComponent className="w-4 h-4" />
+                    {field.label}
+                  </Label>
+                  <Input
+                    id={field.key}
+                    type={field.type}
+                    value={contactInfo[field.key] || ''}
+                    onChange={(e) => handleInputChange(field.key, e.target.value)}
+                    placeholder={field.label}
+                  />
+                </div>
+              );
+            })}
           </CardContent>
         </Card>
       </div>

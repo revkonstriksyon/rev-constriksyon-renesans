@@ -10,7 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, Edit, Trash2, Save, X, Image, Video } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import RichTextEditor from '@/components/ui/rich-text-editor';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 interface Project {
   id: string;

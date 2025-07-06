@@ -3,28 +3,32 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface ContactInfo {
-  phone_1: string;
-  phone_2?: string;
-  email_1: string;
-  email_2?: string;
-  address: string;
-  hours: string;
-  facebook: string;
-  instagram: string;
-  twitter: string;
+  contact_phone_1: string;
+  contact_phone_2?: string;
+  contact_email_1: string;
+  contact_email_2?: string;
+  contact_address: string;
+  contact_hours: string;
+  social_facebook: string;
+  social_instagram: string;
+  social_twitter: string;
+  social_tiktok: string;
+  social_youtube: string;
 }
 
 export const useContactInfo = () => {
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
-    phone_1: '+509 3456-7890',
-    phone_2: '+509 2812-3456',
-    email_1: 'info@revkonstriksyon.com',
-    email_2: 'devis@revkonstriksyon.com',
-    address: '123 Rue Lamarre, Péguy-Ville, Port-au-Prince, Haïti',
-    hours: 'Lendi - Vandredi: 7:00 AM - 5:00 PM, Samdi: 8:00 AM - 2:00 PM',
-    facebook: '#',
-    instagram: '#',
-    twitter: '#'
+    contact_phone_1: '+509 3456-7890',
+    contact_phone_2: '+509 2812-3456',
+    contact_email_1: 'info@revkonstriksyon.com',
+    contact_email_2: 'devis@revkonstriksyon.com',
+    contact_address: '123 Rue Lamarre, Péguy-Ville, Port-au-Prince, Haïti',
+    contact_hours: 'Lendi - Vandredi: 7:00 AM - 5:00 PM, Samdi: 8:00 AM - 2:00 PM',
+    social_facebook: '#',
+    social_instagram: '#',
+    social_twitter: '#',
+    social_tiktok: '#',
+    social_youtube: '#'
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -43,42 +47,16 @@ export const useContactInfo = () => {
             'contact_hours',
             'social_facebook',
             'social_instagram',
-            'social_twitter'
+            'social_twitter',
+            'social_tiktok',
+            'social_youtube'
           ]);
 
         if (error) throw error;
 
         const info: any = {};
         data?.forEach(item => {
-          switch(item.key) {
-            case 'contact_phone_1':
-              info.phone_1 = item.content;
-              break;
-            case 'contact_phone_2':
-              info.phone_2 = item.content;
-              break;
-            case 'contact_email_1':
-              info.email_1 = item.content;
-              break;
-            case 'contact_email_2':
-              info.email_2 = item.content;
-              break;
-            case 'contact_address':
-              info.address = item.content;
-              break;
-            case 'contact_hours':
-              info.hours = item.content;
-              break;
-            case 'social_facebook':
-              info.facebook = item.content;
-              break;
-            case 'social_instagram':
-              info.instagram = item.content;
-              break;
-            case 'social_twitter':
-              info.twitter = item.content;
-              break;
-          }
+          info[item.key] = item.content;
         });
 
         setContactInfo(prev => ({ ...prev, ...info }));
