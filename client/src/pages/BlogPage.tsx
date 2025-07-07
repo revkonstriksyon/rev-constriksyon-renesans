@@ -6,15 +6,20 @@ import SEOManager from '@/components/SEO/SEOManager';
 import { OrganizationStructuredData } from '@/components/SEO/StructuredData';
 import { Link } from 'react-router-dom';
 import { Calendar, ArrowRight, Clock, User, Search, Tag } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useBlogs } from '@/hooks/useBlogs';
 import { useStaticContent } from '@/hooks/useStaticContent';
+import { Pagination } from '@/components/ui/pagination';
+import { stripHtmlTags } from '@/utils/textHelpers';
 
 const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
   const { blogs, isLoading, error } = useBlogs();
   const { content } = useStaticContent();
+  
+  const ITEMS_PER_PAGE = 9;
 
   // Get unique categories from blogs
   const categories = [
@@ -28,10 +33,36 @@ const BlogPage = () => {
 
   const filteredBlogs = blogs.filter(blog => {
     const matchesSearch = blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+                         stripHtmlTags(blog.excerpt).toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || blog.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredBlogs.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedBlogs = filteredBlogs.slice(startIndex, endIndex);
+
+  // Reset to first page when filters change
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top of blog section
+    const blogSection = document.getElementById('blog-content');
+    if (blogSection) {
+      blogSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -118,7 +149,7 @@ const BlogPage = () => {
                   type="text"
                   placeholder="Chèche atik sou konstriksyon..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={(e) => handleSearch(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-transparent"
                   aria-label="Chèche atik blog konstriksyon"
                 />
@@ -129,7 +160,7 @@ const BlogPage = () => {
                 {categories.map((category) => (
                   <button
                     key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
+                    onClick={() => handleCategoryChange(category.id)}
                     className={`px-4 py-2 rounded-lg font-inter font-medium transition-all duration-300 flex items-center gap-2 ${
                       selectedCategory === category.id
                         ? 'bg-accent text-white shadow-lg'
@@ -172,7 +203,7 @@ const BlogPage = () => {
                       {filteredBlogs[0].title}
                     </h3>
                     <p className="font-inter text-gray-600 mb-6">
-                      {filteredBlogs[0].excerpt}
+                      {stripHtmlTags(filteredBlogs[0].excerpt)}
                     </p>
                     
                     <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
@@ -206,7 +237,7 @@ const BlogPage = () => {
         )}
 
         {/* Articles Grid */}
-        <section className="py-20 bg-white">
+        <section id="blog-content" className="py-20 bg-white">
           <div className="container mx-auto px-4">
             {filteredBlogs.length === 0 ? (
               <div className="text-center py-12">
@@ -219,7 +250,7 @@ const BlogPage = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredBlogs.slice(1).map((blog) => (
+                {paginatedBlogs.map((blog) => (
                   <article
                     key={blog.id}
                     className="bg-secondary rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
@@ -244,7 +275,7 @@ const BlogPage = () => {
                       </h3>
 
                       <p className="font-inter text-gray-600 mb-4 line-clamp-3">
-                        {blog.excerpt}
+                        {stripHtmlTags(blog.excerpt)}
                       </p>
 
                       {/* Article Meta */}
@@ -274,6 +305,18 @@ const BlogPage = () => {
                     </div>
                   </article>
                 ))}
+              </div>
+            )}
+            
+            {/* Pagination */}
+            {filteredBlogs.length > ITEMS_PER_PAGE && (
+              <div className="mt-12 flex justify-center">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                  className="justify-center"
+                />
               </div>
             )}
           </div>

@@ -1,12 +1,37 @@
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, MapPin, Eye, Play, Filter, ArrowRight, Building2, Construction, Clock, Lightbulb } from 'lucide-react';
 import { useProjects } from '@/hooks/useProjects';
+import { Pagination } from '@/components/ui/pagination';
 
 const ProjectTypeSection = () => {
   const [selectedType, setSelectedType] = useState<'all' | 'reyalize' | 'an-kour' | 'planifye'>('all');
+  const [currentPage, setCurrentPage] = useState(1);
   const { projects, isLoading } = useProjects(selectedType === 'all' ? undefined : selectedType);
+  
+  const ITEMS_PER_PAGE = 9;
+
+  // Pagination logic
+  const totalPages = Math.ceil(projects.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedProjects = projects.slice(startIndex, endIndex);
+
+  // Reset to first page when project type changes
+  const handleTypeChange = (type: 'all' | 'reyalize' | 'an-kour' | 'planifye') => {
+    setSelectedType(type);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top of projects section
+    const projectsSection = document.getElementById('projects');
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const projectTypes = [
     { 
@@ -81,7 +106,7 @@ const ProjectTypeSection = () => {
                 return (
                   <button
                     key={type.id}
-                    onClick={() => setSelectedType(type.id as any)}
+                    onClick={() => handleTypeChange(type.id as any)}
                     className={`flex items-center gap-2 px-4 py-3 rounded-full font-inter font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
                       selectedType === type.id
                         ? 'bg-primary text-white shadow-lg'
@@ -131,8 +156,9 @@ const ProjectTypeSection = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project) => (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {paginatedProjects.map((project) => (
               <div
                 key={project.id}
                 className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
@@ -269,8 +295,21 @@ const ProjectTypeSection = () => {
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+            
+            {/* Pagination */}
+            {projects.length > ITEMS_PER_PAGE && (
+              <div className="mt-12 flex justify-center">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                  className="justify-center"
+                />
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>

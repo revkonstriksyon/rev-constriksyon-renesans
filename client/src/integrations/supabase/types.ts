@@ -12,6 +12,9 @@ export type Database = {
       blogs: {
         Row: {
           author: string
+          author_en: string | null
+          author_fr: string | null
+          author_ht: string | null
           category: string
           category_en: string | null
           category_fr: string | null
@@ -21,6 +24,8 @@ export type Database = {
           content_fr: string | null
           content_ht: string | null
           created_at: string
+          cta_text: string | null
+          cta_url: string | null
           date: string
           excerpt: string
           excerpt_en: string | null
@@ -28,9 +33,13 @@ export type Database = {
           excerpt_ht: string | null
           id: string
           image_url: string | null
+          meta_description: string | null
+          meta_title: string | null
           published: boolean
           read_time: string
+          show_on_homepage: boolean | null
           slug: string
+          tags: string[] | null
           title: string
           title_en: string | null
           title_fr: string | null
@@ -39,6 +48,9 @@ export type Database = {
         }
         Insert: {
           author: string
+          author_en?: string | null
+          author_fr?: string | null
+          author_ht?: string | null
           category: string
           category_en?: string | null
           category_fr?: string | null
@@ -48,6 +60,8 @@ export type Database = {
           content_fr?: string | null
           content_ht?: string | null
           created_at?: string
+          cta_text?: string | null
+          cta_url?: string | null
           date: string
           excerpt: string
           excerpt_en?: string | null
@@ -55,9 +69,13 @@ export type Database = {
           excerpt_ht?: string | null
           id?: string
           image_url?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
           published?: boolean
           read_time: string
+          show_on_homepage?: boolean | null
           slug: string
+          tags?: string[] | null
           title: string
           title_en?: string | null
           title_fr?: string | null
@@ -66,6 +84,9 @@ export type Database = {
         }
         Update: {
           author?: string
+          author_en?: string | null
+          author_fr?: string | null
+          author_ht?: string | null
           category?: string
           category_en?: string | null
           category_fr?: string | null
@@ -75,6 +96,8 @@ export type Database = {
           content_fr?: string | null
           content_ht?: string | null
           created_at?: string
+          cta_text?: string | null
+          cta_url?: string | null
           date?: string
           excerpt?: string
           excerpt_en?: string | null
@@ -82,9 +105,13 @@ export type Database = {
           excerpt_ht?: string | null
           id?: string
           image_url?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
           published?: boolean
           read_time?: string
+          show_on_homepage?: boolean | null
           slug?: string
+          tags?: string[] | null
           title?: string
           title_en?: string | null
           title_fr?: string | null

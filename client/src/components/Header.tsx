@@ -19,7 +19,7 @@ const Header = () => {
   const isActive = (href: string) => location.pathname === href;
 
   return (
-    <header className="fixed top-0 w-full bg-white/98 backdrop-blur-sm z-50 shadow-lg border-b border-gray-200">
+    <header className="fixed top-0 w-full bg-white z-50 shadow-lg border-b border-gray-200">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}

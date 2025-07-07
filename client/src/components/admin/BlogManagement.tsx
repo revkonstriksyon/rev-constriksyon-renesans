@@ -33,6 +33,12 @@ interface BlogPost {
   read_time: string;
   slug: string;
   published: boolean;
+  show_on_homepage: boolean | null;
+  tags: string[] | null;
+  meta_title: string | null;
+  meta_description: string | null;
+  cta_text: string | null;
+  cta_url: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -52,7 +58,13 @@ const BlogManagement = () => {
     category: '',
     author: '',
     read_time: '',
-    published: true
+    published: true,
+    show_on_homepage: false,
+    tags: [] as string[],
+    meta_title: '',
+    meta_description: '',
+    cta_text: '',
+    cta_url: ''
   });
 
   useEffect(() => {
@@ -97,7 +109,13 @@ const BlogManagement = () => {
       category: '',
       author: '',
       read_time: '',
-      published: true
+      published: true,
+      show_on_homepage: false,
+      tags: [] as string[],
+      meta_title: '',
+      meta_description: '',
+      cta_text: '',
+      cta_url: ''
     });
     setEditingPost(null);
     setShowForm(false);
@@ -112,7 +130,13 @@ const BlogManagement = () => {
       category: post.category,
       author: post.author,
       read_time: post.read_time,
-      published: post.published
+      published: post.published,
+      show_on_homepage: post.show_on_homepage || false,
+      tags: post.tags || [],
+      meta_title: post.meta_title || '',
+      meta_description: post.meta_description || '',
+      cta_text: post.cta_text || '',
+      cta_url: post.cta_url || ''
     });
     setEditingPost(post);
     setShowForm(true);
@@ -135,7 +159,13 @@ const BlogManagement = () => {
         date: currentDate,
         read_time: formData.read_time,
         slug: editingPost ? editingPost.slug : slug,
-        published: formData.published
+        published: formData.published,
+        show_on_homepage: formData.show_on_homepage,
+        tags: formData.tags,
+        meta_title: formData.meta_title || null,
+        meta_description: formData.meta_description || null,
+        cta_text: formData.cta_text || null,
+        cta_url: formData.cta_url || null
       };
 
       if (editingPost) {
@@ -317,6 +347,80 @@ const BlogManagement = () => {
                     onCheckedChange={(checked) => setFormData({ ...formData, published: checked })}
                   />
                   <label className="text-sm font-medium">Pibliye</label>
+                </div>
+              </div>
+
+              {/* New Enhanced Blog Fields */}
+              <div className="border-t pt-4">
+                <h3 className="text-lg font-semibold mb-4">Opsyon Avanse</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      checked={formData.show_on_homepage}
+                      onCheckedChange={(checked) => setFormData({ ...formData, show_on_homepage: checked })}
+                    />
+                    <label className="text-sm font-medium">Montre sou paj akèy</label>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Tags (separe yo ak vigil)</label>
+                    <Input
+                      type="text"
+                      value={formData.tags.join(', ')}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        tags: e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
+                      })}
+                      placeholder="konstriksyon, renovasyon, arkitekti"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Meta Tit (SEO)</label>
+                    <Input
+                      type="text"
+                      value={formData.meta_title}
+                      onChange={(e) => setFormData({ ...formData, meta_title: e.target.value })}
+                      placeholder="Tit pou SEO (60 karaktè maksimòm)"
+                      maxLength={60}
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Meta Deskripsyon (SEO)</label>
+                    <Input
+                      type="text"
+                      value={formData.meta_description}
+                      onChange={(e) => setFormData({ ...formData, meta_description: e.target.value })}
+                      placeholder="Deskripsyon pou SEO (160 karaktè maksimòm)"
+                      maxLength={160}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Tèks Bouton CTA</label>
+                    <Input
+                      type="text"
+                      value={formData.cta_text}
+                      onChange={(e) => setFormData({ ...formData, cta_text: e.target.value })}
+                      placeholder="Li atik konplè a"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Lyen CTA</label>
+                    <Input
+                      type="url"
+                      value={formData.cta_url}
+                      onChange={(e) => setFormData({ ...formData, cta_url: e.target.value })}
+                      placeholder="https://example.com/article"
+                    />
+                  </div>
                 </div>
               </div>
 

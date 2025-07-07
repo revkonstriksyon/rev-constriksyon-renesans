@@ -14,19 +14,32 @@ const iconMap: Record<string, any> = {
 };
 
 const Services = () => {
-  const { services, isLoading } = useServices();
   const { content } = useStaticContent();
 
-  if (isLoading) {
-    return (
-      <section id="services" className="py-20 bg-secondary">
-        <div className="container mx-auto px-4 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-gray-600">Ap chaje sèvis yo...</p>
-        </div>
-      </section>
-    );
-  }
+  // Fixed set of 3 services to display on homepage
+  const featuredServices = [
+    {
+      id: 1,
+      title: "Plan Achitekti",
+      description: "Konsepsyon ak kreye plan detaye pou pwojè konstriksyon yo ak vizualizasyon 3D",
+      icon: "FileText",
+      color: "bg-blue-500"
+    },
+    {
+      id: 2,
+      title: "Renovasyon",
+      description: "Renovasyon ak reamenajman konplè kay ak espas yo ak materyèl kalite",
+      icon: "Wrench", 
+      color: "bg-green-500"
+    },
+    {
+      id: 3,
+      title: "Siveyans ak Jesyon Chantye",
+      description: "Swivi ak jesyon pwofesyonèl nan travay konstriksyon yo ak kontwòl kalite",
+      icon: "Eye",
+      color: "bg-orange-500"
+    }
+  ];
 
   return (
     <section id="services" className="py-20 bg-secondary">
@@ -41,7 +54,7 @@ const Services = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service) => {
+          {featuredServices.map((service) => {
             const IconComponent = iconMap[service.icon || 'Home'] || Home;
             
             return (
@@ -59,27 +72,9 @@ const Services = () => {
                   {service.title}
                 </h3>
                 
-                <p className="font-inter text-gray-600 mb-4">
+                <p className="font-inter text-gray-600 mb-6">
                   {service.description}
                 </p>
-
-                {service.features && service.features.length > 0 && (
-                  <ul className="space-y-2 mb-6">
-                    {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center text-sm text-gray-600">
-                        <div className="w-2 h-2 bg-accent rounded-full mr-3"></div>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                {(service.price_range || service.duration) && (
-                  <div className="mb-4 text-sm text-gray-500">
-                    {service.price_range && <div>Pri: {service.price_range}</div>}
-                    {service.duration && <div>Dire: {service.duration}</div>}
-                  </div>
-                )}
 
                 <Link
                   to="/services"

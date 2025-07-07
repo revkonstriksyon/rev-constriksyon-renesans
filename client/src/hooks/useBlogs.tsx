@@ -16,6 +16,12 @@ interface Blog {
   category: string;
   image_url: string | null;
   published: boolean;
+  show_on_homepage: boolean | null;
+  tags: string[] | null;
+  meta_title: string | null;
+  meta_description: string | null;
+  cta_text: string | null;
+  cta_url: string | null;
   created_at: string;
   updated_at: string;
   // Multilang fields
@@ -48,6 +54,12 @@ export interface TranslatedBlog {
   category: string;
   image_url: string | null;
   published: boolean;
+  show_on_homepage: boolean | null;
+  tags: string[] | null;
+  meta_title: string | null;
+  meta_description: string | null;
+  cta_text: string | null;
+  cta_url: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -79,6 +91,12 @@ export const useBlogs = () => {
       category: getTranslatedContent(blog, 'category', currentLanguage, blog.category),
       image_url: blog.image_url,
       published: blog.published,
+      show_on_homepage: blog.show_on_homepage,
+      tags: blog.tags,
+      meta_title: blog.meta_title,
+      meta_description: blog.meta_description,
+      cta_text: blog.cta_text,
+      cta_url: blog.cta_url,
       created_at: blog.created_at,
       updated_at: blog.updated_at,
     };
@@ -167,6 +185,12 @@ export const useBlog = (slug: string) => {
       category: getTranslatedContent(blog, 'category', currentLanguage, blog.category),
       image_url: blog.image_url,
       published: blog.published,
+      show_on_homepage: blog.show_on_homepage,
+      tags: blog.tags,
+      meta_title: blog.meta_title,
+      meta_description: blog.meta_description,
+      cta_text: blog.cta_text,
+      cta_url: blog.cta_url,
       created_at: blog.created_at,
       updated_at: blog.updated_at,
     };
