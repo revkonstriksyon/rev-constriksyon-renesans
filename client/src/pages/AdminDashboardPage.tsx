@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StaticContentManagement from '@/components/admin/StaticContentManagement';
-import ServiceManagement from '@/components/admin/ServiceManagement';
+import ServicesManagement from '@/components/admin/ServicesManagement';
 import ProjectManagement from '@/components/admin/ProjectManagement';
 import BlogManagement from '@/components/admin/BlogManagement';
-import SliderManagement from '@/components/admin/SliderManagement';
-import GalleryManagement from '@/components/admin/GalleryManagement';
+import HomepageSliderManagement from '@/components/admin/HomepageSliderManagement';
+import InspirationGalleryManagement from '@/components/admin/InspirationGalleryManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
 import TranslationManagement from '@/components/admin/TranslationManagement';
 import CategoryManagement from '@/components/admin/CategoryManagement';
@@ -40,7 +40,7 @@ const AdminDashboardPage = () => {
           </TabsContent>
 
           <TabsContent value="services">
-            <ServiceManagement />
+            <ServicesManagement />
           </TabsContent>
 
           <TabsContent value="projects">
@@ -56,11 +56,11 @@ const AdminDashboardPage = () => {
           </TabsContent>
 
           <TabsContent value="slider">
-            <SliderManagement />
+            <HomepageSliderManagement />
           </TabsContent>
 
           <TabsContent value="gallery">
-            <GalleryManagement />
+            <InspirationGalleryManagement />
           </TabsContent>
 
           <TabsContent value="contact">
