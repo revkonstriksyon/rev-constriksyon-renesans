@@ -49,6 +49,7 @@ const App = () => (
                   <Route path="/blog/:slug" element={<BlogArticlePage />} />
                   <Route path="/testimonials" element={<TestimonialsPage />} />
                   <Route path="/contact" element={<ContactPage />} />
+                  <Route path="/admin" element={<AdminLoginPage />} />
                   <Route path="/admin/login" element={<AdminLoginPage />} />
                   <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
                   <Route path="*" element={<NotFound />} />
