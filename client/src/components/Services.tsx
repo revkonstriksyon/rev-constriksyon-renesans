@@ -1,4 +1,3 @@
-
 import { Home, Wrench, FileText, Eye, Zap, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useStaticContent } from '@/hooks/useStaticContent';
@@ -41,7 +40,7 @@ export default function Services() {
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-primary/10 to-accent/5 rounded-full blur-3xl transform -translate-x-32 -translate-y-32"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-br from-accent/10 to-primary/5 rounded-full blur-3xl transform translate-x-48 translate-y-48"></div>
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-16">
           <h2 className="font-poppins font-bold text-4xl md:text-5xl text-primary mb-6">
