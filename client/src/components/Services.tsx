@@ -1,4 +1,3 @@
-
 import { Home, Wrench, FileText, Eye, Zap, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useStaticContent } from '@/hooks/useStaticContent';
@@ -55,7 +54,7 @@ const Services = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredServices.map((service) => {
             const IconComponent = iconMap[service.icon || 'Home'] || Home;
-            
+
             return (
               <div
                 key={service.id}
@@ -66,11 +65,11 @@ const Services = () => {
                     <IconComponent className="w-8 h-8 text-primary group-hover:text-accent transition-colors duration-300" />
                   </div>
                 </div>
-                
+
                 <h3 className="font-poppins font-semibold text-xl text-primary mb-3">
                   {service.title}
                 </h3>
-                
+
                 <p className="font-inter text-gray-600 mb-6">
                   {service.description}
                 </p>
