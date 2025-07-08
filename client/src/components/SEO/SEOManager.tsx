@@ -91,8 +91,8 @@ const SEOManager: React.FC<SEOManagerProps> = ({
         <meta name="msapplication-TileColor" content="#C8102E" />
         
         {/* Favicon */}
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href={ogImage} />
+        <link rel="icon" type="image/png" href="/lovable-uploads/13fb6e7e-0f38-4087-a603-87332522b654.png" />
+        <link rel="apple-touch-icon" href="/lovable-uploads/13fb6e7e-0f38-4087-a603-87332522b654.png" />
       </Helmet>
     );
   } catch (error) {
