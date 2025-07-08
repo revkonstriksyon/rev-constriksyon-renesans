@@ -98,25 +98,25 @@ const ProjectTypeSection = () => {
         </div>
 
         {/* Modern Tab Filter */}
-        <div className="mb-16">
+        <div className="mb-12 md:mb-16">
           <div className="overflow-x-auto scrollbar-hide pb-2">
             <div className="flex justify-center mb-4">
-              <div className="bg-gray-100 rounded-full p-1 inline-flex gap-1 min-w-max">
+              <div className="bg-gray-100 rounded-full p-1 inline-flex gap-1 min-w-max mx-2 md:mx-0">
                 {projectTypes.map((type) => {
                   const IconComponent = type.icon;
                   return (
                     <button
                       key={type.id}
                       onClick={() => handleTypeChange(type.id as any)}
-                      className={`flex items-center gap-2 px-4 py-3 rounded-full font-inter font-semibold text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
+                      className={`flex items-center gap-2 px-3 md:px-4 py-2.5 md:py-3 rounded-full font-inter font-semibold text-xs md:text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0 min-w-max ${
                         selectedType === type.id
                           ? 'bg-primary text-white shadow-lg scale-105'
                           : 'text-gray-600 hover:text-primary hover:bg-white hover:scale-102'
                       }`}
                     >
-                      <IconComponent className="w-4 h-4 flex-shrink-0" />
+                      <IconComponent className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
                       <span className="font-poppins">{type.label}</span>
-                      <span className={`text-xs px-2 py-1 rounded-full flex-shrink-0 ${
+                      <span className={`text-xs px-1.5 md:px-2 py-0.5 md:py-1 rounded-full flex-shrink-0 ${
                         selectedType === type.id 
                           ? 'bg-white/20 text-white' 
                           : 'bg-gray-200 text-gray-600'
@@ -130,9 +130,14 @@ const ProjectTypeSection = () => {
             </div>
           </div>
           
+          {/* Mobile scroll hint */}
+          <div className="text-center md:hidden mb-2">
+            <p className="text-xs text-gray-400 font-inter">← Swipe pou wè kategori yo →</p>
+          </div>
+          
           {/* Description for selected type */}
           <div className="text-center">
-            <p className="text-gray-500 font-inter">
+            <p className="text-gray-500 font-inter text-sm md:text-base">
               {projectTypes.find(t => t.id === selectedType)?.description}
             </p>
           </div>

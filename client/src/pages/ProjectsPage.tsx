@@ -41,41 +41,42 @@ const ProjectsPage = () => {
         </section>
 
         {/* Navigation Menu */}
-        <section className="py-8 bg-white shadow-sm sticky top-20 z-10">
-          <div className="container mx-auto px-4">
+        <section className="py-6 md:py-8 bg-white shadow-sm sticky top-20 z-10">
+          <div className="container mx-auto px-2 md:px-4">
             <nav className="overflow-x-auto scrollbar-hide">
-              <div className="flex gap-4 min-w-max justify-center mx-auto">
+              <div className="flex gap-3 md:gap-4 min-w-max md:justify-center px-4 md:px-0">
                 <a 
                   href="#projects" 
-                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-6 py-3 rounded-xl hover:bg-gray-50 flex items-center gap-3 whitespace-nowrap border-2 border-transparent hover:border-primary/20 flex-shrink-0"
+                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-4 md:px-6 py-2.5 md:py-3 rounded-xl hover:bg-gray-50 flex items-center gap-2 md:gap-3 whitespace-nowrap border-2 border-transparent hover:border-primary/20 flex-shrink-0 min-w-max shadow-sm hover:shadow-md"
                 >
-                  <span className="text-lg">🏗️</span>
-                  <span className="font-poppins">Pwojè yo</span>
+                  <span className="text-base md:text-lg">🏗️</span>
+                  <span className="font-poppins text-sm md:text-base">Pwojè yo</span>
                 </a>
                 <a 
                   href="#concepts" 
-                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-6 py-3 rounded-xl hover:bg-gray-50 flex items-center gap-3 whitespace-nowrap border-2 border-transparent hover:border-primary/20 flex-shrink-0"
+                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-4 md:px-6 py-2.5 md:py-3 rounded-xl hover:bg-gray-50 flex items-center gap-2 md:gap-3 whitespace-nowrap border-2 border-transparent hover:border-primary/20 flex-shrink-0 min-w-max shadow-sm hover:shadow-md"
                 >
-                  <span className="text-lg">🎯</span>
-                  <span className="font-poppins">Konsepsyon 3D</span>
+                  <span className="text-base md:text-lg">🎯</span>
+                  <span className="font-poppins text-sm md:text-base">Konsepsyon 3D</span>
                 </a>
                 <a 
                   href="#inspiration" 
-                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-6 py-3 rounded-xl hover:bg-gray-50 flex items-center gap-3 whitespace-nowrap border-2 border-transparent hover:border-primary/20 flex-shrink-0"
+                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-4 md:px-6 py-2.5 md:py-3 rounded-xl hover:bg-gray-50 flex items-center gap-2 md:gap-3 whitespace-nowrap border-2 border-transparent hover:border-primary/20 flex-shrink-0 min-w-max shadow-sm hover:shadow-md"
                 >
-                  <span className="text-lg">✨</span>
-                  <span className="font-poppins">Enspirasyon</span>
+                  <span className="text-base md:text-lg">✨</span>
+                  <span className="font-poppins text-sm md:text-base">Enspirasyon</span>
                 </a>
               </div>
             </nav>
             
             {/* Mobile scroll indicator */}
-            <div className="flex justify-center mt-4 md:hidden">
-              <div className="flex gap-1">
-                <div className="w-2 h-2 bg-primary/30 rounded-full animate-pulse"></div>
-                <div className="w-2 h-2 bg-primary/20 rounded-full animate-pulse delay-100"></div>
-                <div className="w-2 h-2 bg-primary/30 rounded-full animate-pulse delay-200"></div>
+            <div className="flex justify-center mt-3 md:mt-4 md:hidden">
+              <div className="flex gap-1.5">
+                <div className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-pulse"></div>
+                <div className="w-1.5 h-1.5 bg-primary/25 rounded-full animate-pulse delay-100"></div>
+                <div className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-pulse delay-200"></div>
               </div>
+              <p className="text-xs text-gray-500 mt-2 font-inter">← Swipe pou wè pi plis →</p>
             </div>
           </div>
         </section>
