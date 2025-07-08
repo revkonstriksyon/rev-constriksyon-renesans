@@ -99,33 +99,34 @@ const ProjectTypeSection = () => {
 
         {/* Modern Tab Filter */}
         <div className="mb-16">
-          <div className="flex items-center justify-center mb-4">
-            <div className="bg-gray-100 rounded-full p-1 inline-flex">
-              {projectTypes.map((type) => {
-                const IconComponent = type.icon;
-                return (
-                  <button
-                    key={type.id}
-                    onClick={() => handleTypeChange(type.id as any)}
-                    className={`flex items-center gap-2 px-4 py-3 rounded-full font-inter font-semibold text-sm transition-all duration-300 whitespace-nowrap ${
-                      selectedType === type.id
-                        ? 'bg-primary text-white shadow-lg'
-                        : 'text-gray-600 hover:text-primary hover:bg-white'
-                    }`}
-                  >
-                    <IconComponent className="w-4 h-4" />
-                    <span className="hidden sm:inline">{type.label}</span>
-                    <span className="sm:hidden">{type.label}</span>
-                    <span className={`text-xs px-2 py-1 rounded-full ${
-                      selectedType === type.id 
-                        ? 'bg-white/20 text-white' 
-                        : 'bg-gray-200 text-gray-600'
-                    }`}>
-                      {type.count}
-                    </span>
-                  </button>
-                );
-              })}
+          <div className="overflow-x-auto scrollbar-hide pb-2">
+            <div className="flex justify-center mb-4">
+              <div className="bg-gray-100 rounded-full p-1 inline-flex gap-1 min-w-max">
+                {projectTypes.map((type) => {
+                  const IconComponent = type.icon;
+                  return (
+                    <button
+                      key={type.id}
+                      onClick={() => handleTypeChange(type.id as any)}
+                      className={`flex items-center gap-2 px-4 py-3 rounded-full font-inter font-semibold text-sm transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
+                        selectedType === type.id
+                          ? 'bg-primary text-white shadow-lg scale-105'
+                          : 'text-gray-600 hover:text-primary hover:bg-white hover:scale-102'
+                      }`}
+                    >
+                      <IconComponent className="w-4 h-4 flex-shrink-0" />
+                      <span className="font-poppins">{type.label}</span>
+                      <span className={`text-xs px-2 py-1 rounded-full flex-shrink-0 ${
+                        selectedType === type.id 
+                          ? 'bg-white/20 text-white' 
+                          : 'bg-gray-200 text-gray-600'
+                      }`}>
+                        {type.count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
           

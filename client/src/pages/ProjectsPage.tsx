@@ -41,30 +41,42 @@ const ProjectsPage = () => {
         </section>
 
         {/* Navigation Menu */}
-        <section className="py-12 bg-white shadow-sm sticky top-20 z-10">
+        <section className="py-8 bg-white shadow-sm sticky top-20 z-10">
           <div className="container mx-auto px-4">
-            <nav className="flex justify-center">
-              <div className="flex flex-wrap justify-center gap-8">
+            <nav className="overflow-x-auto scrollbar-hide">
+              <div className="flex gap-4 min-w-max justify-center mx-auto">
                 <a 
                   href="#projects" 
-                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-6 py-3 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-6 py-3 rounded-xl hover:bg-gray-50 flex items-center gap-3 whitespace-nowrap border-2 border-transparent hover:border-primary/20 flex-shrink-0"
                 >
-                  🏗️ <span>Pwojè yo</span>
+                  <span className="text-lg">🏗️</span>
+                  <span className="font-poppins">Pwojè yo</span>
                 </a>
                 <a 
                   href="#concepts" 
-                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-6 py-3 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-6 py-3 rounded-xl hover:bg-gray-50 flex items-center gap-3 whitespace-nowrap border-2 border-transparent hover:border-primary/20 flex-shrink-0"
                 >
-                  🎯 <span>Konsepsyon 3D</span>
+                  <span className="text-lg">🎯</span>
+                  <span className="font-poppins">Konsepsyon 3D</span>
                 </a>
                 <a 
                   href="#inspiration" 
-                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-6 py-3 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+                  className="group text-primary hover:text-accent font-semibold transition-all duration-300 px-6 py-3 rounded-xl hover:bg-gray-50 flex items-center gap-3 whitespace-nowrap border-2 border-transparent hover:border-primary/20 flex-shrink-0"
                 >
-                  ✨ <span>Enspirasyon</span>
+                  <span className="text-lg">✨</span>
+                  <span className="font-poppins">Enspirasyon</span>
                 </a>
               </div>
             </nav>
+            
+            {/* Mobile scroll indicator */}
+            <div className="flex justify-center mt-4 md:hidden">
+              <div className="flex gap-1">
+                <div className="w-2 h-2 bg-primary/30 rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-primary/20 rounded-full animate-pulse delay-100"></div>
+                <div className="w-2 h-2 bg-primary/30 rounded-full animate-pulse delay-200"></div>
+              </div>
+            </div>
           </div>
         </section>
 
