@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,16 +7,64 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { Captcha } from '@/components/ui/captcha';
+import { useRateLimit } from '@/hooks/useRateLimit';
 
 const AdminLoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  
+  const rateLimit = useRateLimit({
+    maxAttempts: 5,
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    blockDurationMs: 30 * 60 * 1000, // 30 minutes block
+  });
+
+  // Check if already authenticated
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        navigate('/admin/dashboard');
+      }
+    };
+    checkAuth();
+  }, [navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!isCaptchaVerified) {
+      toast({
+        title: 'Erè',
+        description: 'Tanpri verifye CAPTCHA a.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (rateLimit.isBlocked) {
+      toast({
+        title: 'Twòp tantativ',
+        description: `Tanpri tann ${rateLimit.remainingTime} segonn yo anvan ou eseye ankò.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!rateLimit.recordAttempt()) {
+      toast({
+        title: 'Twòp tantativ',
+        description: 'Ou gen twòp tantativ koneksyon. Tann kèk minit anvan ou eseye ankò.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setIsLoading(true);
     
     try {
@@ -36,7 +84,8 @@ const AdminLoginPage = () => {
           title: 'Konekte ak siksè!',
           description: 'Ou konekte nan admin dashboard la.',
         });
-        navigate('/admin');
+        rateLimit.reset(); // Reset rate limit on successful login
+        navigate('/admin/dashboard');
       }
     } catch (error) {
       toast({
@@ -131,13 +180,23 @@ const AdminLoginPage = () => {
               />
             </div>
             <div className="space-y-2">
-              <Button 
-                type="submit" 
-                className="w-full" 
-                disabled={isLoading}
-              >
-                {isLoading ? 'Ap konekte...' : 'Konekte'}
-              </Button>
+              <div className="space-y-4">
+                <Captcha onVerify={setIsCaptchaVerified} />
+                
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={isLoading || !isCaptchaVerified || rateLimit.isBlocked}
+                >
+                  {isLoading ? 'Ap konekte...' : 'Konekte'}
+                </Button>
+                
+                {rateLimit.isBlocked && (
+                  <p className="text-sm text-red-600 text-center">
+                    Twòp tantativ. Tann {rateLimit.remainingTime} segonn yo.
+                  </p>
+                )}
+              </div>
               <Button 
                 type="button" 
                 variant="outline" 

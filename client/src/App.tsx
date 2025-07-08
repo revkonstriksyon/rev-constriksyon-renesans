@@ -18,6 +18,7 @@ import TestimonialsPage from "./pages/TestimonialsPage";
 import ContactPage from "./pages/ContactPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -51,7 +52,11 @@ const App = () => (
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/admin" element={<AdminLoginPage />} />
                   <Route path="/admin/login" element={<AdminLoginPage />} />
-                  <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+                  <Route path="/admin/dashboard" element={
+                    <ProtectedRoute>
+                      <AdminDashboardPage />
+                    </ProtectedRoute>
+                  } />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </ErrorBoundary>

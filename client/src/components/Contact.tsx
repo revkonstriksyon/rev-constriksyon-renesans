@@ -1,11 +1,32 @@
 
 import { useState } from 'react';
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import { useNewsletter } from '@/hooks/useNewsletter';
+import { useToast } from '@/hooks/use-toast';
+import { Captcha } from '@/components/ui/captcha';
+import { useRateLimit } from '@/hooks/useRateLimit';
 
 const Contact = () => {
   const [email, setEmail] = useState('');
   const { subscribe, isLoading } = useNewsletter();
+  const { toast } = useToast();
+  
+  // Contact form states
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    projectType: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
+  
+  const rateLimit = useRateLimit({
+    maxAttempts: 3,
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    blockDurationMs: 30 * 60 * 1000, // 30 minutes block
+  });
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,6 +36,76 @@ const Contact = () => {
         setEmail('');
       }
     }
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!isCaptchaVerified) {
+      toast({
+        title: 'Erè',
+        description: 'Tanpri verifye CAPTCHA a anvan ou voye mesaj la.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (rateLimit.isBlocked) {
+      toast({
+        title: 'Twòp mesaj',
+        description: `Tanpri tann ${rateLimit.remainingTime} segonn yo anvan ou voye yon lòt mesaj.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!rateLimit.recordAttempt()) {
+      toast({
+        title: 'Twòp mesaj',
+        description: 'Ou voye twòp mesaj. Tann kèk minit anvan ou eseye ankò.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      // Simulate form submission (you can replace this with actual API call)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: 'Mesaj voye ak siksè!',
+        description: 'Nou pral reponn ou nan 24 èdtan.',
+      });
+      
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        projectType: '',
+        message: ''
+      });
+      setIsCaptchaVerified(false);
+      rateLimit.reset();
+      
+    } catch (error) {
+      toast({
+        title: 'Erè',
+        description: 'Pwoblèm nan voye mesaj la. Eseye ankò.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   return (
@@ -116,26 +207,34 @@ const Contact = () => {
               Voye yon Mesaj
             </h3>
             
-            <form className="space-y-6">
+            <form onSubmit={handleContactSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block font-poppins font-medium text-primary mb-2">
-                    Non
+                    Non *
                   </label>
                   <input
                     type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent font-inter"
                     placeholder="Non ou..."
+                    required
                   />
                 </div>
                 <div>
                   <label className="block font-poppins font-medium text-primary mb-2">
-                    Imèl
+                    Imèl *
                   </label>
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent font-inter"
                     placeholder="Imèl ou..."
+                    required
                   />
                 </div>
               </div>
@@ -146,6 +245,9 @@ const Contact = () => {
                 </label>
                 <input
                   type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent font-inter"
                   placeholder="Telefòn ou..."
                 />
@@ -153,35 +255,64 @@ const Contact = () => {
 
               <div>
                 <label className="block font-poppins font-medium text-primary mb-2">
-                  Tip Pwojè
+                  Tip Pwojè *
                 </label>
-                <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent font-inter">
-                  <option>Chwazi yon tip pwojè...</option>
-                  <option>Renovasyon Konplè</option>
-                  <option>Extansyon Kay</option>
-                  <option>Konstriksyon Nouvo</option>
-                  <option>Plan Achitekti</option>
-                  <option>Konsèltasyon</option>
+                <select 
+                  name="projectType"
+                  value={formData.projectType}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent font-inter"
+                  required
+                >
+                  <option value="">Chwazi yon tip pwojè...</option>
+                  <option value="renovation">Renovasyon Konplè</option>
+                  <option value="extension">Extansyon Kay</option>
+                  <option value="new-construction">Konstriksyon Nouvo</option>
+                  <option value="architecture">Plan Achitekti</option>
+                  <option value="consultation">Konsèltasyon</option>
                 </select>
               </div>
 
               <div>
                 <label className="block font-poppins font-medium text-primary mb-2">
-                  Mesaj
+                  Mesaj *
                 </label>
                 <textarea
                   rows={5}
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent font-inter resize-none"
                   placeholder="Eksplike pwojè ou an ak detay..."
+                  required
                 ></textarea>
               </div>
 
+              <Captcha onVerify={setIsCaptchaVerified} />
+
               <button
                 type="submit"
-                className="w-full bg-accent hover:bg-accent/90 text-white py-4 rounded-lg font-poppins font-semibold text-lg transition-colors duration-300"
+                disabled={isSubmitting || !isCaptchaVerified || rateLimit.isBlocked}
+                className="w-full bg-accent hover:bg-accent/90 text-white py-4 rounded-lg font-poppins font-semibold text-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                Voye Mesaj
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    Ap voye...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5" />
+                    Voye Mesaj
+                  </>
+                )}
               </button>
+              
+              {rateLimit.isBlocked && (
+                <p className="text-sm text-red-600 text-center">
+                  Twòp mesaj voye. Tann {rateLimit.remainingTime} segonn yo.
+                </p>
+              )}
             </form>
           </div>
         </div>
