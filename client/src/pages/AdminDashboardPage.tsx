@@ -8,7 +8,7 @@ import HomepageSliderManagement from '@/components/admin/HomepageSliderManagemen
 import InspirationGalleryManagement from '@/components/admin/InspirationGalleryManagement';
 import ContactManagement from '@/components/admin/ContactManagement';
 import TranslationManagement from '@/components/admin/TranslationManagement';
-import CategoryManagement from '@/components/admin/CategoryManagement';
+
 
 const AdminDashboardPage = () => {
   const [activeTab, setActiveTab] = useState('static');
@@ -23,11 +23,11 @@ const AdminDashboardPage = () => {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-8">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="static">Kontni</TabsTrigger>
             <TabsTrigger value="services">Sèvis</TabsTrigger>
             <TabsTrigger value="projects">Pwojè</TabsTrigger>
-            <TabsTrigger value="categories">Kategori</TabsTrigger>
+            
             <TabsTrigger value="blogs">Blog</TabsTrigger>
             <TabsTrigger value="slider">Slider</TabsTrigger>
             <TabsTrigger value="gallery">Galri</TabsTrigger>
@@ -47,9 +47,6 @@ const AdminDashboardPage = () => {
             <ProjectManagement />
           </TabsContent>
 
-          <TabsContent value="categories">
-            <CategoryManagement />
-          </TabsContent>
 
           <TabsContent value="blogs">
             <BlogManagement />
@@ -68,7 +65,12 @@ const AdminDashboardPage = () => {
           </TabsContent>
 
           <TabsContent value="translations">
-            <TranslationManagement />
+            <TranslationManagement 
+              title="Jesyon Tradiksyon"
+              fields={[]}
+              onSave={async () => {}}
+              onCancel={() => {}}
+            />
           </TabsContent>
         </Tabs>
       </div>

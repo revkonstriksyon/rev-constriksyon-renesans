@@ -12,9 +12,9 @@ const InspirationGallery = () => {
   const categories = [
     { id: 'all', label: 'Tout Enspirasyon', icon: '✨' },
     ...Array.from(new Set(items.map(item => item.category).filter(Boolean))).map(cat => ({
-      id: cat,
-      label: cat,
-      icon: getIconForCategory(cat)
+      id: cat as string,
+      label: cat as string,
+      icon: getIconForCategory(cat as string)
     }))
   ];
 

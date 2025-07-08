@@ -34,7 +34,7 @@ const BlogArticlePage = () => {
         const { data, error } = await supabase
           .from('blogs')
           .select('*')
-          .eq('slug', slug)
+          .eq('slug', slug || '')
           .eq('published', true)
           .single();
 
@@ -45,7 +45,19 @@ const BlogArticlePage = () => {
             throw error;
           }
         } else {
-          setPost(data);
+          setPost({
+            id: data.id,
+            title: data.title,
+            excerpt: data.excerpt,
+            content: data.content,
+            image_url: data.image_url || undefined,
+            category: data.category,
+            author: data.author,
+            date: data.date,
+            read_time: data.read_time,
+            slug: data.slug,
+            published: data.published,
+          });
           fetchRelatedPosts(data.category, data.id);
         }
       } catch (error) {
@@ -67,7 +79,19 @@ const BlogArticlePage = () => {
           .limit(3);
 
         if (error) throw error;
-        setRelatedPosts(data || []);
+        setRelatedPosts(data.map(post => ({
+          id: post.id,
+          title: post.title,
+          excerpt: post.excerpt,
+          content: post.content,
+          image_url: post.image_url || undefined,
+          category: post.category,
+          author: post.author,
+          date: post.date,
+          read_time: post.read_time,
+          slug: post.slug,
+          published: post.published,
+        })) || []);
       } catch (error) {
         console.error('Error fetching related posts:', error);
       }

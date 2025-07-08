@@ -54,7 +54,12 @@ const ProjectDetailPage = () => {
           .single();
 
         if (error) throw error;
-        setProject(data);
+        setProject({
+          ...data,
+          images: data.images || [],
+          tags: data.tags || [],
+          project_type: data.project_type || 'reyalize',
+        });
       } catch (error) {
         console.error('Error fetching project:', error);
       } finally {

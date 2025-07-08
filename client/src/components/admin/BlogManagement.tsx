@@ -79,7 +79,22 @@ const BlogManagement = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setBlogPosts(data || []);
+      setBlogPosts(data.map(blog => ({
+        ...blog,
+        title_en: blog.title_en || undefined,
+        title_fr: blog.title_fr || undefined,
+        title_ht: blog.title_ht || undefined,
+        content_en: blog.content_en || undefined,
+        content_fr: blog.content_fr || undefined,
+        content_ht: blog.content_ht || undefined,
+        excerpt_en: blog.excerpt_en || undefined,
+        excerpt_fr: blog.excerpt_fr || undefined,
+        excerpt_ht: blog.excerpt_ht || undefined,
+        category_en: blog.category_en || undefined,
+        category_fr: blog.category_fr || undefined,
+        category_ht: blog.category_ht || undefined,
+        image_url: blog.image_url || undefined,
+      })) || []);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
       toast({

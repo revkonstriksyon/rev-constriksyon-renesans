@@ -85,7 +85,15 @@ export const useServices = () => {
           .order('order_position', { ascending: true });
 
         if (error) throw error;
-        const translatedServices = (data || []).map(translateService);
+        const translatedServices = (data || []).map(service => translateService({
+          ...service,
+          title_ht: service.title_ht || undefined,
+          title_fr: service.title_fr || undefined,
+          title_en: service.title_en || undefined,
+          description_ht: service.description_ht || undefined,
+          description_fr: service.description_fr || undefined,
+          description_en: service.description_en || undefined,
+        }));
         setServices(translatedServices);
       } catch (error) {
         console.error('Error fetching services:', error);

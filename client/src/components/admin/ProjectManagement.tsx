@@ -76,7 +76,12 @@ const ProjectManagement = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setProjects(data || []);
+      setProjects(data.map(project => ({
+        ...project,
+        project_type: project.project_type || 'reyalize',
+        images: project.images || [],
+        tags: project.tags || [],
+      })) || []);
     } catch (error) {
       toast({
         title: 'Erè',
@@ -97,7 +102,7 @@ const ProjectManagement = () => {
 
       if (error) throw error;
       
-      const uniqueCategories = [...new Set(data?.map(item => item.category).filter(Boolean))];
+      const uniqueCategories = [...new Set(data?.map(item => item.category).filter(Boolean))] as string[];
       setCategories(uniqueCategories);
     } catch (error) {
       console.error('Error fetching categories:', error);

@@ -121,7 +121,24 @@ export const useBlogs = () => {
           return;
         }
 
-        const translatedBlogs = (data || []).map(translateBlog);
+        const translatedBlogs = (data || []).map(blog => translateBlog({
+          ...blog,
+          title_ht: blog.title_ht || undefined,
+          title_fr: blog.title_fr || undefined,
+          title_en: blog.title_en || undefined,
+          excerpt_ht: blog.excerpt_ht || undefined,
+          excerpt_fr: blog.excerpt_fr || undefined,
+          excerpt_en: blog.excerpt_en || undefined,
+          content_ht: blog.content_ht || undefined,
+          content_fr: blog.content_fr || undefined,
+          content_en: blog.content_en || undefined,
+          category_ht: blog.category_ht || undefined,
+          category_fr: blog.category_fr || undefined,
+          category_en: blog.category_en || undefined,
+          author_ht: blog.author_ht || undefined,
+          author_fr: blog.author_fr || undefined,
+          author_en: blog.author_en || undefined,
+        }));
         setBlogs(translatedBlogs);
       } catch (error) {
         console.error('Error fetching blogs:', error);
@@ -218,7 +235,24 @@ export const useBlog = (slug: string) => {
           return;
         }
 
-        const translatedBlog = translateBlog(data);
+        const translatedBlog = translateBlog({
+          ...data,
+          title_ht: data.title_ht || undefined,
+          title_fr: data.title_fr || undefined,
+          title_en: data.title_en || undefined,
+          excerpt_ht: data.excerpt_ht || undefined,
+          excerpt_fr: data.excerpt_fr || undefined,
+          excerpt_en: data.excerpt_en || undefined,
+          content_ht: data.content_ht || undefined,
+          content_fr: data.content_fr || undefined,
+          content_en: data.content_en || undefined,
+          category_ht: data.category_ht || undefined,
+          category_fr: data.category_fr || undefined,
+          category_en: data.category_en || undefined,
+          author_ht: data.author_ht || undefined,
+          author_fr: data.author_fr || undefined,
+          author_en: data.author_en || undefined,
+        });
         setBlog(translatedBlog);
       } catch (error) {
         console.error('Error fetching blog:', error);

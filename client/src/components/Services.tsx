@@ -53,7 +53,7 @@ export default function Services() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredServices.map((service) => {
-            const IconComponent = iconMap[service.icon || 'Home'] || Home;
+            const IconComponent = (service.icon && iconMap[service.icon as keyof typeof iconMap]) || Home;
 
             return (
               <div

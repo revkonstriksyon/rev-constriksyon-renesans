@@ -28,7 +28,12 @@ export const useInspirationGallery = () => {
           .order('order_position', { ascending: true });
 
         if (error) throw error;
-        setItems(data || []);
+        setItems(data.map(item => ({
+          ...item,
+          tags: item.tags || [],
+          order_position: item.order_position || 0,
+          is_active: item.is_active || false
+        })) || []);
       } catch (error) {
         console.error('Error fetching inspiration gallery:', error);
       } finally {
